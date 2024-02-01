@@ -2279,6 +2279,14 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1978513835}
     m_Modifications:
+    - target: {fileID: -1460346771144134561, guid: bb6e44333c75a8e408e52ad8da382152, type: 3}
+      propertyPath: hero
+      value: 
+      objectReference: {fileID: 444751506}
+    - target: {fileID: -1460346771144134561, guid: bb6e44333c75a8e408e52ad8da382152, type: 3}
+      propertyPath: timeBetweenAttacks
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 1750560516131386101, guid: bb6e44333c75a8e408e52ad8da382152, type: 3}
       propertyPath: m_SizeDelta.x
       value: 200
@@ -2412,6 +2420,14 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.x
       value: 0.0025434494
       objectReference: {fileID: 0}
+    - target: {fileID: 887529310369570406, guid: b4bab66c6a36e7c4187ee1898f2ee662, type: 3}
+      propertyPath: hero
+      value: 
+      objectReference: {fileID: 444751506}
+    - target: {fileID: 887529310369570406, guid: b4bab66c6a36e7c4187ee1898f2ee662, type: 3}
+      propertyPath: timeBetweenAttacks
+      value: 0.5
+      objectReference: {fileID: 0}
     - target: {fileID: 1147116399680578785, guid: b4bab66c6a36e7c4187ee1898f2ee662, type: 3}
       propertyPath: m_Name
       value: EnemyLight
@@ -2460,50 +2476,6 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 1527156647343239545, guid: b4bab66c6a36e7c4187ee1898f2ee662, type: 3}
-      propertyPath: hero
-      value: 
-      objectReference: {fileID: 444751506}
-    - target: {fileID: 1527156647343239545, guid: b4bab66c6a36e7c4187ee1898f2ee662, type: 3}
-      propertyPath: colors.Array.data[0].a
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 1527156647343239545, guid: b4bab66c6a36e7c4187ee1898f2ee662, type: 3}
-      propertyPath: colors.Array.data[0].b
-      value: 0.11764706
-      objectReference: {fileID: 0}
-    - target: {fileID: 1527156647343239545, guid: b4bab66c6a36e7c4187ee1898f2ee662, type: 3}
-      propertyPath: colors.Array.data[0].g
-      value: 0.078431375
-      objectReference: {fileID: 0}
-    - target: {fileID: 1527156647343239545, guid: b4bab66c6a36e7c4187ee1898f2ee662, type: 3}
-      propertyPath: colors.Array.data[0].r
-      value: 0.8627451
-      objectReference: {fileID: 0}
-    - target: {fileID: 1527156647343239545, guid: b4bab66c6a36e7c4187ee1898f2ee662, type: 3}
-      propertyPath: colors.Array.data[1].a
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 1527156647343239545, guid: b4bab66c6a36e7c4187ee1898f2ee662, type: 3}
-      propertyPath: colors.Array.data[1].b
-      value: 0.34117648
-      objectReference: {fileID: 0}
-    - target: {fileID: 1527156647343239545, guid: b4bab66c6a36e7c4187ee1898f2ee662, type: 3}
-      propertyPath: colors.Array.data[1].g
-      value: 0.21960784
-      objectReference: {fileID: 0}
-    - target: {fileID: 1527156647343239545, guid: b4bab66c6a36e7c4187ee1898f2ee662, type: 3}
-      propertyPath: colors.Array.data[1].r
-      value: 0.20392157
-      objectReference: {fileID: 0}
-    - target: {fileID: 1527156647343239545, guid: b4bab66c6a36e7c4187ee1898f2ee662, type: 3}
-      propertyPath: colors.Array.data[2].a
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 1527156647343239545, guid: b4bab66c6a36e7c4187ee1898f2ee662, type: 3}
-      propertyPath: colors.Array.data[2].r
-      value: 0.35686275
-      objectReference: {fileID: 0}
     - target: {fileID: 4779321769223694014, guid: b4bab66c6a36e7c4187ee1898f2ee662, type: 3}
       propertyPath: m_AnchoredPosition.x
       value: -101
@@ -2530,6 +2502,14 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1978513835}
     m_Modifications:
+    - target: {fileID: -7273479249557357517, guid: e25fabf3a6a8a304083101ee65bbc1e6, type: 3}
+      propertyPath: hero
+      value: 
+      objectReference: {fileID: 444751506}
+    - target: {fileID: -7273479249557357517, guid: e25fabf3a6a8a304083101ee65bbc1e6, type: 3}
+      propertyPath: timeBetweenAttacks
+      value: 1.5
+      objectReference: {fileID: 0}
     - target: {fileID: 5196026033857221700, guid: e25fabf3a6a8a304083101ee65bbc1e6, type: 3}
       propertyPath: m_AnchorMax.x
       value: 0

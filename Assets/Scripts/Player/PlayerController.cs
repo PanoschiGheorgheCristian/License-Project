@@ -5,7 +5,7 @@ using UnityEngine;
 public class PlayerController : MonoBehaviour
 {
     public int heroCurrentPosition;
-    public Vector3[] heroBoardPositions = new Vector3[15];
+    private Vector3[] heroBoardPositions = new Vector3[15];
     public Attack attackScript;
     int canMove;
     int isDashing;
