@@ -1,0 +1,45 @@
+{
+    "name": "PlayerInputMap",
+    "maps": [
+        {
+            "name": "MapNavigation",
+            "id": "811e40d8-b7c2-47e9-bf9f-dbaac13cf7bf",
+            "actions": [
+                {
+                    "name": "ClickStage",
+                    "type": "Button",
+                    "id": "dd9982de-a1de-4301-8bbe-a2ffc9abaf9d",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "c26c91ff-f9e8-4131-af30-1be99d66ddef",
+                    "path": "<Mouse>/leftButton",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "ClickStage",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "57fb4200-90c2-43a7-9866-8eec4d112065",
+                    "path": "",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "ClickStage",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
+        }
+    ],
+    "controlSchemes": []
+}
