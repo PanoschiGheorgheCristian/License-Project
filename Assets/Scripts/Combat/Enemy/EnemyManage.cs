@@ -15,10 +15,10 @@ public class EnemyManage : MonoBehaviour
         enemyTypes[1].SetActive(false);
         enemyTypes[2].SetActive(false);
 
-        currentEnemy = getEnemyNr();
+        currentEnemy = GetEnemyNr();
     }
 
-    private int getEnemyNr()
+    private int GetEnemyNr()
     {
         int rand = (Random.Range(0, 3));
         enemyTypes[rand].SetActive(true);
@@ -26,7 +26,7 @@ public class EnemyManage : MonoBehaviour
         return rand;
     }
 
-    public GameObject returnCurrentEnemy ()
+    public GameObject GetCurrentEnemy ()
     {
         return enemyTypes[currentEnemy];
     }

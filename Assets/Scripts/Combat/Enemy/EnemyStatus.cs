@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class EnemyStatus : MonoBehaviour
 {
@@ -34,5 +35,13 @@ public class EnemyStatus : MonoBehaviour
     {
         health = newHealth;
         healthbar.SetHealth(newHealth);
+    }
+
+    private IEnumerator NextLevel()
+    {
+        Debug.Log("You Won!");
+        yield return new WaitForSeconds(2f);
+        
+        SceneManager.LoadScene("Map", LoadSceneMode.Single);
     }
 }

@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor.SearchService;
 using UnityEngine;
 
 public class HeroStatus : MonoBehaviour
@@ -30,7 +31,6 @@ public class HeroStatus : MonoBehaviour
         if(alive == 0)
         {
             gameObject.GetComponent<SpriteRenderer>().enabled = false;
-            print("hero died");
             alive = -1;
         }
     }

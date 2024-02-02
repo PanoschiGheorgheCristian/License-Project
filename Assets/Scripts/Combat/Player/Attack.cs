@@ -29,7 +29,7 @@ public class Attack : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        enemy = enemyManager.GetComponent<EnemyManage>().returnCurrentEnemy();
+        enemy = enemyManager.GetComponent<EnemyManage>().GetCurrentEnemy();
         currentWeapon = weapons[indexCurrentWeapon];
         if(Input.GetKeyDown(KeyCode.E) && isAttacking == 0)
         {
