@@ -52,35 +52,36 @@ public class MapController : MonoBehaviour
     {
         mapNodes[0].GetComponent<MapNode>().SetEncounter(MapNode.Encounter.Start);
         mapNodes[^1].GetComponent<MapNode>().SetEncounter(MapNode.Encounter.Boss);
+        mapNodes[^2].GetComponent<MapNode>().SetEncounter(MapNode.Encounter.Camp);
 
         float rand = UnityEngine.Random.Range(0f,2f);
         if(rand < 1f)
         {
             mapNodes[7].GetComponent<MapNode>().SetEncounter(MapNode.Encounter.HardEnemy);
             mapNodes[8].GetComponent<MapNode>().SetEncounter(MapNode.Encounter.Camp);
-            mapNodes[^2].GetComponent<MapNode>().SetEncounter(MapNode.Encounter.HardEnemy);
-            mapNodes[^3].GetComponent<MapNode>().SetEncounter(MapNode.Encounter.Camp);
+            mapNodes[^3].GetComponent<MapNode>().SetEncounter(MapNode.Encounter.HardEnemy);
+            mapNodes[^4].GetComponent<MapNode>().SetEncounter(MapNode.Encounter.UpgradeShop);
         }
         else
         {
             mapNodes[7].GetComponent<MapNode>().SetEncounter(MapNode.Encounter.Camp);
             mapNodes[8].GetComponent<MapNode>().SetEncounter(MapNode.Encounter.HardEnemy);
-            mapNodes[^2].GetComponent<MapNode>().SetEncounter(MapNode.Encounter.Camp);
-            mapNodes[^3].GetComponent<MapNode>().SetEncounter(MapNode.Encounter.HardEnemy);
+            mapNodes[^3].GetComponent<MapNode>().SetEncounter(MapNode.Encounter.UpgradeShop);
+            mapNodes[^4].GetComponent<MapNode>().SetEncounter(MapNode.Encounter.HardEnemy);
         }
-        for(int index = 1; index <= mapNodes.Count - 2; index++)
+        for(int index = 1; index <= mapNodes.Count - 3; index++)
         {
             if(index % 8 == 7)  
             {
                 index += 1;
                 continue;
             }
-            rand = UnityEngine.Random.Range(0f,3f);
-            if(rand < 1f)
+            rand = UnityEngine.Random.Range(0f,25f);
+            if(rand < 12f)
                 mapNodes[index].GetComponent<MapNode>().SetEncounter(MapNode.Encounter.Enemy);
-            else    if(rand < 2f)
-                        mapNodes[index].GetComponent<MapNode>().SetEncounter(MapNode.Encounter.Treasure);
-                    else    mapNodes[index].GetComponent<MapNode>().SetEncounter(MapNode.Encounter.Event);
+            else    if(rand < 24f)
+                        mapNodes[index].GetComponent<MapNode>().SetEncounter(MapNode.Encounter.Event);
+                    else    mapNodes[index].GetComponent<MapNode>().SetEncounter(MapNode.Encounter.WeaponShop);
             // node.GetComponent<MapNode>().SetEncounter(MapNode.Encounter.Enemy);
         }
     }
@@ -96,9 +97,14 @@ public class MapController : MonoBehaviour
         {
             SceneManager.LoadScene("Combat", LoadSceneMode.Single);
         }
-        else
+        else if(this.currentStage.GetComponent<MapNode>().encounter == MapNode.Encounter.Camp || 
+            this.currentStage.GetComponent<MapNode>().encounter == MapNode.Encounter.Event)
         {
             SceneManager.LoadScene("Encounter", LoadSceneMode.Single);
+        }
+        else 
+        {
+            SceneManager.LoadScene("Shop", LoadSceneMode.Single);
         }
     }
 }

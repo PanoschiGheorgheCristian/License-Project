@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class MapNode : MonoBehaviour
 {
-    public enum Encounter {Start, Enemy, HardEnemy, Camp, Treasure, Event, Boss};
+    public enum Encounter {Start, Enemy, HardEnemy, Camp, Event, UpgradeShop, WeaponShop, Boss};
     public Encounter encounter;
     public bool hasPlayer;
     public List<GameObject> successors;
