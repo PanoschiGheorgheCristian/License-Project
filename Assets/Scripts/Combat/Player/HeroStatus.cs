@@ -23,12 +23,12 @@ public class HeroStatus : MonoBehaviour
 
     void Update()
     {
-        if(health <= 0)
+        if (health <= 0)
         {
             alive = 0;
             health = 100;
         }
-        if(alive == 0)
+        if (alive == 0)
         {
             gameObject.GetComponent<SpriteRenderer>().enabled = false;
             alive = -1;

@@ -5,13 +5,13 @@ using UnityEngine;
 public class PlayerController : MonoBehaviour
 {
     public int heroCurrentPosition;
-    private Vector3[] heroBoardPositions = new Vector3[15];
+    private readonly Vector3[] heroBoardPositions = new Vector3[15];
     public Attack attackScript;
     int canMove;
     int isDashing;
     public float movementDelay;
     public float shieldDuration;
-    
+
     // Start is called before the first frame update
     void Start()
     {
@@ -40,86 +40,86 @@ public class PlayerController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        checkSpace();
-        move();
-        useShieldCharge();
+        CheckSpace();
+        Move();
+        UseShieldCharge();
     }
 
-    private void checkSpace()
+    private void CheckSpace()
     {
-        if(Input.GetKeyDown(KeyCode.Space))
+        if (Input.GetKeyDown(KeyCode.Space))
             isDashing = 1;
-        if(Input.GetKeyUp(KeyCode.Space))
+        if (Input.GetKeyUp(KeyCode.Space))
             isDashing = 0;
     }
-    private void move() 
+    private void Move()
     {
-        if(canMove == 1)
+        if (canMove == 1)
         {
-            if(Input.GetKeyDown(KeyCode.A) && heroCurrentPosition % 5 !=0)
+            if (Input.GetKeyDown(KeyCode.A) && heroCurrentPosition % 5 != 0)
             {
                 heroCurrentPosition = heroCurrentPosition - 1 - (heroCurrentPosition % 5 == 1 ? 0 : isDashing);
                 transform.position = heroBoardPositions[heroCurrentPosition];
                 attackScript.indexCurrentWeapon = heroCurrentPosition % 5;
                 canMove = 0;
-                StartCoroutine(regainMovement(movementDelay));
+                StartCoroutine(RegainMovement(movementDelay));
             }
 
-            if(Input.GetKeyDown(KeyCode.D) && heroCurrentPosition % 5 != 4)
+            if (Input.GetKeyDown(KeyCode.D) && heroCurrentPosition % 5 != 4)
             {
                 heroCurrentPosition = heroCurrentPosition + 1 + (heroCurrentPosition % 5 == 3 ? 0 : isDashing);
                 transform.position = heroBoardPositions[heroCurrentPosition];
                 attackScript.indexCurrentWeapon = heroCurrentPosition % 5;
                 canMove = 0;
-                StartCoroutine(regainMovement(movementDelay));
+                StartCoroutine(RegainMovement(movementDelay));
             }
 
-            if(Input.GetKeyDown(KeyCode.S) && heroCurrentPosition > 4)
+            if (Input.GetKeyDown(KeyCode.S) && heroCurrentPosition > 4)
             {
-                heroCurrentPosition = heroCurrentPosition - 5 - 5*(heroCurrentPosition < 10 ? 0 : isDashing);
+                heroCurrentPosition = heroCurrentPosition - 5 - 5 * (heroCurrentPosition < 10 ? 0 : isDashing);
                 transform.position = heroBoardPositions[heroCurrentPosition];
                 attackScript.indexCurrentWeapon = heroCurrentPosition % 5;
                 canMove = 0;
-                StartCoroutine(regainMovement(movementDelay));
+                StartCoroutine(RegainMovement(movementDelay));
             }
 
-            if(Input.GetKeyDown(KeyCode.W) && heroCurrentPosition < 10)
+            if (Input.GetKeyDown(KeyCode.W) && heroCurrentPosition < 10)
             {
-                heroCurrentPosition = heroCurrentPosition + 5 + 5*(heroCurrentPosition > 4 ? 0 : isDashing);
+                heroCurrentPosition = heroCurrentPosition + 5 + 5 * (heroCurrentPosition > 4 ? 0 : isDashing);
                 transform.position = heroBoardPositions[heroCurrentPosition];
                 attackScript.indexCurrentWeapon = heroCurrentPosition % 5;
                 canMove = 0;
-                StartCoroutine(regainMovement(movementDelay));
+                StartCoroutine(RegainMovement(movementDelay));
             }
         }
     }
 
-    public void useShieldCharge()
+    public void UseShieldCharge()
     {
-        if(Input.GetKeyDown(KeyCode.Q) && !gameObject.GetComponent<HeroStatus>().isShielded && gameObject.GetComponent<HeroStatus>().shieldCharges > 0)
+        if (Input.GetKeyDown(KeyCode.Q) && !gameObject.GetComponent<HeroStatus>().isShielded && gameObject.GetComponent<HeroStatus>().shieldCharges > 0)
         {
             gameObject.GetComponent<HeroStatus>().isShielded = true;
             gameObject.GetComponent<HeroStatus>().shieldCharges = gameObject.GetComponent<HeroStatus>().shieldCharges - 1;
-            StartCoroutine(loseShield(shieldDuration));
+            StartCoroutine(LoseShield(shieldDuration));
         }
     }
     public int GetIndex(Vector3 position)
     {
-        for(int i=0; i<this.heroBoardPositions.Length; i++)
+        for (int i = 0; i < heroBoardPositions.Length; i++)
         {
-            if(position == this.heroBoardPositions[i])
+            if (position == heroBoardPositions[i])
                 return i;
         }
         return -1;
     }
 
-    IEnumerator loseShield(float shieldDuration)
+    IEnumerator LoseShield(float shieldDuration)
     {
         yield return new WaitForSeconds(shieldDuration);
         Debug.Log("Shield Expired");
         gameObject.GetComponent<HeroStatus>().isShielded = false;
     }
-    IEnumerator regainMovement(float movementDelay) 
+    IEnumerator RegainMovement(float movementDelay)
     {
         yield return new WaitForSeconds(movementDelay);
         canMove = 1;

@@ -10,20 +10,21 @@ public class SceneLoad : MonoBehaviour
     [SerializeField] GameObject player;
     [SerializeField] GameObject enemyManager;
 
-    private void Awake() {
+    private void Awake()
+    {
         isLoading = false;
     }
 
     void Update()
     {
-        if(enemyManager.GetComponent<EnemyManage>().GetCurrentEnemy().activeSelf == false && isLoading == false)
+        if (enemyManager.GetComponent<EnemyManage>().GetCurrentEnemy().activeSelf == false && isLoading == false)
         {
             StartCoroutine(LoadMap("You Won!"));
         }
-        else    if(player.GetComponent<HeroStatus>().alive <= 0 && isLoading == false)
-                {
-                    StartCoroutine(LoadMap("You Died"));
-                }
+        else if (player.GetComponent<HeroStatus>().alive <= 0 && isLoading == false)
+        {
+            StartCoroutine(LoadMap("You Died"));
+        }
     }
 
     private IEnumerator LoadMap(String message)

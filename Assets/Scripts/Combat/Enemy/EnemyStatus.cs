@@ -41,7 +41,7 @@ public class EnemyStatus : MonoBehaviour
     {
         Debug.Log("You Won!");
         yield return new WaitForSeconds(2f);
-        
+
         SceneManager.LoadScene("Map", LoadSceneMode.Single);
     }
 }

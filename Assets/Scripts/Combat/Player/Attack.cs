@@ -7,7 +7,7 @@ public class Attack : MonoBehaviour
     // 0 - Bow || 1 - Staff || 2 - Shield || 3 - Sword || 4 - Mace
     public int indexCurrentWeapon = 2;
     Weapon currentWeapon;
-    List<Weapon> weapons = new List<Weapon>();
+    readonly List<Weapon> weapons = new();
     int isAttacking;
     public GameObject enemyManager;
     public GameObject enemy;
@@ -31,20 +31,20 @@ public class Attack : MonoBehaviour
     {
         enemy = enemyManager.GetComponent<EnemyManage>().GetCurrentEnemy();
         currentWeapon = weapons[indexCurrentWeapon];
-        if(Input.GetKeyDown(KeyCode.E) && isAttacking == 0)
+        if (Input.GetKeyDown(KeyCode.E) && isAttacking == 0)
         {
-            attackEnemy(currentWeapon, enemy);
+            AttackEnemy(currentWeapon, enemy);
         }
     }
 
-    void attackEnemy(Weapon currentWeapon, GameObject enemy)
+    void AttackEnemy(Weapon currentWeapon, GameObject enemy)
     {
         isAttacking = 1;
-        currentWeapon.attack(enemy);
-        StartCoroutine(cooldownAttack(attackCooldown));
+        currentWeapon.Attack(enemy);
+        StartCoroutine(CooldownAttack(attackCooldown));
     }
 
-    IEnumerator cooldownAttack(float time)
+    IEnumerator CooldownAttack(float time)
     {
         yield return new WaitForSeconds(time);
 

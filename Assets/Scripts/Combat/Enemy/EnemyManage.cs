@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class EnemyManage : MonoBehaviour
@@ -26,7 +24,7 @@ public class EnemyManage : MonoBehaviour
         return rand;
     }
 
-    public GameObject GetCurrentEnemy ()
+    public GameObject GetCurrentEnemy()
     {
         return enemyTypes[currentEnemy];
     }

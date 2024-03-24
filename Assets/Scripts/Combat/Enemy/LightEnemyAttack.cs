@@ -9,23 +9,23 @@ public class LightEnemyAttack : GenericEnemyAttack
     void Update()
     {
         heroCurrentPosition = hero.GetComponent<PlayerController>().heroCurrentPosition;
-        if(isAttacking == 0 && isExhausted == 0)
-            if(hero.GetComponent<HeroStatus>().alive == 1)
-                if(heroCurrentPosition % 5 == 4)
-                    attackClose();
+        if (isAttacking == 0 && isExhausted == 0)
+            if (hero.GetComponent<HeroStatus>().alive == 1)
+                if (heroCurrentPosition % 5 == 4)
+                    AttackClose();
                 else
-                    preciseAttack(heroCurrentPosition);
+                    PreciseAttack(heroCurrentPosition);
     }
 
-    void attackClose() 
+    void AttackClose()
     {
-        attack(4, 0.75f, 15);
-        attack(9, 0.75f, 15);
-        attack(14, 0.75f, 15);
+        Attack(4, 0.75f, 15);
+        Attack(9, 0.75f, 15);
+        Attack(14, 0.75f, 15);
     }
 
-    void preciseAttack(int heroCurrentPosition)
+    void PreciseAttack(int heroCurrentPosition)
     {
-        attack(heroCurrentPosition, 0.3f, 10);
+        Attack(heroCurrentPosition, 0.3f, 10);
     }
 }
