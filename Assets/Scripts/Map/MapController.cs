@@ -4,6 +4,7 @@ using UnityEngine.InputSystem;
 using UnityEngine;
 using System;
 using UnityEngine.SceneManagement;
+using System.IO;
 
 public class MapController : MonoBehaviour
 {
@@ -12,17 +13,25 @@ public class MapController : MonoBehaviour
     public GameObject currentStage;
     private Camera _mainCamera;
     [SerializeField] private List<GameObject> mapNodes;
+
+    private static string SAVE_FOLDER;
     void Awake() 
     {
         _mainCamera = Camera.main;
         isSceneLoading = false;
         SetEncounters();
+
+        SAVE_FOLDER = Application.dataPath + "/Saves";
+        LoadGame();
     }
 
     // Update is called once per frame
     void Update()
     {
-        
+        //TEST
+        if(Input.GetKeyDown(KeyCode.S)) {
+            SaveGame();
+        }
     }
 
     public void OnClick(InputAction.CallbackContext context)
@@ -42,6 +51,7 @@ public class MapController : MonoBehaviour
                     currentStage = iteratorGameObject;
                     currentStage.GetComponent<MapNode>().hasPlayer = true;
                     player.transform.position = currentStage.transform.position + new Vector3 (0, 0.5f, -1);
+                    SaveGame();
                     isSceneLoading = true;
                     StartCoroutine(LoadStage());
                 }
@@ -84,6 +94,31 @@ public class MapController : MonoBehaviour
                     else    mapNodes[index].GetComponent<MapNode>().SetEncounter(MapNode.Encounter.WeaponShop);
             // node.GetComponent<MapNode>().SetEncounter(MapNode.Encounter.Enemy);
         }
+    }
+
+    public void SaveGame() {
+        SaveObject save = new()
+        {
+            currentStage = currentStage.name,
+            currentGold = 200
+        };
+        string jsonSave = JsonUtility.ToJson(save);
+
+        File.WriteAllText(SAVE_FOLDER, jsonSave);
+
+        Debug.Log("Saved");
+    }
+
+    public void LoadGame() {
+        string json = File.ReadAllText(SAVE_FOLDER);
+
+        SaveObject save = JsonUtility.FromJson<SaveObject>(json);
+        if(save is not null) {
+            currentStage = GameObject.Find(save.currentStage);
+            GameObject.Find("Player").transform.position = currentStage.transform.position + new Vector3 (0, 0.5f, -1);
+        }
+        else
+            currentStage = GameObject.Find("Start");
     }
 
     private IEnumerator LoadStage()
