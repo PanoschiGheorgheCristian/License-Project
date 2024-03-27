@@ -563,7 +563,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1850269994}
         m_TargetAssemblyTypeName: ButtonActions, Assembly-CSharp
-        m_MethodName: PrintStuff
+        m_MethodName: LoadMap
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -844,7 +844,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1850269994}
         m_TargetAssemblyTypeName: ButtonActions, Assembly-CSharp
-        m_MethodName: PrintStuff
+        m_MethodName: LoadMap
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -978,7 +978,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1850269994}
         m_TargetAssemblyTypeName: ButtonActions, Assembly-CSharp
-        m_MethodName: PrintStuff
+        m_MethodName: LoadMap
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}

@@ -28,11 +28,7 @@ public class MapController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        //TEST
-        if (Input.GetKeyDown(KeyCode.S))
-        {
-            SaveGame();
-        }
+        //Make animations
     }
 
     public void OnClick(InputAction.CallbackContext context)
@@ -52,7 +48,7 @@ public class MapController : MonoBehaviour
                     currentStage = iteratorGameObject;
                     currentStage.GetComponent<MapNode>().hasPlayer = true;
                     player.transform.position = currentStage.transform.position + new Vector3(0, 0.5f, -1);
-                    SaveGame();
+                    SaveGame(currentStage.name, 200, PlayerWeapons.GetWeaponsIndexes());
                     isSceneLoading = true;
                     StartCoroutine(LoadStage());
                 }
@@ -97,12 +93,14 @@ public class MapController : MonoBehaviour
         }
     }
 
-    public void SaveGame()
+    public void SaveGame(string name, int gold, int[] weapons)
     {
         SaveObject save = new()
         {
-            currentStage = currentStage.name,
-            currentGold = 200
+            currentStage = name,
+            currentGold = gold,
+            currentWeapons = weapons
+            //for each weapon give the index in the database
         };
         string jsonSave = JsonUtility.ToJson(save);
 
@@ -122,7 +120,17 @@ public class MapController : MonoBehaviour
             GameObject.Find("Player").transform.position = currentStage.transform.position + new Vector3(0, 0.5f, -1);
         }
         else
-            currentStage = GameObject.Find("Start");
+            StartGame();
+    }
+
+    private void StartGame()
+    {
+        currentStage = GameObject.Find("Start");
+        // foreach (Weapon weapon in playerWeapons.GetWeapons())
+        // {
+        //     Debug.Log(weapon.GetType().Name);
+        // }
+        SaveGame(currentStage.name, 0, PlayerWeapons.GetWeaponsIndexes());
     }
 
     private IEnumerator LoadStage()
