@@ -31,6 +31,13 @@ public class SceneLoad : MonoBehaviour
     {
         Debug.Log(message);
         isLoading = true;
+        
+        string json = SaveObject.getJsonSave();
+        SaveObject saveObject = JsonUtility.FromJson<SaveObject>(json);
+        saveObject.heroHealth = player.GetComponent<HeroStatus>().health;
+        saveObject.currentGold += (int)UnityEngine.Random.Range(20,30);
+        saveObject.SaveGame();
+
         yield return new WaitForSeconds(2f);
 
         SceneManager.LoadScene("Map", LoadSceneMode.Single);

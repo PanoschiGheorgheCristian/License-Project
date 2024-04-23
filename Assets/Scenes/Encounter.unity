@@ -1586,6 +1586,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ba558b3e0ccc6584c983b2fec32ec1be, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  Description: {fileID: 817183481}
+  TextButton1: {fileID: 1397713502}
+  TextButton2: {fileID: 224492562}
+  TextButton3: {fileID: 252539759}
 --- !u!4 &2002091766
 Transform:
   m_ObjectHideFlags: 0

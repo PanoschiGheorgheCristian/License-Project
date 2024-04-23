@@ -15,7 +15,10 @@ public class HeroStatus : MonoBehaviour
     void Start()
     {
         healthbar.SetMaxHealth(100);
-        health = 100;
+        string json = SaveObject.getJsonSave();
+        SaveObject saveObject = JsonUtility.FromJson<SaveObject>(json);
+        UpdateHealth(saveObject.heroHealth);
+
         alive = 1;
         shieldCharges = 0;
         isShielded = false;

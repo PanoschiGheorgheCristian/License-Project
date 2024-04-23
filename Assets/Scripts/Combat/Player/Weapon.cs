@@ -16,7 +16,7 @@ public abstract class Weapon
     }
     public EnemyStatus enemyStatus;
     protected Weapon() { }
-    public abstract void Attack(GameObject enemy);
+    public abstract void Attack(GameObject enemy, GameObject hero);
     public abstract double GetModifier();
 }
 
@@ -30,7 +30,7 @@ public class Bow : Weapon, ILongRangeWeapon
         attackCooldown = 1;
     }
 
-    public override void Attack(GameObject enemy)
+    public override void Attack(GameObject enemy, GameObject hero)
     {
         Debug.Log("Attack with Bow");
         enemyStatus = enemy.GetComponent<EnemyStatus>();
@@ -58,7 +58,7 @@ public class Staff : Weapon, IMagicWeapon
         attackCooldown = 1;
     }
 
-    public override void Attack(GameObject enemy)
+    public override void Attack(GameObject enemy, GameObject hero)
     {
         Debug.Log("Attack with Staff");
         enemyStatus = enemy.GetComponent<EnemyStatus>();
@@ -81,7 +81,7 @@ public class Shield : Weapon, IShieldWeapon
         attackCooldown = 1;
     }
 
-    public override void Attack(GameObject enemy)
+    public override void Attack(GameObject enemy, GameObject hero)
     {
         Debug.Log("Block with shield");
         int shieldCharges = hero.GetComponent<HeroStatus>().shieldCharges;
@@ -109,7 +109,7 @@ public class Sword : Weapon, ICloseCombatWeapon
         attackCooldown = 1;
     }
 
-    public override void Attack(GameObject enemy)
+    public override void Attack(GameObject enemy, GameObject hero)
     {
         Debug.Log("Attack with Sword");
         enemyStatus = enemy.GetComponent<EnemyStatus>();
@@ -138,7 +138,7 @@ public class Mace : Weapon, IMeleeWeapon
         attackCooldown = 1;
     }
 
-    public override void Attack(GameObject enemy)
+    public override void Attack(GameObject enemy, GameObject hero)
     {
         Debug.Log("Attack with Mace");
         enemyStatus = enemy.GetComponent<EnemyStatus>();
@@ -167,7 +167,7 @@ public class CrossBow : Weapon, ILongRangeWeapon
         attackCooldown = 2;
     }
 
-    public override void Attack(GameObject enemy)
+    public override void Attack(GameObject enemy, GameObject hero)
     {
         Debug.Log("Attack with CrossBow");
         enemyStatus = enemy.GetComponent<EnemyStatus>();
@@ -195,7 +195,7 @@ public class SpellBook : Weapon, IMagicWeapon
         attackCooldown = 1;
     }
 
-    public override void Attack(GameObject enemy)
+    public override void Attack(GameObject enemy, GameObject hero)
     {
         Debug.Log("Attack with SpellBook");
         enemyStatus = enemy.GetComponent<EnemyStatus>();
@@ -218,7 +218,7 @@ public class Buckler : Weapon, IShieldWeapon
         attackCooldown = 1;
     }
 
-    public override void Attack(GameObject enemy)
+    public override void Attack(GameObject enemy, GameObject hero)
     {
         Debug.Log("Block with Buckler");
         int shieldCharges = hero.GetComponent<HeroStatus>().shieldCharges;
@@ -246,7 +246,7 @@ public class Rapier : Weapon, ICloseCombatWeapon
         attackCooldown = 1;
     }
 
-    public override void Attack(GameObject enemy)
+    public override void Attack(GameObject enemy, GameObject hero)
     {
         Debug.Log("Attack with Rapier");
         enemyStatus = enemy.GetComponent<EnemyStatus>();
@@ -275,7 +275,7 @@ public class GreatSword : Weapon, ICloseCombatWeapon
         attackCooldown = 1;
     }
 
-    public override void Attack(GameObject enemy)
+    public override void Attack(GameObject enemy, GameObject hero)
     {
         Debug.Log("Attack with GreatSword");
         enemyStatus = enemy.GetComponent<EnemyStatus>();
@@ -304,7 +304,7 @@ public class Daggers : Weapon, IMeleeWeapon
         attackCooldown = 1;
     }
 
-    public override void Attack(GameObject enemy)
+    public override void Attack(GameObject enemy, GameObject hero)
     {
         Debug.Log("Attack with Daggers");
         enemyStatus = enemy.GetComponent<EnemyStatus>();
@@ -334,7 +334,7 @@ public class Net : Weapon, IMeleeWeapon
         attackCooldown = 2;
     }
 
-    public override void Attack(GameObject enemy)
+    public override void Attack(GameObject enemy, GameObject hero)
     {
         Debug.Log("Attack with Daggers");
         enemyStatus = enemy.GetComponent<EnemyStatus>();

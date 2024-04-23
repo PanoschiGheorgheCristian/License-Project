@@ -17,8 +17,7 @@ public class Attack : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        SAVE_FOLDER = Application.dataPath + "/Saves";
-        string json = File.ReadAllText(SAVE_FOLDER);
+        string json = SaveObject.getJsonSave();
 
         SaveObject save = JsonUtility.FromJson<SaveObject>(json);
         // if (save is not null)
@@ -45,7 +44,7 @@ public class Attack : MonoBehaviour
     void AttackEnemy(Weapon currentWeapon, GameObject enemy)
     {
         isAttacking = 1;
-        currentWeapon.Attack(enemy);
+        currentWeapon.Attack(enemy, gameObject);
         StartCoroutine(CooldownAttack(attackCooldown));
     }
 

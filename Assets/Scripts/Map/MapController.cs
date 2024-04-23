@@ -8,20 +8,19 @@ using System.IO;
 
 public class MapController : MonoBehaviour
 {
+    SaveObject save = new();
     private bool isSceneLoading;
     public GameObject player;
     public GameObject currentStage;
     private Camera _mainCamera;
     [SerializeField] private List<GameObject> mapNodes;
 
-    private static string SAVE_FOLDER;
     void Awake()
     {
         _mainCamera = Camera.main;
         isSceneLoading = false;
         SetEncounters();
 
-        SAVE_FOLDER = Application.dataPath + "/Saves";
         LoadGame();
     }
 
@@ -48,7 +47,7 @@ public class MapController : MonoBehaviour
                     currentStage = iteratorGameObject;
                     currentStage.GetComponent<MapNode>().hasPlayer = true;
                     player.transform.position = currentStage.transform.position + new Vector3(0, 0.5f, -1);
-                    SaveGame(currentStage.name, 200, PlayerWeapons.GetWeaponsIndexes());
+                    SaveGame(currentStage.name, save.currentGold, PlayerWeapons.GetWeaponsIndexes(), save.heroHealth);
                     isSceneLoading = true;
                     StartCoroutine(LoadStage());
                 }
@@ -57,6 +56,10 @@ public class MapController : MonoBehaviour
 
     private void SetEncounters()
     {
+        //WeaponShop is a rare encounter
+        //UpgradeShop is a mechanic of the camp
+        //Getting new weapons is manly done through defeating hard enemies that are wielding the weapon
+
         mapNodes[0].GetComponent<MapNode>().SetEncounter(MapNode.Encounter.Start);
         mapNodes[^1].GetComponent<MapNode>().SetEncounter(MapNode.Encounter.Boss);
         mapNodes[^2].GetComponent<MapNode>().SetEncounter(MapNode.Encounter.Camp);
@@ -67,13 +70,13 @@ public class MapController : MonoBehaviour
             mapNodes[7].GetComponent<MapNode>().SetEncounter(MapNode.Encounter.HardEnemy);
             mapNodes[8].GetComponent<MapNode>().SetEncounter(MapNode.Encounter.Camp);
             mapNodes[^3].GetComponent<MapNode>().SetEncounter(MapNode.Encounter.HardEnemy);
-            mapNodes[^4].GetComponent<MapNode>().SetEncounter(MapNode.Encounter.UpgradeShop);
+            mapNodes[^4].GetComponent<MapNode>().SetEncounter(MapNode.Encounter.Event);
         }
         else
         {
             mapNodes[7].GetComponent<MapNode>().SetEncounter(MapNode.Encounter.Camp);
             mapNodes[8].GetComponent<MapNode>().SetEncounter(MapNode.Encounter.HardEnemy);
-            mapNodes[^3].GetComponent<MapNode>().SetEncounter(MapNode.Encounter.UpgradeShop);
+            mapNodes[^3].GetComponent<MapNode>().SetEncounter(MapNode.Encounter.Event);
             mapNodes[^4].GetComponent<MapNode>().SetEncounter(MapNode.Encounter.HardEnemy);
         }
         for (int index = 1; index <= mapNodes.Count - 3; index++)
@@ -83,39 +86,35 @@ public class MapController : MonoBehaviour
                 index += 1;
                 continue;
             }
-            rand = UnityEngine.Random.Range(0f, 25f);
-            if (rand < 12f)
+            rand = UnityEngine.Random.Range(0f, 3f);
+            if (rand < 2f)
                 mapNodes[index].GetComponent<MapNode>().SetEncounter(MapNode.Encounter.Enemy);
-            else if (rand < 24f)
+            else
                 mapNodes[index].GetComponent<MapNode>().SetEncounter(MapNode.Encounter.Event);
-            else mapNodes[index].GetComponent<MapNode>().SetEncounter(MapNode.Encounter.WeaponShop);
             // node.GetComponent<MapNode>().SetEncounter(MapNode.Encounter.Enemy);
         }
     }
 
-    public void SaveGame(string name, int gold, int[] weapons)
+    public void SaveGame(string name, int gold, int[] weapons, int heroHealth)
     {
-        SaveObject save = new()
-        {
-            currentStage = name,
-            currentGold = gold,
-            currentWeapons = weapons
-            //for each weapon give the index in the database
-        };
-        string jsonSave = JsonUtility.ToJson(save);
+        save.currentStage = name;
+        save.currentGold = gold;
+        save.heroHealth = heroHealth;
+        save.currentWeapons = weapons;
 
-        File.WriteAllText(SAVE_FOLDER, jsonSave);
-
+        save.SaveGame();
         Debug.Log("Saved");
     }
 
     public void LoadGame()
     {
-        string json = File.ReadAllText(SAVE_FOLDER);
+        string json = SaveObject.getJsonSave();
 
-        SaveObject save = JsonUtility.FromJson<SaveObject>(json);
-        if (save is not null)
+        SaveObject tempSave = new();
+        tempSave = JsonUtility.FromJson<SaveObject>(json);
+        if (tempSave is not null)
         {
+            save = tempSave;
             currentStage = GameObject.Find(save.currentStage);
             GameObject.Find("Player").transform.position = currentStage.transform.position + new Vector3(0, 0.5f, -1);
         }
@@ -130,7 +129,7 @@ public class MapController : MonoBehaviour
         // {
         //     Debug.Log(weapon.GetType().Name);
         // }
-        SaveGame(currentStage.name, 0, PlayerWeapons.GetWeaponsIndexes());
+        SaveGame(currentStage.name, 0, PlayerWeapons.GetWeaponsIndexes(), 100);
     }
 
     private IEnumerator LoadStage()
