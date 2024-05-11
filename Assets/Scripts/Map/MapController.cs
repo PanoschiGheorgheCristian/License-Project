@@ -107,11 +107,11 @@ public class MapController : MonoBehaviour
             tempColor.a = 0.4f;
             weaponsInInventory[tempArray[iterator]].GetComponent<SpriteRenderer>().color = tempColor;
         }
+        GameObject.Find("Inventory").SetActive(false);
     }
 
     private void SetEncounters()
     {
-        //WeaponShop is a rare encounter
         //UpgradeShop is a mechanic of the camp
         //Getting new weapons is manly done through defeating hard enemies that are wielding the weapon
 
@@ -143,10 +143,9 @@ public class MapController : MonoBehaviour
             }
             rand = UnityEngine.Random.Range(0f, 3f);
             if (rand < 2f)
-                mapNodes[index].GetComponent<MapNode>().SetEncounter(MapNode.Encounter.Enemy);
+                mapNodes[index].GetComponent<MapNode>().SetEncounter(MapNode.Encounter.Event);
             else
                 mapNodes[index].GetComponent<MapNode>().SetEncounter(MapNode.Encounter.Event);
-            // node.GetComponent<MapNode>().SetEncounter(MapNode.Encounter.Enemy);
         }
     }
 
@@ -202,14 +201,15 @@ public class MapController : MonoBehaviour
         {
             SceneManager.LoadScene("Combat", LoadSceneMode.Single);
         }
-        else if (currentStage.GetComponent<MapNode>().encounter == MapNode.Encounter.Camp ||
-            currentStage.GetComponent<MapNode>().encounter == MapNode.Encounter.Event)
+        else if (currentStage.GetComponent<MapNode>().encounter == MapNode.Encounter.Camp)
         {
+            CampFlag.isCamp = true;
             SceneManager.LoadScene("Encounter", LoadSceneMode.Single);
         }
         else
         {
-            SceneManager.LoadScene("Shop", LoadSceneMode.Single);
+            CampFlag.isCamp = false;
+            SceneManager.LoadScene("Encounter", LoadSceneMode.Single);
         }
     }
 }

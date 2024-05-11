@@ -1,0 +1,1 @@
+{"description":"Sample Description for testing things out.", "choices":["Proceed", "Punch a Wall", "Give Up"], "choiceEffects":["cweak,s,g100,b", "d10,g30,m", "d100,m"]}

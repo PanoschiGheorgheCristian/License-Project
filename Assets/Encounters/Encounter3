@@ -1,0 +1,1 @@
+{"description":"A sketchy person offers you a drink", "choices":["Drink", "Refuse", "Make them drink"], "choiceEffects":["cPoisoned,m", "d15,m", "d20,g120,m"]}

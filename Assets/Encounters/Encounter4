@@ -1,0 +1,1 @@
+{"description":"The roof is collapsing upon you", "choices":["Run", "Find Cover", "Try to dodge them"], "choiceEffects":["d10,m", "m", "g90,m"]}

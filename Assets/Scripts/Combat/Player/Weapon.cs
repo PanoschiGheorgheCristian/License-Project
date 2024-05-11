@@ -60,7 +60,7 @@ public class IronBow : Weapon, ILongRangeWeapon
 
     public override void Attack(GameObject enemy, GameObject hero)
     {
-        Debug.Log("Attack with CrossBow");
+        Debug.Log("Attack with IronBow");
         enemyStatus = enemy.GetComponent<EnemyStatus>();
         enemyStatus.UpdateHealth(enemyStatus.health - (int)(GetModifier() * attackDamage));
     }
@@ -88,7 +88,7 @@ public class ThrowingKnives : Weapon, ILongRangeWeapon
 
     public override void Attack(GameObject enemy, GameObject hero)
     {
-        Debug.Log("Attack with CrossBow");
+        Debug.Log("Attack with Throwing Knives");
         enemyStatus = enemy.GetComponent<EnemyStatus>();
         enemyStatus.UpdateHealth(enemyStatus.health - (int)(GetModifier() * attackDamage));
     }
@@ -139,7 +139,7 @@ public class Sceptre : Weapon, IMagicWeapon
 
     public override void Attack(GameObject enemy, GameObject hero)
     {
-        Debug.Log("Attack with SpellBook");
+        Debug.Log("Attack with Sceptre");
         enemyStatus = enemy.GetComponent<EnemyStatus>();
         enemyStatus.UpdateHealth(enemyStatus.health - (int)(GetModifier() * attackDamage));
     }
@@ -161,7 +161,7 @@ public class Circlet : Weapon, IMagicWeapon
 
     public override void Attack(GameObject enemy, GameObject hero)
     {
-        Debug.Log("Attack with SpellBook");
+        Debug.Log("Attack with Circlet");
         enemyStatus = enemy.GetComponent<EnemyStatus>();
         enemyStatus.UpdateHealth(enemyStatus.health - (int)(GetModifier() * attackDamage));
     }
@@ -213,7 +213,7 @@ public class SpikedShield : Weapon, IShieldWeapon
 
     public override void Attack(GameObject enemy, GameObject hero)
     {
-        Debug.Log("Block with Buckler");
+        Debug.Log("Block with Spiked Shield");
         int shieldCharges = hero.GetComponent<HeroStatus>().shieldCharges;
         shieldCharges = shieldCharges == 2 ? 2 : shieldCharges + 1;
         hero.GetComponent<HeroStatus>().shieldCharges = shieldCharges;
@@ -242,7 +242,7 @@ public class MonkeyEarrings : Weapon, IShieldWeapon
 
     public override void Attack(GameObject enemy, GameObject hero)
     {
-        Debug.Log("Block with Buckler");
+        Debug.Log("Block with Monkey Earrings");
         int shieldCharges = hero.GetComponent<HeroStatus>().shieldCharges;
         shieldCharges = shieldCharges == 2 ? 2 : shieldCharges + 1;
         hero.GetComponent<HeroStatus>().shieldCharges = shieldCharges;
@@ -299,7 +299,7 @@ public class Waraxe : Weapon, ICloseCombatWeapon
 
     public override void Attack(GameObject enemy, GameObject hero)
     {
-        Debug.Log("Attack with Rapier");
+        Debug.Log("Attack with WarAxe");
         enemyStatus = enemy.GetComponent<EnemyStatus>();
         enemyStatus.UpdateHealth(enemyStatus.health - (int)(GetModifier() * attackDamage));
     }
@@ -328,7 +328,7 @@ public class Spear : Weapon, ICloseCombatWeapon
 
     public override void Attack(GameObject enemy, GameObject hero)
     {
-        Debug.Log("Attack with GreatSword");
+        Debug.Log("Attack with Spear");
         enemyStatus = enemy.GetComponent<EnemyStatus>();
         enemyStatus.UpdateHealth(enemyStatus.health - (int)(GetModifier() * attackDamage));
     }
@@ -416,7 +416,7 @@ public class Flail : Weapon, IMeleeWeapon
 
     public override void Attack(GameObject enemy, GameObject hero)
     {
-        Debug.Log("Attack with Daggers");
+        Debug.Log("Attack with Flail");
         enemyStatus = enemy.GetComponent<EnemyStatus>();
         enemyStatus.UpdateHealth(enemyStatus.health - (int)(GetModifier() * attackDamage));
     }

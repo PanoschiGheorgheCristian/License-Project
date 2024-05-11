@@ -1,0 +1,1 @@
+{"description":"You rest up at your camp. Choose if you want to sleep, work on your weapons or perform a purification ritual.", "choices":["Sleep", "Upgrade Weapon", "Purify"], "choiceEffects":["s,m", "b", "p,m"]}
