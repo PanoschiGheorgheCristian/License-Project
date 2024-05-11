@@ -6,8 +6,8 @@ public class EncounterObject
 {
     private static string ENCOUNTER_FOLDER;
     public string description;
-    public List<string> choices;
-    public Dictionary<string, List<string>> choiceEffects;
+    public string[] choices;
+    public Dictionary<string, string[]> choiceEffects;
 
     public EncounterObject() { }
 

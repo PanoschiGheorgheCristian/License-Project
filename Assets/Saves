@@ -1,1 +1,1 @@
-{"currentStage":"Boss","currentGold":74,"heroHealth":90,"currentWeapons":[0,1,2,3,4]}
+{"currentStage":"Start","currentGold":0,"heroHealth":100,"currentWeapons":[1,3,6,9,12],"curses":["NoCurse"],"availableWeapons":[0,1,2,3,4]}

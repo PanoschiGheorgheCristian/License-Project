@@ -11,6 +11,8 @@ public class SaveObject
     public int currentGold;
     public int heroHealth;
     public int[] currentWeapons;
+    public List<string> curses;
+    public List<int> availableWeapons;
 
     public SaveObject() { }
 

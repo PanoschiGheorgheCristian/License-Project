@@ -14,12 +14,17 @@ public class MapController : MonoBehaviour
     public GameObject currentStage;
     private Camera _mainCamera;
     [SerializeField] private List<GameObject> mapNodes;
+    private bool isInventoryOpen = false;
+    [SerializeField] private GameObject inventory;
+    [SerializeField] private List<GameObject> weaponsInInventory;
+    [SerializeField] private List<GameObject> equippedWeaponSlots;
 
     void Awake()
     {
         _mainCamera = Camera.main;
         isSceneLoading = false;
         SetEncounters();
+        InitializeInventory();
 
         LoadGame();
     }
@@ -27,7 +32,19 @@ public class MapController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        //Make animations
+        if(Input.GetKeyDown(KeyCode.I))
+        {
+            if(isInventoryOpen == false)
+            {
+                isInventoryOpen = true;
+                inventory.SetActive(true);
+            }
+            else
+            {
+                isInventoryOpen = false;
+                inventory.SetActive(false);
+            }
+        }
     }
 
     public void OnClick(InputAction.CallbackContext context)
@@ -39,19 +56,57 @@ public class MapController : MonoBehaviour
 
         Debug.Log(rayHit.collider.gameObject.name);
         if (isSceneLoading == false)
-            foreach (GameObject iteratorGameObject in currentStage.GetComponent<MapNode>().successors)
+            if(isInventoryOpen == false)
             {
-                if (rayHit.collider.gameObject.name == iteratorGameObject.name)
+                foreach (GameObject iteratorGameObject in currentStage.GetComponent<MapNode>().successors)
                 {
-                    currentStage.GetComponent<MapNode>().hasPlayer = false;
-                    currentStage = iteratorGameObject;
-                    currentStage.GetComponent<MapNode>().hasPlayer = true;
-                    player.transform.position = currentStage.transform.position + new Vector3(0, 0.5f, -1);
-                    SaveGame(currentStage.name, save.currentGold, PlayerWeapons.GetWeaponsIndexes(), save.heroHealth);
-                    isSceneLoading = true;
-                    StartCoroutine(LoadStage());
+                    if (rayHit.collider.gameObject.name == iteratorGameObject.name)
+                    {
+                        currentStage.GetComponent<MapNode>().hasPlayer = false;
+                        currentStage = iteratorGameObject;
+                        currentStage.GetComponent<MapNode>().hasPlayer = true;
+                        player.transform.position = currentStage.transform.position + new Vector3(0, 0.5f, -1);
+                        SaveGame(currentStage.name, save.currentGold, PlayerWeapons.GetWeaponsIndexes(), save.heroHealth, save.curses, save.availableWeapons);
+                        isSceneLoading = true;
+                        StartCoroutine(LoadStage());
+                    }
                 }
             }
+            else
+            {
+                for(int iterator = 0; iterator < 15; iterator++)
+                {
+                    if (rayHit.collider.gameObject.name == weaponsInInventory[iterator].name)
+                    {
+                        equippedWeaponSlots[iterator/3].GetComponent<SpriteRenderer>().sprite = weaponsInInventory[iterator].GetComponent<SpriteRenderer>().sprite;
+
+                        int[] tempArray = PlayerWeapons.GetWeaponsIndexes();
+
+                        // Change color of the previously equipped weapon to clear white to show that it can be reequipped
+                        weaponsInInventory[tempArray[iterator/3]].GetComponent<SpriteRenderer>().color = Color.white;
+
+                        tempArray[iterator / 3] = iterator;
+                        Color tempColor = Color.white;
+                        tempColor.a = 0.4f;
+                        weaponsInInventory[iterator].GetComponent<SpriteRenderer>().color = tempColor;
+                        SaveGame(currentStage.name, save.currentGold, tempArray, save.heroHealth, save.curses, save.availableWeapons);
+
+                    }
+                }
+            }
+    }
+
+    private void InitializeInventory()
+    {
+        int[] tempArray = PlayerWeapons.GetWeaponsIndexes();
+        for(int iterator = 0; iterator < 5; iterator ++)
+        {
+            equippedWeaponSlots[iterator].GetComponent<SpriteRenderer>().sprite = weaponsInInventory[tempArray[iterator]].GetComponent<SpriteRenderer>().sprite;
+
+            Color tempColor = Color.white;
+            tempColor.a = 0.4f;
+            weaponsInInventory[tempArray[iterator]].GetComponent<SpriteRenderer>().color = tempColor;
+        }
     }
 
     private void SetEncounters()
@@ -95,12 +150,14 @@ public class MapController : MonoBehaviour
         }
     }
 
-    public void SaveGame(string name, int gold, int[] weapons, int heroHealth)
+    public void SaveGame(string name, int gold, int[] weapons, int heroHealth, List<string> curses, List<int> availableWeapons)
     {
         save.currentStage = name;
         save.currentGold = gold;
         save.heroHealth = heroHealth;
         save.currentWeapons = weapons;
+        save.curses = curses;
+        save.availableWeapons = availableWeapons;
 
         save.SaveGame();
         Debug.Log("Saved");
@@ -129,7 +186,9 @@ public class MapController : MonoBehaviour
         // {
         //     Debug.Log(weapon.GetType().Name);
         // }
-        SaveGame(currentStage.name, 0, PlayerWeapons.GetWeaponsIndexes(), 100);
+        List<string> curses = new();
+        curses.Add("NoCurse");
+        SaveGame(currentStage.name, 0, PlayerWeapons.GetWeaponsIndexes(), 100, curses, new List<int> {0,1,2,3,4});
     }
 
     private IEnumerator LoadStage()

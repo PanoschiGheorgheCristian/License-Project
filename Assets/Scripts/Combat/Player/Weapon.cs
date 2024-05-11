@@ -48,6 +48,63 @@ public class Bow : Weapon, ILongRangeWeapon
     }
 }
 
+public class IronBow : Weapon, ILongRangeWeapon
+{
+    // damageType attackType = damageType.Piercing;
+
+    public IronBow()
+    {
+        attackDamage = 20;
+        attackCooldown = 2;
+    }
+
+    public override void Attack(GameObject enemy, GameObject hero)
+    {
+        Debug.Log("Attack with CrossBow");
+        enemyStatus = enemy.GetComponent<EnemyStatus>();
+        enemyStatus.UpdateHealth(enemyStatus.health - (int)(GetModifier() * attackDamage));
+    }
+    public override double GetModifier()
+    {
+        return (int)enemyStatus.armor switch
+        {
+            0 => 0.5,
+            1 => 3,
+            2 => 1,
+            _ => 1,
+        };
+    }
+}
+
+public class ThrowingKnives : Weapon, ILongRangeWeapon
+{
+    // damageType attackType = damageType.Piercing;
+
+    public ThrowingKnives()
+    {
+        attackDamage = 20;
+        attackCooldown = 2;
+    }
+
+    public override void Attack(GameObject enemy, GameObject hero)
+    {
+        Debug.Log("Attack with CrossBow");
+        enemyStatus = enemy.GetComponent<EnemyStatus>();
+        enemyStatus.UpdateHealth(enemyStatus.health - (int)(GetModifier() * attackDamage));
+    }
+    public override double GetModifier()
+    {
+        return (int)enemyStatus.armor switch
+        {
+            0 => 0.5,
+            1 => 3,
+            2 => 1,
+            _ => 1,
+        };
+    }
+}
+
+
 public class Staff : Weapon, IMagicWeapon
 {
     // damageType attackType = damageType.Magic;
@@ -61,6 +118,50 @@ public class Staff : Weapon, IMagicWeapon
     public override void Attack(GameObject enemy, GameObject hero)
     {
         Debug.Log("Attack with Staff");
+        enemyStatus = enemy.GetComponent<EnemyStatus>();
+        enemyStatus.UpdateHealth(enemyStatus.health - (int)(GetModifier() * attackDamage));
+    }
+    public override double GetModifier()
+    {
+        return 1;
+    }
+}
+
+public class Sceptre : Weapon, IMagicWeapon
+{
+    // damageType attackType = damageType.Magic;
+
+    public Sceptre()
+    {
+        attackDamage = 0;
+        attackCooldown = 1;
+    }
+
+    public override void Attack(GameObject enemy, GameObject hero)
+    {
+        Debug.Log("Attack with SpellBook");
+        enemyStatus = enemy.GetComponent<EnemyStatus>();
+        enemyStatus.UpdateHealth(enemyStatus.health - (int)(GetModifier() * attackDamage));
+    }
+    public override double GetModifier()
+    {
+        return 1;
+    }
+}
+
+public class Circlet : Weapon, IMagicWeapon
+{
+    // damageType attackType = damageType.Magic;
+
+    public Circlet()
+    {
+        attackDamage = 0;
+        attackCooldown = 1;
+    }
+
+    public override void Attack(GameObject enemy, GameObject hero)
+    {
+        Debug.Log("Attack with SpellBook");
         enemyStatus = enemy.GetComponent<EnemyStatus>();
         enemyStatus.UpdateHealth(enemyStatus.health - (int)(GetModifier() * attackDamage));
     }
@@ -84,6 +185,64 @@ public class Shield : Weapon, IShieldWeapon
     public override void Attack(GameObject enemy, GameObject hero)
     {
         Debug.Log("Block with shield");
+        int shieldCharges = hero.GetComponent<HeroStatus>().shieldCharges;
+        shieldCharges = shieldCharges == 2 ? 2 : shieldCharges + 1;
+        hero.GetComponent<HeroStatus>().shieldCharges = shieldCharges;
+        Debug.Log(hero.GetComponent<HeroStatus>().shieldCharges);
+        // ADD these if implementing spiked shield:
+        // enemyStatus = enemy.GetComponent<EnemyStatus>();
+        // enemyStatus.UpdateHealth(enemyStatus.health - (int) (getModifier() * this.attackDamage));
+    }
+
+    public override double GetModifier()
+    {
+        return 1;
+    }
+}
+
+public class SpikedShield : Weapon, IShieldWeapon
+{
+    // damageType attackType = damageType.True;
+    readonly GameObject hero;
+    public SpikedShield()
+    {
+        // this.attackDamage = 0;
+        hero = GameObject.FindWithTag("Player");
+        attackCooldown = 1;
+    }
+
+    public override void Attack(GameObject enemy, GameObject hero)
+    {
+        Debug.Log("Block with Buckler");
+        int shieldCharges = hero.GetComponent<HeroStatus>().shieldCharges;
+        shieldCharges = shieldCharges == 2 ? 2 : shieldCharges + 1;
+        hero.GetComponent<HeroStatus>().shieldCharges = shieldCharges;
+        Debug.Log(hero.GetComponent<HeroStatus>().shieldCharges);
+        // ADD these if implementing spiked shield:
+        // enemyStatus = enemy.GetComponent<EnemyStatus>();
+        // enemyStatus.UpdateHealth(enemyStatus.health - (int) (getModifier() * this.attackDamage));
+    }
+
+    public override double GetModifier()
+    {
+        return 1;
+    }
+}
+
+public class MonkeyEarrings : Weapon, IShieldWeapon
+{
+    // damageType attackType = damageType.True;
+    readonly GameObject hero;
+    public MonkeyEarrings()
+    {
+        // this.attackDamage = 0;
+        hero = GameObject.FindWithTag("Player");
+        attackCooldown = 1;
+    }
+
+    public override void Attack(GameObject enemy, GameObject hero)
+    {
+        Debug.Log("Block with Buckler");
         int shieldCharges = hero.GetComponent<HeroStatus>().shieldCharges;
         shieldCharges = shieldCharges == 2 ? 2 : shieldCharges + 1;
         hero.GetComponent<HeroStatus>().shieldCharges = shieldCharges;
@@ -128,119 +287,11 @@ public class Sword : Weapon, ICloseCombatWeapon
     }
 }
 
-public class Mace : Weapon, IMeleeWeapon
-{
-    // damageType attackType = damageType.Bludgeoning;
-
-    public Mace()
-    {
-        attackDamage = 10;
-        attackCooldown = 1;
-    }
-
-    public override void Attack(GameObject enemy, GameObject hero)
-    {
-        Debug.Log("Attack with Mace");
-        enemyStatus = enemy.GetComponent<EnemyStatus>();
-        enemyStatus.UpdateHealth(enemyStatus.health - (int)(GetModifier() * attackDamage));
-    }
-
-    public override double GetModifier()
-    {
-        return (int)enemyStatus.armor switch
-        {
-            0 => 1,
-            1 => 0.5,
-            2 => 2,
-            _ => 1,
-        };
-    }
-}
-
-public class CrossBow : Weapon, ILongRangeWeapon
+public class Waraxe : Weapon, ICloseCombatWeapon
 {
     // damageType attackType = damageType.Piercing;
 
-    public CrossBow()
-    {
-        attackDamage = 20;
-        attackCooldown = 2;
-    }
-
-    public override void Attack(GameObject enemy, GameObject hero)
-    {
-        Debug.Log("Attack with CrossBow");
-        enemyStatus = enemy.GetComponent<EnemyStatus>();
-        enemyStatus.UpdateHealth(enemyStatus.health - (int)(GetModifier() * attackDamage));
-    }
-    public override double GetModifier()
-    {
-        return (int)enemyStatus.armor switch
-        {
-            0 => 0.5,
-            1 => 3,
-            2 => 1,
-            _ => 1,
-        };
-    }
-}
-
-public class SpellBook : Weapon, IMagicWeapon
-{
-    // damageType attackType = damageType.Magic;
-
-    public SpellBook()
-    {
-        attackDamage = 0;
-        attackCooldown = 1;
-    }
-
-    public override void Attack(GameObject enemy, GameObject hero)
-    {
-        Debug.Log("Attack with SpellBook");
-        enemyStatus = enemy.GetComponent<EnemyStatus>();
-        enemyStatus.UpdateHealth(enemyStatus.health - (int)(GetModifier() * attackDamage));
-    }
-    public override double GetModifier()
-    {
-        return 1;
-    }
-}
-
-public class Buckler : Weapon, IShieldWeapon
-{
-    // damageType attackType = damageType.True;
-    readonly GameObject hero;
-    public Buckler()
-    {
-        // this.attackDamage = 0;
-        hero = GameObject.FindWithTag("Player");
-        attackCooldown = 1;
-    }
-
-    public override void Attack(GameObject enemy, GameObject hero)
-    {
-        Debug.Log("Block with Buckler");
-        int shieldCharges = hero.GetComponent<HeroStatus>().shieldCharges;
-        shieldCharges = shieldCharges == 2 ? 2 : shieldCharges + 1;
-        hero.GetComponent<HeroStatus>().shieldCharges = shieldCharges;
-        Debug.Log(hero.GetComponent<HeroStatus>().shieldCharges);
-        // ADD these if implementing spiked shield:
-        // enemyStatus = enemy.GetComponent<EnemyStatus>();
-        // enemyStatus.UpdateHealth(enemyStatus.health - (int) (getModifier() * this.attackDamage));
-    }
-
-    public override double GetModifier()
-    {
-        return 1;
-    }
-}
-
-public class Rapier : Weapon, ICloseCombatWeapon
-{
-    // damageType attackType = damageType.Piercing;
-
-    public Rapier()
+    public Waraxe()
     {
         attackDamage = 10;
         attackCooldown = 1;
@@ -265,11 +316,11 @@ public class Rapier : Weapon, ICloseCombatWeapon
     }
 }
 
-public class GreatSword : Weapon, ICloseCombatWeapon
+public class Spear : Weapon, ICloseCombatWeapon
 {
     // damageType attackType = damageType.Piercing;
 
-    public GreatSword()
+    public Spear()
     {
         attackDamage = 10;
         attackCooldown = 1;
@@ -289,6 +340,35 @@ public class GreatSword : Weapon, ICloseCombatWeapon
             0 => 0.5,
             1 => 2,
             2 => 1,
+            _ => 1,
+        };
+    }
+}
+
+public class Mace : Weapon, IMeleeWeapon
+{
+    // damageType attackType = damageType.Bludgeoning;
+
+    public Mace()
+    {
+        attackDamage = 10;
+        attackCooldown = 1;
+    }
+
+    public override void Attack(GameObject enemy, GameObject hero)
+    {
+        Debug.Log("Attack with Mace");
+        enemyStatus = enemy.GetComponent<EnemyStatus>();
+        enemyStatus.UpdateHealth(enemyStatus.health - (int)(GetModifier() * attackDamage));
+    }
+
+    public override double GetModifier()
+    {
+        return (int)enemyStatus.armor switch
+        {
+            0 => 1,
+            1 => 0.5,
+            2 => 2,
             _ => 1,
         };
     }
@@ -324,11 +404,11 @@ public class Daggers : Weapon, IMeleeWeapon
     }
 }
 
-public class Net : Weapon, IMeleeWeapon
+public class Flail : Weapon, IMeleeWeapon
 {
     // damageType attackType = damageType.Bludgeoning;
 
-    public Net()
+    public Flail()
     {
         attackDamage = 0;
         attackCooldown = 2;
