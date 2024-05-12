@@ -1,1 +1,18 @@
-{"description":"A weary soul asks for a bit of coin", "choices":["Donate", "End his suffering", "Ignore"], "choiceEffects":["l50,cMercyful,m", "g40,m", "m"]}
+{
+  "description": "A weary soul asks for a bit of coin. He is dressed in rags and sits barefoot on the cold dungeon floor. He covers a cough with his hand and a crimson spot is left on it.",
+  "choices": [
+    "Donate",
+    "End his suffering",
+    "Ignore"
+  ],
+  "choiceEffects": [
+    "l50,m",
+    "g20,cWrathful,m",
+    "m"
+  ],
+  "afterChoiceDescription": [
+    "You give him a part of the wealth you found in the dungeons. He smiles and thanks you, bowing deelpy.",
+    "You strike down the man huddled in corner before he can realise it. One last wheezing gasp of air is all that is left on his lips.",
+    "You decide to leave the man alone. It is not up to you to help him."
+  ]
+}

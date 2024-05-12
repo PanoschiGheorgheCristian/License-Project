@@ -1,1 +1,18 @@
-{"description":"Sample Description for testing things out.", "choices":["Proceed", "Punch a Wall", "Give Up"], "choiceEffects":["cweak,s,g100,b", "d10,g30,m", "d100,m"]}
+{
+  "description": "You happen upon a small hot spring. You start hearing a beautiful melody and notice that in the water a gorgeous naked woman bathes. She has noticed you and signs at you to get closer.",
+  "choices": [
+    "Approach her",
+    "Cover your ears",
+    "Shoot her with your ranged weapon"
+  ],
+  "choiceEffects": [
+    "d20,m",
+    "m",
+    "g70,m"
+  ],
+  "afterChoiceDescription": [
+    "You get lured by the melody and approach the woman. You start noticing scales on her skin and an unnerving sentiment grows within you. With a sharp pain, you break free of the curse and distance yourself fromt the monster. She scrached your face and nearly took your neck off. You slay the beast and move on.",
+    "You cover your ears and take a closer look at the woman, noticing her scales and sharp teeth. You back off before she has any chance to hurt you.",
+    "You are not sure if the woman is a monster or not, but you are not taking any chances. You shoot her and see her blue blood spill on the rocky floor. After some more struggle you approach the corpse and find several other dead bodies in the shallow water. You find a pouch of coin in one of the ribcages."
+  ]
+}

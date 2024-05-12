@@ -1,1 +1,18 @@
-{"description":"A sketchy person offers you a drink", "choices":["Drink", "Refuse", "Make them drink"], "choiceEffects":["cPoisoned,m", "d15,m", "d20,g120,m"]}
+{
+  "description": "A sketchy person offers you a blood red drink. Chunks of something are floating around in the glass.",
+  "choices": [
+    "Drink",
+    "Refuse",
+    "Make them drink"
+  ],
+  "choiceEffects": [
+    "l60,cPoisoned,m",
+    "d15,m",
+    "d30,g120,m"
+  ],
+  "afterChoiceDescription": [
+    "You drink the weird looking beverage, and immediately start feeling nauseaous. You can vaguely hear the figure laugh in the distance. You wake up feeling lighter and realise it is because you lost some money from your pouch.",
+    "You refuse to drink the weird concoction. As you leave, a knife grazes your shoulder. You turn back and see the figure scurry in the shadows. Good thing they missed...",
+    "You grab the stranger and get them in a hold. You force them to drink the potion and watch them start to look visibly sick. Before they faint, the stranger dashes and stabs your thigh. You loot their body and move on."
+  ]
+}

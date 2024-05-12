@@ -1,1 +1,18 @@
-{"description":"Sample Description for testing things out.", "choices":["Proceed", "Punch a Wall", "Give Up"], "choiceEffects":["cweak,s,g100,b", "d10,g30,m", "d100,m"]}
+{
+  "description": "You happen upon a great forge. A dwarf is busily hammering at a weapon atop an iron anvil. He sees you approaching and looks up, wiping his brow.",
+  "choices": [
+    "Ask to have one of your weapons upgraded",
+    "Salute him and go on",
+    "Steal his weapon"
+  ],
+  "choiceEffects": [
+    "l150,b",
+    "d10,g30,m",
+    "d30,m"
+  ],
+  "afterChoiceDescription": [
+    "He takes a look at your weapons and brags that it would be child's play to work on those outdated scraps. He takes your money and starts working.",
+    "He gives you a stern look and goes back to work.",
+    "You get closer to the anvil and prepare to grab the weapon, but the dwarf was vigilant and strikes at you with his hammer. Wounded, you run away."
+  ]
+}

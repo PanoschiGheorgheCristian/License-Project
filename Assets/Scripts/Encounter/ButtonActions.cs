@@ -16,7 +16,13 @@ public class ButtonActions : MonoBehaviour
     }
 
     SaveObject save = new();
-    public void LoadMap()
+    public void LoadAfterChoiceDescription()
+    {
+        Debug.Log("Loading after choice description...");
+        GetComponent<EncDataLoader>().DisplayAfterChoice();
+    }
+
+    public void ContinueToMap()
     {
         Debug.Log("Loading map...");
         StartCoroutine(LoadMapDelay());
@@ -31,7 +37,7 @@ public class ButtonActions : MonoBehaviour
     public void LoseGold(int amount)
     {
         Debug.Log("Lost " + amount + " gold");
-        SaveGame(save.currentStage, save.currentGold - amount, save.currentWeapons, save.heroHealth, save.curses, save.availableWeapons);
+        SaveGame(save.currentStage, Math.Max(save.currentGold - amount, 0), save.currentWeapons, save.heroHealth, save.curses, save.availableWeapons);
     }
 
     public void TakeDamage(int amount)
@@ -113,7 +119,7 @@ public class ButtonActions : MonoBehaviour
         {
             save = tempSave;
         }
-        else LoadMap();
+        else ContinueToMap();
     }
 
     private IEnumerator LoadMapDelay()

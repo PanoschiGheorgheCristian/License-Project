@@ -29,7 +29,6 @@ public class HeroStatus : MonoBehaviour
         if (health <= 0)
         {
             alive = 0;
-            health = 100;
         }
         if (alive == 0)
         {

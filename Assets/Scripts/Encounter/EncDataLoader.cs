@@ -10,13 +10,18 @@ public class EncDataLoader : MonoBehaviour
     [SerializeField] GameObject Button1;
     [SerializeField] GameObject Button2;
     [SerializeField] GameObject Button3;
+    [SerializeField] GameObject Button4;
     [SerializeField] GameObject TextButton1;
     [SerializeField] GameObject TextButton2;
     [SerializeField] GameObject TextButton3;
+    private string[] afterChoiceDescriptions;
+    private string descriptionAfterSpecificChoice;
     private string[] choiceEffectsStrings;
     // Start is called before the first frame update
     void Awake()
     {
+        Button4.SetActive(false);
+
         string json = EncounterObject.GetJsonEncounter(CampFlag.isCamp);
         EncounterObject encounterObject = JsonUtility.FromJson<EncounterObject>(json);
 
@@ -29,11 +34,15 @@ public class EncDataLoader : MonoBehaviour
         choiceEffectsStrings[0] = encounterObject.choiceEffects[0];
         choiceEffectsStrings[1] = encounterObject.choiceEffects[1];
         choiceEffectsStrings[2] = encounterObject.choiceEffects[2];
+
+        afterChoiceDescriptions = encounterObject.afterChoiceDescription;
     }
 
     public void DoButtonActions(int buttonNr)
     {
-        ButtonActions buttonActions = this.GetComponent<ButtonActions>();
+        descriptionAfterSpecificChoice = afterChoiceDescriptions[buttonNr];
+
+        ButtonActions buttonActions = GetComponent<ButtonActions>();
 
         string[] actions = choiceEffectsStrings[buttonNr].Split(',');
         foreach (string action in actions)
@@ -66,13 +75,22 @@ public class EncDataLoader : MonoBehaviour
                         buttonActions.UpgradeWeapon();
                         break;
                     case "m":
-                        buttonActions.LoadMap();
+                        buttonActions.LoadAfterChoiceDescription();
                         break;
                     default:
                         Debug.Log("Unknown choice effect in encounter JSON");
                         break;
                 }
         }
+    }
+
+    public void DisplayAfterChoice()
+    {
+        Description.GetComponent<TMP_Text>().text = descriptionAfterSpecificChoice;
+        Button1.SetActive(false);
+        Button2.SetActive(false);
+        Button3.SetActive(false);
+        Button4.SetActive(true);
     }
 }
 

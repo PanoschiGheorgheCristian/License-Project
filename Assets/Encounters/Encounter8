@@ -1,1 +1,18 @@
-{"description":"Sample Description for testing things out.", "choices":["Proceed", "Punch a Wall", "Give Up"], "choiceEffects":["cweak,s,g100,b", "d10,g30,m", "d100,m"]}
+{
+  "description": "You find an altar carved in the stone wall. Depicted on it is a weird black cloud monster standing before a human figure, which is kneeling over and bleeding from the arm.",
+  "choices": [
+    "Place some money on the altar",
+    "Cut your palm and let the blood drip on the stone surface",
+    "Move on"
+  ],
+  "choiceEffects": [
+    "l50,h30,m",
+    "d10,p,m",
+    "m"
+  ],
+  "afterChoiceDescription": [
+    "You place a small amount of money on the surface of the altar. You wait a few seconds, and when you blink the money is gone and in its place lays a bright red potion. You drink it and feel your fatigue wear off.",
+    "You cut your palm and bleed on the stone. The blood seeps in like in dry soil and you feel one of your afflictions stop weighing down on you.",
+    "You leave the dubious altar behind and move on."
+  ]
+}

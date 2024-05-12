@@ -1,1 +1,18 @@
-{"description":"Sample Description for testing things out.", "choices":["Proceed", "Punch a Wall", "Give Up"], "choiceEffects":["cweak,s,g100,b", "d10,g30,m", "d100,m"]}
+{
+  "description": "You happen upon the ancient ritual of some fey spirits. One of them comes forward and asks you to join them.",
+  "choices": [
+    "Agree to join the ritual",
+    "Refuse politely",
+    "Beware every one of their words"
+  ],
+  "choiceEffects": [
+    "g100,d15,cFeyTouched,m",
+    "l30,m",
+    "m"
+  ],
+  "afterChoiceDescription": [
+    "As you get closer you feel a force try and corrupt your mind. You start feeling sleepy and pass out. Hours later, you wake up on the floor feeling worse for wear but with a bag of gold at your feet.",
+    "You try to back off but get tricked by the fey's words and lose some of your gold. You go on your way unharmed afterwards.",
+    "You are careful with your words and back off, then go on your way."
+  ]
+}

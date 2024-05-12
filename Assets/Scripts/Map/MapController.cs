@@ -27,6 +27,8 @@ public class MapController : MonoBehaviour
         InitializeInventory();
 
         LoadGame();
+        if(save.heroHealth <= 0)
+            EndGame();
     }
 
     // Update is called once per frame
@@ -181,12 +183,7 @@ public class MapController : MonoBehaviour
     private void StartGame()
     {
         currentStage = GameObject.Find("Start");
-        // foreach (Weapon weapon in playerWeapons.GetWeapons())
-        // {
-        //     Debug.Log(weapon.GetType().Name);
-        // }
         List<string> curses = new();
-        curses.Add("NoCurse");
         SaveGame(currentStage.name, 0, PlayerWeapons.GetWeaponsIndexes(), 100, curses, new List<int> {0,1,2,3,4});
     }
 
@@ -211,5 +208,13 @@ public class MapController : MonoBehaviour
             CampFlag.isCamp = false;
             SceneManager.LoadScene("Encounter", LoadSceneMode.Single);
         }
+    }
+
+    public void EndGame()
+    {
+        Debug.Log("GAME OVER!");
+        StartGame();
+        currentStage = GameObject.Find("Start");
+        GameObject.Find("Player").transform.position = currentStage.transform.position + new Vector3(0, 0.5f, -1);
     }
 }

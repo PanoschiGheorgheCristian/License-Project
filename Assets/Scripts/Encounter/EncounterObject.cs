@@ -8,6 +8,7 @@ public class EncounterObject
     public string description;
     public string[] choices;
     public string[] choiceEffects;
+    public string[] afterChoiceDescription;
 
 
     public EncounterObject() { }
@@ -17,9 +18,12 @@ public class EncounterObject
     {
         if(isCamp)
             ENCOUNTER_FOLDER = Application.dataPath + "/Encounters/Camp";
+        else   
+        {
+            GetEncounterFolder();
+        }
         return File.ReadAllText(ENCOUNTER_FOLDER);
     }
-    [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
     private static void GetEncounterFolder()
     {
         int encIndex = Random.Range(1, 11);

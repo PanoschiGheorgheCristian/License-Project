@@ -1,1 +1,18 @@
-{"description":"You rest up at your camp. Choose if you want to sleep, work on your weapons or perform a purification ritual.", "choices":["Sleep", "Upgrade Weapon", "Purify"], "choiceEffects":["s,m", "b", "p,m"]}
+{
+  "description": "You rest up at your camp. Choose if you want to sleep, work on your weapons or perform a purification ritual.",
+  "choices": [
+    "Sleep",
+    "Upgrade Weapon",
+    "Purify"
+  ],
+  "choiceEffects": [
+    "s,m",
+    "b",
+    "p,m"
+  ],
+  "afterChoiceDescription": [
+    "You slept soundly and recovered all your HP.",
+    "",
+    "You performed the purification ritual and rid yourself of one of your curses."
+  ]
+}

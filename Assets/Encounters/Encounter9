@@ -1,1 +1,18 @@
-{"description":"Sample Description for testing things out.", "choices":["Proceed", "Punch a Wall", "Give Up"], "choiceEffects":["cweak,s,g100,b", "d10,g30,m", "d100,m"]}
+{
+  "description": "The roof is collapsing upon you. Huge boulders are coming towards you with terrifying speed. You need to act fast! The exit is close, but you also spot a little crevice in the wall.",
+  "choices": [
+    "Run",
+    "Find Cover",
+    "Try to dodge them"
+  ],
+  "choiceEffects": [
+    "d10,m",
+    "m",
+    "d80,m"
+  ],
+  "afterChoiceDescription": [
+    "You run as fast as you can and trip on a rock. In a frenzy you get up and dash for the nearrest exit. You scrached your leg but can barely feel it with all the adrenaline. You leave and don't look back again.",
+    "You run to the crevice and huddle up inside, preparing for the impact and praying your hideout won't be affected. You brace, but the impact never comes. You climb out, and see neither boulder nor destruction. Befuddled, you go on your way.",
+    "Confident in your skills, you decide to dodge the coming boulders. You keep your distance from the first, almost graze the second, but you don't see a third coming for you. It hits you in the chest and crushes you to the ground. You manage to lodge it off yourself and limp forwards, breathing rasply."
+  ]
+}

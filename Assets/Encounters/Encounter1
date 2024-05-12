@@ -1,1 +1,18 @@
-{"description":"You happen upon an old well.", "choices":["Drink", "Ignore", "Destroy"], "choiceEffects":["h30,m", "m", "cHaunted,g100,m"]}
+{
+  "description": "You happen upon an old well. The water has a mossy hue and at the bottom you spot a pile of coin.",
+  "choices": [
+    "Drink",
+    "Ignore",
+    "Take the coin"
+  ],
+  "choiceEffects": [
+    "h30,m",
+    "m",
+    "cHaunted,g100,m"
+  ],
+  "afterChoiceDescription": [
+    "The dirty water sticks to your throat as you drink, almost chocking you. Still, you feel refreshed.",
+    "You leave the well behind and move on.",
+    "You put your upper body in the water as you lunge for the coin. As you grab the money you feel unsettled."
+  ]
+}
