@@ -35,7 +35,27 @@ public class SceneLoad : MonoBehaviour
         string json = SaveObject.getJsonSave();
         SaveObject saveObject = JsonUtility.FromJson<SaveObject>(json);
         saveObject.heroHealth = player.GetComponent<HeroStatus>().health;
-        saveObject.currentGold += (int)UnityEngine.Random.Range(20,30);
+        if(EnemyToFight.isElite)
+            saveObject.currentGold += (int)UnityEngine.Random.Range(40,60);
+        else if(EnemyToFight.isBoss)
+            saveObject.currentGold += (int)UnityEngine.Random.Range(100, 150);
+        else
+            saveObject.currentGold += (int)UnityEngine.Random.Range(20, 30);
+        bool isWeaponObtained = false;
+        for(int iterator = 0; iterator < saveObject.availableWeapons.Count; iterator++)
+            if(EnemyToFight.currentEnemy == saveObject.availableWeapons[iterator])
+            {
+                isWeaponObtained = true;
+                break;
+            }
+        if(isWeaponObtained == false)
+        {
+            saveObject.availableWeapons.Add(EnemyToFight.currentEnemy);
+        }
+        else
+        {
+            //add weapon exp to the weapon given
+        }
         saveObject.SaveGame();
 
         yield return new WaitForSeconds(2f);

@@ -15,7 +15,6 @@ public class EnemyStatus : MonoBehaviour
     public armorType armor;
     public HealthBar healthbar;
 
-
     // Start is called before the first frame update
     void Start()
     {

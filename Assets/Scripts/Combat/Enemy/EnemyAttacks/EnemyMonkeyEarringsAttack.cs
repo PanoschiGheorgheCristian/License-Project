@@ -2,12 +2,13 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class HeavyEnemyAttack : GenericEnemyAttack
+public class EnemyMonkeyEarringsAttack : GenericEnemyAttack
 {
     int heroCurrentPosition;
     // Update is called once per frame
     void Update()
     {
+        //Check for Elite Enemy / Boss by looking at EnemyToFight.isElite / EnemyToFight.isBoss
         heroCurrentPosition = hero.GetComponent<PlayerController>().heroCurrentPosition;
         if (isAttacking == 0 && isExhausted == 0)
             if (hero.GetComponent<HeroStatus>().alive == 1)
@@ -19,9 +20,9 @@ public class HeavyEnemyAttack : GenericEnemyAttack
 
     void AttackClose()
     {
-        Attack(4, 1.5f, 35);
-        Attack(9, 1.5f, 35);
-        Attack(14, 1.5f, 35);
+        Attack(4, 0.5f, 10);
+        Attack(9, 0.5f, 10);
+        Attack(14, 0.5f, 10);
     }
 
     void GroundSlam(int heroCurrentPosition)
@@ -38,6 +39,6 @@ public class HeavyEnemyAttack : GenericEnemyAttack
         if (heroCurrentPosition % 5 != 4)
             attackPositions.Add(heroCurrentPosition + 1);
 
-        Attack(attackPositions, 1.5f, 20);
+        Attack(attackPositions, 0.8f, 15);
     }
 }

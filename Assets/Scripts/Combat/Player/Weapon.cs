@@ -55,7 +55,7 @@ public class IronBow : Weapon, ILongRangeWeapon
     public IronBow()
     {
         attackDamage = 20;
-        attackCooldown = 2;
+        attackCooldown = 2.5;
     }
 
     public override void Attack(GameObject enemy, GameObject hero)
@@ -69,7 +69,7 @@ public class IronBow : Weapon, ILongRangeWeapon
         return (int)enemyStatus.armor switch
         {
             0 => 0.5,
-            1 => 3,
+            1 => 2,
             2 => 1,
             _ => 1,
         };
@@ -82,8 +82,8 @@ public class ThrowingKnives : Weapon, ILongRangeWeapon
 
     public ThrowingKnives()
     {
-        attackDamage = 20;
-        attackCooldown = 2;
+        attackDamage = 5;
+        attackCooldown = 0.2;
     }
 
     public override void Attack(GameObject enemy, GameObject hero)
@@ -97,7 +97,7 @@ public class ThrowingKnives : Weapon, ILongRangeWeapon
         return (int)enemyStatus.armor switch
         {
             0 => 0.5,
-            1 => 3,
+            1 => 2,
             2 => 1,
             _ => 1,
         };

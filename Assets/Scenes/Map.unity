@@ -227,6 +227,7 @@ MonoBehaviour:
   - {fileID: 54565513}
   - {fileID: 71981654}
   - {fileID: 68730274}
+  enemyNumber: 0
 --- !u!61 &1173007
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -355,6 +356,7 @@ MonoBehaviour:
   hasPlayer: 0
   successors:
   - {fileID: 639109834}
+  enemyNumber: 0
 --- !u!61 &54565517
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -483,6 +485,7 @@ MonoBehaviour:
   hasPlayer: 0
   successors:
   - {fileID: 905172281}
+  enemyNumber: 0
 --- !u!61 &68730278
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -612,6 +615,7 @@ MonoBehaviour:
   successors:
   - {fileID: 639109834}
   - {fileID: 905172281}
+  enemyNumber: 0
 --- !u!61 &71981658
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -1074,6 +1078,7 @@ MonoBehaviour:
   successors:
   - {fileID: 1659797783}
   - {fileID: 1534844714}
+  enemyNumber: 0
 --- !u!61 &595791467
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -1204,6 +1209,7 @@ MonoBehaviour:
   - {fileID: 1659797783}
   - {fileID: 1534844714}
   - {fileID: 826791791}
+  enemyNumber: 0
 --- !u!61 &637798150
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -1333,6 +1339,7 @@ MonoBehaviour:
   successors:
   - {fileID: 595791463}
   - {fileID: 637798146}
+  enemyNumber: 0
 --- !u!61 &639109838
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -1462,6 +1469,7 @@ MonoBehaviour:
   successors:
   - {fileID: 1534844714}
   - {fileID: 826791791}
+  enemyNumber: 0
 --- !u!61 &704074240
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -1701,6 +1709,7 @@ MonoBehaviour:
   hasPlayer: 0
   successors:
   - {fileID: 1494821283}
+  enemyNumber: 0
 --- !u!61 &807481791
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -1829,6 +1838,7 @@ MonoBehaviour:
   hasPlayer: 0
   successors:
   - {fileID: 807481787}
+  enemyNumber: 0
 --- !u!61 &826791795
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -2008,6 +2018,7 @@ MonoBehaviour:
   successors:
   - {fileID: 637798146}
   - {fileID: 704074236}
+  enemyNumber: 0
 --- !u!61 &905172285
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -2554,6 +2565,7 @@ MonoBehaviour:
   successors:
   - {fileID: 54565513}
   - {fileID: 71981654}
+  enemyNumber: 0
 --- !u!61 &1082992358
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -3127,6 +3139,7 @@ MonoBehaviour:
   successors:
   - {fileID: 71981654}
   - {fileID: 68730274}
+  enemyNumber: 0
 --- !u!61 &1364567383
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -3667,6 +3680,7 @@ MonoBehaviour:
   hasPlayer: 0
   successors:
   - {fileID: 1901293749}
+  enemyNumber: 0
 --- !u!212 &1494821287
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -3961,6 +3975,7 @@ MonoBehaviour:
   successors:
   - {fileID: 1898405544}
   - {fileID: 807481787}
+  enemyNumber: 0
 --- !u!61 &1534844718
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -4089,6 +4104,7 @@ MonoBehaviour:
   hasPlayer: 0
   successors:
   - {fileID: 1898405544}
+  enemyNumber: 0
 --- !u!61 &1659797787
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -4829,6 +4845,7 @@ MonoBehaviour:
   hasPlayer: 0
   successors:
   - {fileID: 1494821283}
+  enemyNumber: 0
 --- !u!61 &1898405548
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -4956,6 +4973,7 @@ MonoBehaviour:
   encounter: 0
   hasPlayer: 0
   successors: []
+  enemyNumber: 0
 --- !u!61 &1901293753
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -5308,6 +5326,7 @@ MonoBehaviour:
   - {fileID: 1082992354}
   - {fileID: 1173003}
   - {fileID: 1364567379}
+  enemyNumber: 0
 --- !u!61 &2093201511
 BoxCollider2D:
   m_ObjectHideFlags: 0

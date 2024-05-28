@@ -24,10 +24,10 @@ public class MapController : MonoBehaviour
         _mainCamera = Camera.main;
         isSceneLoading = false;
         SetEncounters();
-        InitializeInventory();
 
         LoadGame();
-        if(save.heroHealth <= 0)
+        InitializeInventory();
+        if (save.heroHealth <= 0)
             EndGame();
     }
 
@@ -76,8 +76,9 @@ public class MapController : MonoBehaviour
             }
             else
             {
-                for(int iterator = 0; iterator < 15; iterator++)
+                for(int i = 0; i < save.availableWeapons.Count; i++)
                 {
+                    int iterator = save.availableWeapons[i];
                     if (rayHit.collider.gameObject.name == weaponsInInventory[iterator].name)
                     {
                         equippedWeaponSlots[iterator/3].GetComponent<SpriteRenderer>().sprite = weaponsInInventory[iterator].GetComponent<SpriteRenderer>().sprite;
@@ -109,6 +110,14 @@ public class MapController : MonoBehaviour
             tempColor.a = 0.4f;
             weaponsInInventory[tempArray[iterator]].GetComponent<SpriteRenderer>().color = tempColor;
         }
+        for(int iterator = 0; iterator < 15; iterator++)
+        {
+            weaponsInInventory[iterator].SetActive(false);
+        }
+        for(int iterator = 0; iterator < save.availableWeapons.Count; iterator++)
+        {
+            weaponsInInventory[save.availableWeapons[iterator]].SetActive(true);
+        }
         GameObject.Find("Inventory").SetActive(false);
     }
 
@@ -119,22 +128,27 @@ public class MapController : MonoBehaviour
 
         mapNodes[0].GetComponent<MapNode>().SetEncounter(MapNode.Encounter.Start);
         mapNodes[^1].GetComponent<MapNode>().SetEncounter(MapNode.Encounter.Boss);
+        mapNodes[^1].GetComponent<MapNode>().enemyNumber = 15;
         mapNodes[^2].GetComponent<MapNode>().SetEncounter(MapNode.Encounter.Camp);
 
         float rand = UnityEngine.Random.Range(0f, 2f);
         if (rand < 1f)
         {
             mapNodes[7].GetComponent<MapNode>().SetEncounter(MapNode.Encounter.HardEnemy);
+            mapNodes[7].GetComponent<MapNode>().SetRandomEnemy();
             mapNodes[8].GetComponent<MapNode>().SetEncounter(MapNode.Encounter.Camp);
             mapNodes[^3].GetComponent<MapNode>().SetEncounter(MapNode.Encounter.HardEnemy);
+            mapNodes[^3].GetComponent<MapNode>().SetRandomEnemy();
             mapNodes[^4].GetComponent<MapNode>().SetEncounter(MapNode.Encounter.Event);
         }
         else
         {
             mapNodes[7].GetComponent<MapNode>().SetEncounter(MapNode.Encounter.Camp);
             mapNodes[8].GetComponent<MapNode>().SetEncounter(MapNode.Encounter.HardEnemy);
+            mapNodes[8].GetComponent<MapNode>().SetRandomEnemy();
             mapNodes[^3].GetComponent<MapNode>().SetEncounter(MapNode.Encounter.Event);
             mapNodes[^4].GetComponent<MapNode>().SetEncounter(MapNode.Encounter.HardEnemy);
+            mapNodes[^4].GetComponent<MapNode>().SetRandomEnemy();
         }
         for (int index = 1; index <= mapNodes.Count - 3; index++)
         {
@@ -145,7 +159,10 @@ public class MapController : MonoBehaviour
             }
             rand = UnityEngine.Random.Range(0f, 3f);
             if (rand < 2f)
-                mapNodes[index].GetComponent<MapNode>().SetEncounter(MapNode.Encounter.Event);
+            {
+                mapNodes[index].GetComponent<MapNode>().SetEncounter(MapNode.Encounter.Enemy);
+                mapNodes[index].GetComponent<MapNode>().SetRandomEnemy();
+            }
             else
                 mapNodes[index].GetComponent<MapNode>().SetEncounter(MapNode.Encounter.Event);
         }
@@ -184,7 +201,7 @@ public class MapController : MonoBehaviour
     {
         currentStage = GameObject.Find("Start");
         List<string> curses = new();
-        SaveGame(currentStage.name, 0, PlayerWeapons.GetWeaponsIndexes(), 100, curses, new List<int> {0,1,2,3,4});
+        SaveGame(currentStage.name, 0, PlayerWeapons.GetWeaponsIndexes(), 100, curses, new List<int> {0,3,6,9,12});
     }
 
     private IEnumerator LoadStage()
@@ -192,10 +209,25 @@ public class MapController : MonoBehaviour
         yield return new WaitForSeconds(1.5f);
 
         isSceneLoading = false;
-        if (currentStage.GetComponent<MapNode>().encounter == MapNode.Encounter.Enemy ||
-            currentStage.GetComponent<MapNode>().encounter == MapNode.Encounter.HardEnemy ||
-                currentStage.GetComponent<MapNode>().encounter == MapNode.Encounter.Boss)
+        if (currentStage.GetComponent<MapNode>().encounter == MapNode.Encounter.Enemy)
         {
+            EnemyToFight.isElite = false;
+            EnemyToFight.isBoss = false;
+            EnemyToFight.currentEnemy = currentStage.GetComponent<MapNode>().enemyNumber;
+            SceneManager.LoadScene("Combat", LoadSceneMode.Single);
+        }
+        else if (currentStage.GetComponent<MapNode>().encounter == MapNode.Encounter.HardEnemy)
+        {
+            EnemyToFight.isElite = true;
+            EnemyToFight.isBoss = false;
+            EnemyToFight.currentEnemy = currentStage.GetComponent<MapNode>().enemyNumber;
+            SceneManager.LoadScene("Combat", LoadSceneMode.Single);
+        }
+        else if (currentStage.GetComponent<MapNode>().encounter == MapNode.Encounter.Boss)
+        {
+            EnemyToFight.isElite = false;
+            EnemyToFight.isBoss = true;
+            EnemyToFight.currentEnemy = currentStage.GetComponent<MapNode>().enemyNumber;
             SceneManager.LoadScene("Combat", LoadSceneMode.Single);
         }
         else if (currentStage.GetComponent<MapNode>().encounter == MapNode.Encounter.Camp)

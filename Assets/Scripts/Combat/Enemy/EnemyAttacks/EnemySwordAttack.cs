@@ -2,12 +2,13 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class MediumEnemyAttack : GenericEnemyAttack
+public class EnemySwordAttack : GenericEnemyAttack
 {
     int heroCurrentPosition;
     // Update is called once per frame
     void Update()
     {
+        //Check for Elite Enemy / Boss by looking at EnemyToFight.isElite / EnemyToFight.isBoss
         heroCurrentPosition = hero.GetComponent<PlayerController>().heroCurrentPosition;
         if (isAttacking == 0 && isExhausted == 0)
             if (hero.GetComponent<HeroStatus>().alive == 1)
@@ -34,6 +35,6 @@ public class MediumEnemyAttack : GenericEnemyAttack
             attackPositions.Add(i);
         }
 
-        Attack(attackPositions, 1.5f, 20);
+        Attack(attackPositions, 0.7f, 20);
     }
 }
