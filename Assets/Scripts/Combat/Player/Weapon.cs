@@ -34,7 +34,7 @@ public class Bow : Weapon, ILongRangeWeapon
     {
         Debug.Log("Attack with Bow");
         enemyStatus = enemy.GetComponent<EnemyStatus>();
-        enemyStatus.UpdateHealth(enemyStatus.health - (int)(GetModifier() * attackDamage));
+        enemyStatus.UpdateHealth(enemyStatus.health - ((int)(GetModifier() * (attackDamage + attackDamage * ((HeroStatus.isBuffed ? 30 : 0) + (HeroStatus.isDebuffed ? -30 : 0)) / 100))));
     }
     public override double GetModifier()
     {
@@ -62,7 +62,8 @@ public class IronBow : Weapon, ILongRangeWeapon
     {
         Debug.Log("Attack with IronBow");
         enemyStatus = enemy.GetComponent<EnemyStatus>();
-        enemyStatus.UpdateHealth(enemyStatus.health - (int)(GetModifier() * attackDamage));
+        enemyStatus.UpdateHealth(enemyStatus.health - ((int)(GetModifier() * (attackDamage + attackDamage * ((HeroStatus.isBuffed ? 30 : 0) + (HeroStatus.isDebuffed ? -30 : 0)) / 100))));
+        EnemyStatus.isBleeding = true;
     }
     public override double GetModifier()
     {
@@ -90,7 +91,8 @@ public class ThrowingKnives : Weapon, ILongRangeWeapon
     {
         Debug.Log("Attack with Throwing Knives");
         enemyStatus = enemy.GetComponent<EnemyStatus>();
-        enemyStatus.UpdateHealth(enemyStatus.health - (int)(GetModifier() * attackDamage));
+        enemyStatus.UpdateHealth(enemyStatus.health - ((int)(GetModifier() * (attackDamage + attackDamage * ((HeroStatus.isBuffed ? 30 : 0) + (HeroStatus.isDebuffed ? -30 : 0)) / 100))));
+        EnemyStatus.isPoisoned = true;
     }
     public override double GetModifier()
     {
@@ -119,7 +121,7 @@ public class Staff : Weapon, IMagicWeapon
     {
         Debug.Log("Attack with Staff");
         enemyStatus = enemy.GetComponent<EnemyStatus>();
-        enemyStatus.UpdateHealth(enemyStatus.health - (int)(GetModifier() * attackDamage));
+        enemyStatus.UpdateHealth(enemyStatus.health - ((int)(GetModifier() * (attackDamage + attackDamage * ((HeroStatus.isBuffed ? 30 : 0) + (HeroStatus.isDebuffed ? -30 : 0)) / 100))));
     }
     public override double GetModifier()
     {
@@ -139,9 +141,8 @@ public class Sceptre : Weapon, IMagicWeapon
 
     public override void Attack(GameObject enemy, GameObject hero)
     {
-        Debug.Log("Attack with Sceptre");
-        enemyStatus = enemy.GetComponent<EnemyStatus>();
-        enemyStatus.UpdateHealth(enemyStatus.health - (int)(GetModifier() * attackDamage));
+        Debug.Log("Debuffed your enemy with Sceptre");
+       EnemyStatus.isDebuffed = true;
     }
     public override double GetModifier()
     {
@@ -161,9 +162,8 @@ public class Circlet : Weapon, IMagicWeapon
 
     public override void Attack(GameObject enemy, GameObject hero)
     {
-        Debug.Log("Attack with Circlet");
-        enemyStatus = enemy.GetComponent<EnemyStatus>();
-        enemyStatus.UpdateHealth(enemyStatus.health - (int)(GetModifier() * attackDamage));
+        Debug.Log("Buffed yourself with Circlet");
+        HeroStatus.isBuffed = true;
     }
     public override double GetModifier()
     {
@@ -177,7 +177,6 @@ public class Shield : Weapon, IShieldWeapon
     readonly GameObject hero;
     public Shield()
     {
-        // this.attackDamage = 0;
         hero = GameObject.FindWithTag("Player");
         attackCooldown = 1;
     }
@@ -189,9 +188,6 @@ public class Shield : Weapon, IShieldWeapon
         shieldCharges = shieldCharges == 2 ? 2 : shieldCharges + 1;
         hero.GetComponent<HeroStatus>().shieldCharges = shieldCharges;
         Debug.Log(hero.GetComponent<HeroStatus>().shieldCharges);
-        // ADD these if implementing spiked shield:
-        // enemyStatus = enemy.GetComponent<EnemyStatus>();
-        // enemyStatus.UpdateHealth(enemyStatus.health - (int) (getModifier() * this.attackDamage));
     }
 
     public override double GetModifier()
@@ -206,9 +202,9 @@ public class SpikedShield : Weapon, IShieldWeapon
     readonly GameObject hero;
     public SpikedShield()
     {
-        // this.attackDamage = 0;
+        attackDamage = 10;
         hero = GameObject.FindWithTag("Player");
-        attackCooldown = 1;
+        attackCooldown = 2;
     }
 
     public override void Attack(GameObject enemy, GameObject hero)
@@ -218,9 +214,9 @@ public class SpikedShield : Weapon, IShieldWeapon
         shieldCharges = shieldCharges == 2 ? 2 : shieldCharges + 1;
         hero.GetComponent<HeroStatus>().shieldCharges = shieldCharges;
         Debug.Log(hero.GetComponent<HeroStatus>().shieldCharges);
-        // ADD these if implementing spiked shield:
-        // enemyStatus = enemy.GetComponent<EnemyStatus>();
-        // enemyStatus.UpdateHealth(enemyStatus.health - (int) (getModifier() * this.attackDamage));
+
+        enemyStatus = enemy.GetComponent<EnemyStatus>();
+        enemyStatus.UpdateHealth(enemyStatus.health - ((int)(GetModifier() * (attackDamage + attackDamage * ((HeroStatus.isBuffed ? 30 : 0) + (HeroStatus.isDebuffed ? -30 : 0)) / 100))));
     }
 
     public override double GetModifier()
@@ -235,9 +231,8 @@ public class MonkeyEarrings : Weapon, IShieldWeapon
     readonly GameObject hero;
     public MonkeyEarrings()
     {
-        // this.attackDamage = 0;
         hero = GameObject.FindWithTag("Player");
-        attackCooldown = 1;
+        attackCooldown = 4;
     }
 
     public override void Attack(GameObject enemy, GameObject hero)
@@ -247,9 +242,7 @@ public class MonkeyEarrings : Weapon, IShieldWeapon
         shieldCharges = shieldCharges == 2 ? 2 : shieldCharges + 1;
         hero.GetComponent<HeroStatus>().shieldCharges = shieldCharges;
         Debug.Log(hero.GetComponent<HeroStatus>().shieldCharges);
-        // ADD these if implementing spiked shield:
-        // enemyStatus = enemy.GetComponent<EnemyStatus>();
-        // enemyStatus.UpdateHealth(enemyStatus.health - (int) (getModifier() * this.attackDamage));
+        EnemyStatus.isStunned = true;
     }
 
     public override double GetModifier()
@@ -272,7 +265,7 @@ public class Sword : Weapon, ICloseCombatWeapon
     {
         Debug.Log("Attack with Sword");
         enemyStatus = enemy.GetComponent<EnemyStatus>();
-        enemyStatus.UpdateHealth(enemyStatus.health - (int)(GetModifier() * attackDamage));
+        enemyStatus.UpdateHealth(enemyStatus.health - ((int)(GetModifier() * (attackDamage + attackDamage * ((HeroStatus.isBuffed ? 30 : 0) + (HeroStatus.isDebuffed ? -30 : 0)) / 100))));
     }
 
     public override double GetModifier()
@@ -301,7 +294,8 @@ public class Waraxe : Weapon, ICloseCombatWeapon
     {
         Debug.Log("Attack with WarAxe");
         enemyStatus = enemy.GetComponent<EnemyStatus>();
-        enemyStatus.UpdateHealth(enemyStatus.health - (int)(GetModifier() * attackDamage));
+        enemyStatus.UpdateHealth(enemyStatus.health - ((int)(GetModifier() * (attackDamage + attackDamage * ((HeroStatus.isBuffed ? 30 : 0) + (HeroStatus.isDebuffed ? -30 : 0)) / 100))));
+        EnemyStatus.isBleeding = true;
     }
 
     public override double GetModifier()
@@ -330,7 +324,7 @@ public class Spear : Weapon, ICloseCombatWeapon
     {
         Debug.Log("Attack with Spear");
         enemyStatus = enemy.GetComponent<EnemyStatus>();
-        enemyStatus.UpdateHealth(enemyStatus.health - (int)(GetModifier() * attackDamage));
+        enemyStatus.UpdateHealth(enemyStatus.health - ((int)(GetModifier() * (attackDamage + attackDamage * ((HeroStatus.isBuffed ? 30 : 0) + (HeroStatus.isDebuffed ? -30 : 0)) / 100))));
     }
 
     public override double GetModifier()
@@ -359,7 +353,7 @@ public class Mace : Weapon, IMeleeWeapon
     {
         Debug.Log("Attack with Mace");
         enemyStatus = enemy.GetComponent<EnemyStatus>();
-        enemyStatus.UpdateHealth(enemyStatus.health - (int)(GetModifier() * attackDamage));
+        enemyStatus.UpdateHealth(enemyStatus.health - ((int)(GetModifier() * (attackDamage + attackDamage * ((HeroStatus.isBuffed ? 30 : 0) + (HeroStatus.isDebuffed ? -30 : 0)) / 100))));
     }
 
     public override double GetModifier()
@@ -388,8 +382,9 @@ public class Daggers : Weapon, IMeleeWeapon
     {
         Debug.Log("Attack with Daggers");
         enemyStatus = enemy.GetComponent<EnemyStatus>();
-        enemyStatus.UpdateHealth(enemyStatus.health - (int)(GetModifier() * attackDamage));
-        enemyStatus.UpdateHealth(enemyStatus.health - (int)(GetModifier() * attackDamage));
+        enemyStatus.UpdateHealth(enemyStatus.health - ((int)(GetModifier() * (attackDamage + attackDamage * ((HeroStatus.isBuffed ? 30 : 0) + (HeroStatus.isDebuffed ? -30 : 0)) / 100))));
+        enemyStatus.UpdateHealth(enemyStatus.health - ((int)(GetModifier() * (attackDamage + attackDamage * ((HeroStatus.isBuffed ? 30 : 0) + (HeroStatus.isDebuffed ? -30 : 0)) / 100))));
+        EnemyStatus.isPoisoned = true;
     }
 
     public override double GetModifier()
@@ -410,15 +405,16 @@ public class Flail : Weapon, IMeleeWeapon
 
     public Flail()
     {
-        attackDamage = 0;
-        attackCooldown = 2;
+        attackDamage = 10;
+        attackCooldown = 3;
     }
 
     public override void Attack(GameObject enemy, GameObject hero)
     {
         Debug.Log("Attack with Flail");
         enemyStatus = enemy.GetComponent<EnemyStatus>();
-        enemyStatus.UpdateHealth(enemyStatus.health - (int)(GetModifier() * attackDamage));
+        enemyStatus.UpdateHealth(enemyStatus.health - ((int)(GetModifier() * (attackDamage + attackDamage * ((HeroStatus.isBuffed ? 30 : 0) + (HeroStatus.isDebuffed ? -30 : 0)) / 100))));
+        EnemyStatus.isStunned = true;
     }
 
     public override double GetModifier()

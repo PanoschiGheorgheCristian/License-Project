@@ -10,7 +10,7 @@ public class EnemySpikedShieldAttack : GenericEnemyAttack
     {
         //Check for Elite Enemy / Boss by looking at EnemyToFight.isElite / EnemyToFight.isBoss
         heroCurrentPosition = hero.GetComponent<PlayerController>().heroCurrentPosition;
-        if (isAttacking == 0 && isExhausted == 0)
+        if (isAttacking == 0 && isExhausted == 0 && !EnemyStatus.isStunned)
             if (hero.GetComponent<HeroStatus>().alive == 1)
                 if (heroCurrentPosition % 5 == 4)
                     AttackClose();

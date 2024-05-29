@@ -25,6 +25,7 @@ public static class PlayerWeapons
             {
                 returnWeapons.Add(weapons[save.currentWeapons[i]]);
             }
+            HeroShield.shieldEquipped = save.currentWeapons[2] - 5;
         }
         else
         {
@@ -33,6 +34,7 @@ public static class PlayerWeapons
             returnWeapons.Add(weapons[6]);
             returnWeapons.Add(weapons[9]);
             returnWeapons.Add(weapons[12]);
+            HeroShield.shieldEquipped = 1;
         }
         return returnWeapons;
     }

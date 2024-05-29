@@ -40,9 +40,12 @@ public class PlayerController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        CheckSpace();
-        Move();
-        UseShieldCharge();
+        if(!HeroStatus.isStunned)
+        {
+            CheckSpace();
+            Move();
+            UseShieldCharge();
+        }
     }
 
     private void CheckSpace()
@@ -98,9 +101,28 @@ public class PlayerController : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.Q) && !gameObject.GetComponent<HeroStatus>().isShielded && gameObject.GetComponent<HeroStatus>().shieldCharges > 0)
         {
-            gameObject.GetComponent<HeroStatus>().isShielded = true;
-            gameObject.GetComponent<HeroStatus>().shieldCharges = gameObject.GetComponent<HeroStatus>().shieldCharges - 1;
-            StartCoroutine(LoseShield(shieldDuration));
+            switch(HeroShield.shieldEquipped)
+            {
+                case 1:
+                    gameObject.GetComponent<HeroStatus>().isShielded = true;
+                    gameObject.GetComponent<HeroStatus>().shieldCharges = gameObject.GetComponent<HeroStatus>().shieldCharges - 1;
+                    StartCoroutine(LoseShield(shieldDuration));
+                    break;
+                case 2:
+                    gameObject.GetComponent<HeroStatus>().isShielded = true;
+                    gameObject.GetComponent<HeroStatus>().shieldCharges = gameObject.GetComponent<HeroStatus>().shieldCharges - 1;
+                    StartCoroutine(LoseShield(shieldDuration / 2));
+                    break;
+                case 3:
+                    gameObject.GetComponent<HeroStatus>().isShielded = true;
+                    gameObject.GetComponent<HeroStatus>().shieldCharges = gameObject.GetComponent<HeroStatus>().shieldCharges - 1;
+                    StartCoroutine(LoseShield(shieldDuration / 2));
+                    EnemyStatus.isStunned = true;
+                    break;
+                default:
+                    Debug.Log("There was an attempt to use a shield that does not exist.");
+                    break;
+            }
         }
     }
     public int GetIndex(Vector3 position)
@@ -124,4 +146,9 @@ public class PlayerController : MonoBehaviour
         yield return new WaitForSeconds(movementDelay);
         canMove = 1;
     }
+}
+
+public static class HeroShield
+{
+    public static int shieldEquipped;
 }

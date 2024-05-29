@@ -61,9 +61,11 @@ public abstract class GenericEnemyAttack : MonoBehaviour
     {
         yield return new WaitForSeconds(time1);
 
+        if(!EnemyStatus.isStunned)
+        {
         int position = heroCurrentPosition;
         if (position == hero.GetComponent<PlayerController>().heroCurrentPosition && !hero.GetComponent<HeroStatus>().isShielded)
-            DealDamage(damage);
+            DealDamage(damage + (int)(damage * ((EnemyStatus.isBuffed ? 30 : 0) + (EnemyStatus.isDebuffed ? -30 : 0)) / 100));
         heroPositions[position].GetComponent<SpriteRenderer>().color = colors[2];
 
         yield return new WaitForSeconds(time2);
@@ -75,5 +77,12 @@ public abstract class GenericEnemyAttack : MonoBehaviour
         yield return new WaitForSeconds(time3);
 
         isExhausted = 0;
+        }
+        else
+        {
+            isExhausted = 0;
+            isAttacking = 0;
+            heroPositions[heroCurrentPosition].GetComponent<SpriteRenderer>().color = colors[1];
+        }
     }
 }

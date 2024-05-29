@@ -35,7 +35,7 @@ public class Attack : MonoBehaviour
     {
         enemy = enemyManager.GetComponent<EnemyManage>().GetCurrentEnemy();
         currentWeapon = PlayerWeapons.GetWeapons()[indexCurrentWeapon];
-        if (Input.GetKeyDown(KeyCode.E) && isAttacking == 0)
+        if (Input.GetKeyDown(KeyCode.E) && isAttacking == 0 && !HeroStatus.isStunned)
         {
             AttackEnemy(currentWeapon, enemy);
         }
