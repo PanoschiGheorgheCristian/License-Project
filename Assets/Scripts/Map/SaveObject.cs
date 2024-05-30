@@ -13,6 +13,7 @@ public class SaveObject
     public int[] currentWeapons;
     public List<string> curses;
     public List<int> availableWeapons;
+    public int[] weaponExperience;
 
     public SaveObject() { }
 

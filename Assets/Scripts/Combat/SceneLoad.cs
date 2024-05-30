@@ -46,16 +46,14 @@ public class SceneLoad : MonoBehaviour
             if(EnemyToFight.currentEnemy == saveObject.availableWeapons[iterator])
             {
                 isWeaponObtained = true;
+                saveObject.weaponExperience[saveObject.availableWeapons[iterator]] = saveObject.weaponExperience[saveObject.availableWeapons[iterator]] + 500;
                 break;
             }
         if(isWeaponObtained == false)
         {
             saveObject.availableWeapons.Add(EnemyToFight.currentEnemy);
         }
-        else
-        {
-            //add weapon exp to the weapon given
-        }
+        
         saveObject.SaveGame();
 
         yield return new WaitForSeconds(2f);

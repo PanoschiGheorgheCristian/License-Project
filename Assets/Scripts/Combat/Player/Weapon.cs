@@ -1,9 +1,11 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Xml.Serialization;
 using UnityEngine;
 
 public abstract class Weapon
 {
+    public int weaponExp;
     public double attackCooldown;
     public int attackDamage;
     protected enum DamageType
@@ -18,6 +20,8 @@ public abstract class Weapon
     protected Weapon() { }
     public abstract void Attack(GameObject enemy, GameObject hero);
     public abstract double GetModifier();
+    public abstract void UpdateToLevel2();
+    public abstract void UpdateToLevel3();
 }
 
 public class Bow : Weapon, ILongRangeWeapon
@@ -34,7 +38,8 @@ public class Bow : Weapon, ILongRangeWeapon
     {
         Debug.Log("Attack with Bow");
         enemyStatus = enemy.GetComponent<EnemyStatus>();
-        enemyStatus.UpdateHealth(enemyStatus.health - ((int)(GetModifier() * (attackDamage + attackDamage * ((HeroStatus.isBuffed ? 30 : 0) + (HeroStatus.isDebuffed ? -30 : 0)) / 100))));
+        enemyStatus.UpdateHealth(enemyStatus.health - ((int)(GetModifier() * (attackDamage + 
+            attackDamage * ((HeroStatus.isBuffed ? HeroStatus.buffPower : 0) + (HeroStatus.isDebuffed ? HeroStatus.debuffPower : 0)) / 100))));
     }
     public override double GetModifier()
     {
@@ -45,6 +50,16 @@ public class Bow : Weapon, ILongRangeWeapon
             2 => 1,
             _ => 1,
         };
+    }
+    public override void UpdateToLevel2()
+    {
+        attackDamage = 15;
+        attackCooldown = 1;
+    }
+    public override void UpdateToLevel3()
+    {
+        attackDamage = 15;
+        attackCooldown = 0.5;
     }
 }
 
@@ -62,7 +77,8 @@ public class IronBow : Weapon, ILongRangeWeapon
     {
         Debug.Log("Attack with IronBow");
         enemyStatus = enemy.GetComponent<EnemyStatus>();
-        enemyStatus.UpdateHealth(enemyStatus.health - ((int)(GetModifier() * (attackDamage + attackDamage * ((HeroStatus.isBuffed ? 30 : 0) + (HeroStatus.isDebuffed ? -30 : 0)) / 100))));
+        enemyStatus.UpdateHealth(enemyStatus.health - ((int)(GetModifier() * (attackDamage + 
+            attackDamage * ((HeroStatus.isBuffed ? HeroStatus.buffPower : 0) + (HeroStatus.isDebuffed ? HeroStatus.debuffPower : 0)) / 100))));
         EnemyStatus.isBleeding = true;
     }
     public override double GetModifier()
@@ -75,24 +91,38 @@ public class IronBow : Weapon, ILongRangeWeapon
             _ => 1,
         };
     }
+    public override void UpdateToLevel2()
+    {
+        attackDamage = 20;
+        attackCooldown = 2;
+    }
+    public override void UpdateToLevel3()
+    {
+        attackDamage = 30;
+        attackCooldown = 2;
+    }
 }
 
 public class ThrowingKnives : Weapon, ILongRangeWeapon
 {
     // damageType attackType = damageType.Piercing;
-
+    private bool isLevel3;
     public ThrowingKnives()
     {
         attackDamage = 5;
-        attackCooldown = 0.2;
+        attackCooldown = 1;
+        isLevel3 = false;
     }
 
     public override void Attack(GameObject enemy, GameObject hero)
     {
         Debug.Log("Attack with Throwing Knives");
         enemyStatus = enemy.GetComponent<EnemyStatus>();
-        enemyStatus.UpdateHealth(enemyStatus.health - ((int)(GetModifier() * (attackDamage + attackDamage * ((HeroStatus.isBuffed ? 30 : 0) + (HeroStatus.isDebuffed ? -30 : 0)) / 100))));
+        enemyStatus.UpdateHealth(enemyStatus.health - ((int)(GetModifier() * (attackDamage + 
+            attackDamage * ((HeroStatus.isBuffed ? HeroStatus.buffPower : 0) + (HeroStatus.isDebuffed ? HeroStatus.debuffPower : 0)) / 100))));
         EnemyStatus.isPoisoned = true;
+        if(isLevel3)
+            EnemyStatus.isBleeding = true;
     }
     public override double GetModifier()
     {
@@ -103,6 +133,17 @@ public class ThrowingKnives : Weapon, ILongRangeWeapon
             2 => 1,
             _ => 1,
         };
+    }
+    public override void UpdateToLevel2()
+    {
+        attackDamage = 10;
+        attackCooldown = 1;
+    }
+    public override void UpdateToLevel3()
+    {
+        attackDamage = 10;
+        attackCooldown = 0.5;
+        isLevel3 = true;
     }
 }
 
@@ -121,11 +162,22 @@ public class Staff : Weapon, IMagicWeapon
     {
         Debug.Log("Attack with Staff");
         enemyStatus = enemy.GetComponent<EnemyStatus>();
-        enemyStatus.UpdateHealth(enemyStatus.health - ((int)(GetModifier() * (attackDamage + attackDamage * ((HeroStatus.isBuffed ? 30 : 0) + (HeroStatus.isDebuffed ? -30 : 0)) / 100))));
+        enemyStatus.UpdateHealth(enemyStatus.health - ((int)(GetModifier() * (attackDamage + 
+            attackDamage * ((HeroStatus.isBuffed ? HeroStatus.buffPower : 0) + (HeroStatus.isDebuffed ? HeroStatus.debuffPower : 0)) / 100))));
     }
     public override double GetModifier()
     {
         return 1;
+    }
+    public override void UpdateToLevel2()
+    {
+        attackDamage = 15;
+        attackCooldown = 1;
+    }
+    public override void UpdateToLevel3()
+    {
+        attackDamage = 20;
+        attackCooldown = 1;
     }
 }
 
@@ -148,6 +200,14 @@ public class Sceptre : Weapon, IMagicWeapon
     {
         return 1;
     }
+    public override void UpdateToLevel2()
+    {
+        EnemyStatus.debuffDuration = 7f;
+    }
+    public override void UpdateToLevel3()
+    {
+        HeroStatus.debuffPower = -50;
+    }
 }
 
 public class Circlet : Weapon, IMagicWeapon
@@ -169,6 +229,14 @@ public class Circlet : Weapon, IMagicWeapon
     {
         return 1;
     }
+    public override void UpdateToLevel2()
+    {
+        HeroStatus.buffDuration = 7f;
+    }
+    public override void UpdateToLevel3()
+    {
+        HeroStatus.buffPower = 50;
+    }
 }
 
 public class Shield : Weapon, IShieldWeapon
@@ -185,7 +253,7 @@ public class Shield : Weapon, IShieldWeapon
     {
         Debug.Log("Block with shield");
         int shieldCharges = hero.GetComponent<HeroStatus>().shieldCharges;
-        shieldCharges = shieldCharges == 2 ? 2 : shieldCharges + 1;
+        shieldCharges = shieldCharges == HeroShield.maxShield1Charges ? HeroShield.maxShield1Charges : shieldCharges + 1;
         hero.GetComponent<HeroStatus>().shieldCharges = shieldCharges;
         Debug.Log(hero.GetComponent<HeroStatus>().shieldCharges);
     }
@@ -193,6 +261,14 @@ public class Shield : Weapon, IShieldWeapon
     public override double GetModifier()
     {
         return 1;
+    }
+    public override void UpdateToLevel2()
+    {
+        HeroShield.maxShield1Charges = 3;
+    }
+    public override void UpdateToLevel3()
+    {
+        HeroShield.shield1Duration = 2.5f;
     }
 }
 
@@ -211,23 +287,34 @@ public class SpikedShield : Weapon, IShieldWeapon
     {
         Debug.Log("Block with Spiked Shield");
         int shieldCharges = hero.GetComponent<HeroStatus>().shieldCharges;
-        shieldCharges = shieldCharges == 2 ? 2 : shieldCharges + 1;
+        shieldCharges = shieldCharges == HeroShield.maxShield2Charges ? HeroShield.maxShield2Charges : shieldCharges + 1;
         hero.GetComponent<HeroStatus>().shieldCharges = shieldCharges;
         Debug.Log(hero.GetComponent<HeroStatus>().shieldCharges);
 
         enemyStatus = enemy.GetComponent<EnemyStatus>();
-        enemyStatus.UpdateHealth(enemyStatus.health - ((int)(GetModifier() * (attackDamage + attackDamage * ((HeroStatus.isBuffed ? 30 : 0) + (HeroStatus.isDebuffed ? -30 : 0)) / 100))));
+        enemyStatus.UpdateHealth(enemyStatus.health - ((int)(GetModifier() * (attackDamage + 
+            attackDamage * ((HeroStatus.isBuffed ? HeroStatus.buffPower : 0) + (HeroStatus.isDebuffed ? HeroStatus.debuffPower : 0)) / 100))));
     }
 
     public override double GetModifier()
     {
         return 1;
     }
+    public override void UpdateToLevel2()
+    {
+        attackDamage = 15;
+        HeroShield.maxShield2Charges = 3;
+    }
+    public override void UpdateToLevel3()
+    {
+        HeroShield.shield2Duration = 1f;
+    }
 }
 
 public class MonkeyEarrings : Weapon, IShieldWeapon
 {
     // damageType attackType = damageType.True;
+    private float stunDuration = 1.5f;
     readonly GameObject hero;
     public MonkeyEarrings()
     {
@@ -242,6 +329,7 @@ public class MonkeyEarrings : Weapon, IShieldWeapon
         shieldCharges = shieldCharges == 2 ? 2 : shieldCharges + 1;
         hero.GetComponent<HeroStatus>().shieldCharges = shieldCharges;
         Debug.Log(hero.GetComponent<HeroStatus>().shieldCharges);
+        EnemyStatus.stunDuration = stunDuration;
         EnemyStatus.isStunned = true;
     }
 
@@ -249,23 +337,35 @@ public class MonkeyEarrings : Weapon, IShieldWeapon
     {
         return 1;
     }
+    public override void UpdateToLevel2()
+    {
+        stunDuration = 2f;
+    }
+    public override void UpdateToLevel3()
+    {
+        stunDuration = 2.5f;
+    }
 }
 
 public class Sword : Weapon, ICloseCombatWeapon
 {
     // damageType attackType = damageType.Slashing;
-
+    private bool isLevel3;
     public Sword()
     {
         attackDamage = 10;
         attackCooldown = 1;
+        isLevel3 = false;
     }
 
     public override void Attack(GameObject enemy, GameObject hero)
     {
         Debug.Log("Attack with Sword");
         enemyStatus = enemy.GetComponent<EnemyStatus>();
-        enemyStatus.UpdateHealth(enemyStatus.health - ((int)(GetModifier() * (attackDamage + attackDamage * ((HeroStatus.isBuffed ? 30 : 0) + (HeroStatus.isDebuffed ? -30 : 0)) / 100))));
+        enemyStatus.UpdateHealth(enemyStatus.health - ((int)(GetModifier() * (attackDamage + 
+            attackDamage * ((HeroStatus.isBuffed ? HeroStatus.buffPower : 0) + (HeroStatus.isDebuffed ? HeroStatus.debuffPower : 0)) / 100))));
+        if (isLevel3)
+            EnemyStatus.isBleeding = true;
     }
 
     public override double GetModifier()
@@ -278,6 +378,15 @@ public class Sword : Weapon, ICloseCombatWeapon
             _ => 1,
         };
     }
+    public override void UpdateToLevel2()
+    {
+        attackDamage = 15;
+        attackCooldown = 1;
+    }
+    public override void UpdateToLevel3()
+    {
+        isLevel3 = true;
+    }
 }
 
 public class Waraxe : Weapon, ICloseCombatWeapon
@@ -286,15 +395,16 @@ public class Waraxe : Weapon, ICloseCombatWeapon
 
     public Waraxe()
     {
-        attackDamage = 10;
-        attackCooldown = 1;
+        attackDamage = 20;
+        attackCooldown = 2;
     }
 
     public override void Attack(GameObject enemy, GameObject hero)
     {
         Debug.Log("Attack with WarAxe");
         enemyStatus = enemy.GetComponent<EnemyStatus>();
-        enemyStatus.UpdateHealth(enemyStatus.health - ((int)(GetModifier() * (attackDamage + attackDamage * ((HeroStatus.isBuffed ? 30 : 0) + (HeroStatus.isDebuffed ? -30 : 0)) / 100))));
+        enemyStatus.UpdateHealth(enemyStatus.health - ((int)(GetModifier() * (attackDamage + 
+            attackDamage * ((HeroStatus.isBuffed ? HeroStatus.buffPower : 0) + (HeroStatus.isDebuffed ? HeroStatus.debuffPower : 0)) / 100))));
         EnemyStatus.isBleeding = true;
     }
 
@@ -307,6 +417,16 @@ public class Waraxe : Weapon, ICloseCombatWeapon
             2 => 1,
             _ => 1,
         };
+    }
+    public override void UpdateToLevel2()
+    {
+        attackDamage = 25;
+        attackCooldown = 2;
+    }
+    public override void UpdateToLevel3()
+    {
+        attackDamage = 25;
+        attackCooldown = 1;
     }
 }
 
@@ -324,7 +444,8 @@ public class Spear : Weapon, ICloseCombatWeapon
     {
         Debug.Log("Attack with Spear");
         enemyStatus = enemy.GetComponent<EnemyStatus>();
-        enemyStatus.UpdateHealth(enemyStatus.health - ((int)(GetModifier() * (attackDamage + attackDamage * ((HeroStatus.isBuffed ? 30 : 0) + (HeroStatus.isDebuffed ? -30 : 0)) / 100))));
+        enemyStatus.UpdateHealth(enemyStatus.health - ((int)(GetModifier() * (attackDamage + 
+            attackDamage * ((HeroStatus.isBuffed ? HeroStatus.buffPower : 0) + (HeroStatus.isDebuffed ? HeroStatus.debuffPower : 0)) / 100))));
     }
 
     public override double GetModifier()
@@ -337,23 +458,40 @@ public class Spear : Weapon, ICloseCombatWeapon
             _ => 1,
         };
     }
+    public override void UpdateToLevel2()
+    {
+        attackDamage = 15;
+        attackCooldown = 1;
+    }
+    public override void UpdateToLevel3()
+    {
+        attackDamage = 25;
+        attackCooldown = 1;
+    }
 }
 
 public class Mace : Weapon, IMeleeWeapon
 {
     // damageType attackType = damageType.Bludgeoning;
-
+    private bool isLevel3;
     public Mace()
     {
-        attackDamage = 10;
-        attackCooldown = 1;
+        attackDamage = 15;
+        attackCooldown = 1.5;
+        isLevel3 = false;
     }
 
     public override void Attack(GameObject enemy, GameObject hero)
     {
         Debug.Log("Attack with Mace");
         enemyStatus = enemy.GetComponent<EnemyStatus>();
-        enemyStatus.UpdateHealth(enemyStatus.health - ((int)(GetModifier() * (attackDamage + attackDamage * ((HeroStatus.isBuffed ? 30 : 0) + (HeroStatus.isDebuffed ? -30 : 0)) / 100))));
+        enemyStatus.UpdateHealth(enemyStatus.health - ((int)(GetModifier() * (attackDamage + 
+            attackDamage * ((HeroStatus.isBuffed ? HeroStatus.buffPower : 0) + (HeroStatus.isDebuffed ? HeroStatus.debuffPower : 0)) / 100))));
+        if (isLevel3)
+        {
+            EnemyStatus.stunDuration = 1f;
+            EnemyStatus.isStunned = true;
+        }
     }
 
     public override double GetModifier()
@@ -365,6 +503,17 @@ public class Mace : Weapon, IMeleeWeapon
             2 => 2,
             _ => 1,
         };
+    }
+    public override void UpdateToLevel2()
+    {
+        attackDamage = 20;
+        attackCooldown = 1.5;
+    }
+    public override void UpdateToLevel3()
+    {
+        attackDamage = 25;
+        attackCooldown = 3;
+        isLevel3 = true;
     }
 }
 
@@ -382,8 +531,10 @@ public class Daggers : Weapon, IMeleeWeapon
     {
         Debug.Log("Attack with Daggers");
         enemyStatus = enemy.GetComponent<EnemyStatus>();
-        enemyStatus.UpdateHealth(enemyStatus.health - ((int)(GetModifier() * (attackDamage + attackDamage * ((HeroStatus.isBuffed ? 30 : 0) + (HeroStatus.isDebuffed ? -30 : 0)) / 100))));
-        enemyStatus.UpdateHealth(enemyStatus.health - ((int)(GetModifier() * (attackDamage + attackDamage * ((HeroStatus.isBuffed ? 30 : 0) + (HeroStatus.isDebuffed ? -30 : 0)) / 100))));
+        enemyStatus.UpdateHealth(enemyStatus.health - ((int)(GetModifier() * (attackDamage + 
+            attackDamage * ((HeroStatus.isBuffed ? HeroStatus.buffPower : 0) + (HeroStatus.isDebuffed ? HeroStatus.debuffPower : 0)) / 100))));
+        enemyStatus.UpdateHealth(enemyStatus.health - ((int)(GetModifier() * (attackDamage + 
+            attackDamage * ((HeroStatus.isBuffed ? HeroStatus.buffPower : 0) + (HeroStatus.isDebuffed ? HeroStatus.debuffPower : 0)) / 100))));
         EnemyStatus.isPoisoned = true;
     }
 
@@ -397,12 +548,22 @@ public class Daggers : Weapon, IMeleeWeapon
             _ => 1,
         };
     }
+    public override void UpdateToLevel2()
+    {
+        attackDamage = 7;
+        attackCooldown = 1;
+    }
+    public override void UpdateToLevel3()
+    {
+        attackDamage = 15;
+        attackCooldown = 1;
+    }
 }
 
 public class Flail : Weapon, IMeleeWeapon
 {
     // damageType attackType = damageType.Bludgeoning;
-
+    private float stunDuration = 1.5f;
     public Flail()
     {
         attackDamage = 10;
@@ -413,7 +574,9 @@ public class Flail : Weapon, IMeleeWeapon
     {
         Debug.Log("Attack with Flail");
         enemyStatus = enemy.GetComponent<EnemyStatus>();
-        enemyStatus.UpdateHealth(enemyStatus.health - ((int)(GetModifier() * (attackDamage + attackDamage * ((HeroStatus.isBuffed ? 30 : 0) + (HeroStatus.isDebuffed ? -30 : 0)) / 100))));
+        enemyStatus.UpdateHealth(enemyStatus.health - ((int)(GetModifier() * (attackDamage + 
+            attackDamage * ((HeroStatus.isBuffed ? HeroStatus.buffPower : 0) + (HeroStatus.isDebuffed ? HeroStatus.debuffPower : 0)) / 100))));
+        EnemyStatus.stunDuration = stunDuration;
         EnemyStatus.isStunned = true;
     }
 
@@ -426,5 +589,16 @@ public class Flail : Weapon, IMeleeWeapon
             2 => 0.5,
             _ => 1,
         };
+    }
+    public override void UpdateToLevel2()
+    {
+        attackDamage = 20;
+        attackCooldown = 3;
+    }
+    public override void UpdateToLevel3()
+    {
+        attackDamage = 25;
+        attackCooldown = 3;
+        stunDuration = 2f;
     }
 }

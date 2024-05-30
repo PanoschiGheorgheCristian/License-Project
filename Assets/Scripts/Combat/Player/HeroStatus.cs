@@ -16,6 +16,9 @@ public class HeroStatus : MonoBehaviour
     public static bool isPoisoned;
     public static bool isBleeding;
     public static bool isStunned;
+    public static int buffPower = 30;
+    public static int debuffPower = -30;
+    public static float buffDuration = 5f;
     private bool isStunBeingProcessed;
     private bool isPoisonBeingProcessed;
     private bool isBleedBeingProcessed;
@@ -65,7 +68,7 @@ public class HeroStatus : MonoBehaviour
         if(isBuffed && !isBuffBeingProcessed)
         {
             isBuffBeingProcessed = true;
-            StartCoroutine(LoseBuff(5f));
+            StartCoroutine(LoseBuff(buffDuration));
         }
         if(isDebuffed && !isDebuffBeingProcessed)
         {

@@ -5,6 +5,7 @@ using UnityEngine;
 using System;
 using UnityEngine.SceneManagement;
 using System.IO;
+using TMPro;
 
 public class MapController : MonoBehaviour
 {
@@ -18,6 +19,10 @@ public class MapController : MonoBehaviour
     [SerializeField] private GameObject inventory;
     [SerializeField] private List<GameObject> weaponsInInventory;
     [SerializeField] private List<GameObject> equippedWeaponSlots;
+    [SerializeField] private List<GameObject> LevelsTextObjects;
+    [SerializeField] private GameObject GoldAmountTextObject;
+    [SerializeField] private GameObject HealthAmountTextObject;
+    [SerializeField] private GameObject CursesTextObject;
 
     void Awake()
     {
@@ -68,7 +73,7 @@ public class MapController : MonoBehaviour
                         currentStage = iteratorGameObject;
                         currentStage.GetComponent<MapNode>().hasPlayer = true;
                         player.transform.position = currentStage.transform.position + new Vector3(0, 0.5f, -1);
-                        SaveGame(currentStage.name, save.currentGold, PlayerWeapons.GetWeaponsIndexes(), save.heroHealth, save.curses, save.availableWeapons);
+                        SaveGame(currentStage.name, save.currentGold, PlayerWeapons.GetWeaponsIndexes(), save.heroHealth, save.curses, save.availableWeapons, save.weaponExperience);
                         isSceneLoading = true;
                         StartCoroutine(LoadStage());
                     }
@@ -92,7 +97,7 @@ public class MapController : MonoBehaviour
                         Color tempColor = Color.white;
                         tempColor.a = 0.4f;
                         weaponsInInventory[iterator].GetComponent<SpriteRenderer>().color = tempColor;
-                        SaveGame(currentStage.name, save.currentGold, tempArray, save.heroHealth, save.curses, save.availableWeapons);
+                        SaveGame(currentStage.name, save.currentGold, tempArray, save.heroHealth, save.curses, save.availableWeapons, save.weaponExperience);
 
                     }
                 }
@@ -124,7 +129,7 @@ public class MapController : MonoBehaviour
     private void SetEncounters()
     {
         //UpgradeShop is a mechanic of the camp
-        //Getting new weapons is manly done through defeating hard enemies that are wielding the weapon
+        //Getting new weapons is manly done through defeating enemies that are wielding the weapon
 
         mapNodes[0].GetComponent<MapNode>().SetEncounter(MapNode.Encounter.Start);
         mapNodes[^1].GetComponent<MapNode>().SetEncounter(MapNode.Encounter.Boss);
@@ -168,7 +173,7 @@ public class MapController : MonoBehaviour
         }
     }
 
-    public void SaveGame(string name, int gold, int[] weapons, int heroHealth, List<string> curses, List<int> availableWeapons)
+    public void SaveGame(string name, int gold, int[] weapons, int heroHealth, List<string> curses, List<int> availableWeapons, int[] weaponExperience)
     {
         save.currentStage = name;
         save.currentGold = gold;
@@ -176,6 +181,7 @@ public class MapController : MonoBehaviour
         save.currentWeapons = weapons;
         save.curses = curses;
         save.availableWeapons = availableWeapons;
+        save.weaponExperience = weaponExperience;
 
         save.SaveGame();
         Debug.Log("Saved");
@@ -187,6 +193,13 @@ public class MapController : MonoBehaviour
 
         SaveObject tempSave = new();
         tempSave = JsonUtility.FromJson<SaveObject>(json);
+
+        int[] weaponLevels = PlayerWeapons.GetAllWeaponsLevels();
+        for (int iterator = 0; iterator < weaponLevels.Length; iterator++)
+        {
+            LevelsTextObjects[iterator].GetComponent<TMP_Text>().text = weaponLevels[iterator].ToString();
+        }
+
         if (tempSave is not null)
         {
             save = tempSave;
@@ -194,14 +207,24 @@ public class MapController : MonoBehaviour
             GameObject.Find("Player").transform.position = currentStage.transform.position + new Vector3(0, 0.5f, -1);
         }
         else
+        {
             StartGame();
+        }
+        GoldAmountTextObject.GetComponent<TMP_Text>().text = "Gold:" + save.currentGold.ToString();
+        HealthAmountTextObject.GetComponent<TMP_Text>().text = "Health:" + save.heroHealth.ToString();
+        string tempString = "Curses:";
+        foreach(string s in save.curses)
+        {
+            tempString = tempString + s + "<br>";
+        }
+        CursesTextObject.GetComponent<TMP_Text>().text = tempString;
     }
 
     private void StartGame()
     {
         currentStage = GameObject.Find("Start");
         List<string> curses = new();
-        SaveGame(currentStage.name, 0, PlayerWeapons.GetWeaponsIndexes(), 100, curses, new List<int> {0,3,6,9,12});
+        SaveGame(currentStage.name, 0, PlayerWeapons.GetWeaponsIndexes(), 100, curses, new List<int> {0,3,6,9,12}, new int[15]);
     }
 
     private IEnumerator LoadStage()

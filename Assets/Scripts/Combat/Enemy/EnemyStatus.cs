@@ -19,6 +19,8 @@ public class EnemyStatus : MonoBehaviour
     public static bool isPoisoned;
     public static bool isBleeding;
     public static bool isStunned;
+    public static float debuffDuration = 5f;
+    public static float stunDuration = 1.5f;
     private bool isStunBeingProcessed;
     private bool isPoisonBeingProcessed;
     private bool isBleedBeingProcessed;
@@ -58,7 +60,7 @@ public class EnemyStatus : MonoBehaviour
         if (isStunned && !isStunBeingProcessed)
         {
             isStunBeingProcessed = true;
-            StartCoroutine(WaitDuringStun(1.5f));
+            StartCoroutine(WaitDuringStun(stunDuration));
         }
         if (isBuffed && !isBuffBeingProcessed)
         {
@@ -68,7 +70,7 @@ public class EnemyStatus : MonoBehaviour
         if (isDebuffed && !isDebuffBeingProcessed)
         {
             isDebuffBeingProcessed = true;
-            StartCoroutine(LoseDebuff(5f));
+            StartCoroutine(LoseDebuff(debuffDuration));
         }
         if (health <= 0)
         {

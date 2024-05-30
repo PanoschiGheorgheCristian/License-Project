@@ -10,7 +10,6 @@ public class PlayerController : MonoBehaviour
     int canMove;
     int isDashing;
     public float movementDelay;
-    public float shieldDuration;
 
     // Start is called before the first frame update
     void Start()
@@ -106,17 +105,17 @@ public class PlayerController : MonoBehaviour
                 case 1:
                     gameObject.GetComponent<HeroStatus>().isShielded = true;
                     gameObject.GetComponent<HeroStatus>().shieldCharges = gameObject.GetComponent<HeroStatus>().shieldCharges - 1;
-                    StartCoroutine(LoseShield(shieldDuration));
+                    StartCoroutine(LoseShield(HeroShield.shield1Duration));
                     break;
                 case 2:
                     gameObject.GetComponent<HeroStatus>().isShielded = true;
                     gameObject.GetComponent<HeroStatus>().shieldCharges = gameObject.GetComponent<HeroStatus>().shieldCharges - 1;
-                    StartCoroutine(LoseShield(shieldDuration / 2));
+                    StartCoroutine(LoseShield(HeroShield.shield2Duration));
                     break;
                 case 3:
                     gameObject.GetComponent<HeroStatus>().isShielded = true;
                     gameObject.GetComponent<HeroStatus>().shieldCharges = gameObject.GetComponent<HeroStatus>().shieldCharges - 1;
-                    StartCoroutine(LoseShield(shieldDuration / 2));
+                    StartCoroutine(LoseShield(HeroShield.shield3Duration));
                     EnemyStatus.isStunned = true;
                     break;
                 default:
@@ -151,4 +150,14 @@ public class PlayerController : MonoBehaviour
 public static class HeroShield
 {
     public static int shieldEquipped;
+    public static float shield1Duration = 1.5f;
+    public static float shield2Duration = 0.5f;
+    public static float shield3Duration = 0.5f;
+
+    public static int maxShield1Charges = 2;
+
+    public static int maxShield2Charges = 2;
+
+    public static int maxShield3Charges = 2;
+
 }
