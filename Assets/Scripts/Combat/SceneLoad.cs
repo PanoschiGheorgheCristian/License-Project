@@ -51,7 +51,12 @@ public class SceneLoad : MonoBehaviour
             }
         if(isWeaponObtained == false)
         {
-            saveObject.availableWeapons.Add(EnemyToFight.currentEnemy);
+            if(!EnemyToFight.isBoss)
+                saveObject.availableWeapons.Add(EnemyToFight.currentEnemy);
+            else
+            {
+                EnemyToFight.layer++;
+            }
         }
         
         saveObject.SaveGame();

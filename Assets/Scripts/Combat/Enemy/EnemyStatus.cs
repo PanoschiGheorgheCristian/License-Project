@@ -19,6 +19,9 @@ public class EnemyStatus : MonoBehaviour
     public static bool isPoisoned;
     public static bool isBleeding;
     public static bool isStunned;
+    public static int buffPower = 30;
+    public static int debuffPower = -30;
+    public static float buffDuration = 5f;
     public static float debuffDuration = 5f;
     public static float stunDuration = 1.5f;
     private bool isStunBeingProcessed;
@@ -82,14 +85,6 @@ public class EnemyStatus : MonoBehaviour
     {
         health = newHealth;
         healthbar.SetHealth(newHealth);
-    }
-
-    private IEnumerator NextLevel()
-    {
-        Debug.Log("You Won!");
-        yield return new WaitForSeconds(2f);
-
-        SceneManager.LoadScene("Map", LoadSceneMode.Single);
     }
 
     private IEnumerator TakePoisonDamageAfterTime(int damage, int count)

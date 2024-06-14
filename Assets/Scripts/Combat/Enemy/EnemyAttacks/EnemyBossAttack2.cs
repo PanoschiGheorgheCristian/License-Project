@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class EnemySceptreAttack : GenericEnemyAttack
+public class EnemyBossAttack2 : GenericEnemyAttack
 {
     int heroCurrentPosition;
     // Update is called once per frame
@@ -32,13 +32,25 @@ public class EnemySceptreAttack : GenericEnemyAttack
 
     void AttackClose()
     {
-        Attack(4, 0.8f, 15);
-        Attack(9, 0.8f, 15);
-        Attack(14, 0.8f, 15);
+        Attack(4, 1.5f, 35);
+        Attack(9, 1.5f, 35);
+        Attack(14, 1.5f, 35);
     }
 
-    void PreciseAttack(int heroCurrentPosition)
+    void GroundSlam(int heroCurrentPosition)
     {
-        Attack(heroCurrentPosition, 1f, 25);
+        List<int> attackPositions = new List<int>();
+        attackPositions.Add(heroCurrentPosition);
+
+        if (heroCurrentPosition > 4)
+            attackPositions.Add(heroCurrentPosition - 5);
+        if (heroCurrentPosition % 5 != 0)
+            attackPositions.Add(heroCurrentPosition - 1);
+        if (heroCurrentPosition < 10)
+            attackPositions.Add(heroCurrentPosition + 5);
+        if (heroCurrentPosition % 5 != 4)
+            attackPositions.Add(heroCurrentPosition + 1);
+
+        Attack(attackPositions, 1f, 20);
     }
 }

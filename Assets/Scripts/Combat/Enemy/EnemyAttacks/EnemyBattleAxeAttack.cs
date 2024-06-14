@@ -1,10 +1,12 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics;
 using UnityEngine;
 
 public class EnemyBattleAxeAttack : GenericEnemyAttack
 {
     int heroCurrentPosition;
+
     // Update is called once per frame
     void Update()
     {
@@ -12,33 +14,96 @@ public class EnemyBattleAxeAttack : GenericEnemyAttack
         heroCurrentPosition = hero.GetComponent<PlayerController>().heroCurrentPosition;
         if (isAttacking == 0 && isExhausted == 0 && !EnemyStatus.isStunned)
             if (hero.GetComponent<HeroStatus>().alive == 1)
-                if (heroCurrentPosition % 5 == 4)
-                    AttackClose();
+            {
+                if( EnemyToFight.isElite)
+                    ProcessEliteEnemy(heroCurrentPosition);
                 else
-                    GroundSlam(heroCurrentPosition);
+                    ProcessNormalEnemy(heroCurrentPosition);
+            }
     }
 
-    void AttackClose()
+    private void ProcessEliteEnemy(int heroPosition)
     {
-        Attack(4, 1.5f, 35);
-        Attack(9, 1.5f, 35);
-        Attack(14, 1.5f, 35);
+        if (heroPosition % 5 == 4 || heroPosition % 5 == 3)
+        {
+            StartCoroutine(TripleSwipe(1.7f, 1.7f, heroCurrentPosition));
+        }
+        else
+        {
+            StartCoroutine(ReverseTripleSwipe(1.7f, 1.7f, heroCurrentPosition));
+        }
     }
 
-    void GroundSlam(int heroCurrentPosition)
+    private void ProcessNormalEnemy(int heroPosition)
     {
-        List<int> attackPositions = new List<int>();
-        attackPositions.Add(heroCurrentPosition);
+        if(heroPosition % 5 == 4 || heroPosition % 5 == 3)
+        {
+            SimpleSwipe(heroPosition, 0);
+        }
+        else
+            SimpleSwipe(heroPosition, 1);
+    }
 
-        if (heroCurrentPosition > 4)
-            attackPositions.Add(heroCurrentPosition - 5);
-        if (heroCurrentPosition % 5 != 0)
-            attackPositions.Add(heroCurrentPosition - 1);
-        if (heroCurrentPosition < 10)
-            attackPositions.Add(heroCurrentPosition + 5);
-        if (heroCurrentPosition % 5 != 4)
-            attackPositions.Add(heroCurrentPosition + 1);
+    void SwipeUp(int heroPosition)
+    {
+        Attack(heroPosition, 1.5f, 35);
+        if(heroPosition < 10)
+            Attack(heroPosition + 5, 1.5f, 35);
+        if(heroPosition > 4)
+            Attack(heroPosition - 5, 1.5f, 35);
+    }
 
-        Attack(attackPositions, 1f, 20);
+    void SwipeLeft(int heroPosition)
+    {
+        Attack(heroPosition, 1.5f, 35);
+        if (heroPosition % 5 != 0)
+            Attack(heroPosition - 1, 1.5f, 35);
+        if (heroPosition % 5 != 4)
+            Attack(heroPosition + 1, 1.5f, 35);
+    }
+    
+    void SimpleSwipe(int heroPosition, int nr)
+    {
+        if(nr < 1)
+            SwipeLeft(heroPosition);
+        else
+            SwipeUp(heroPosition);
+
+
+        StartCoroutine(LoseExhausted(1.5f + timeExhausted));
+    }
+
+    private IEnumerator TripleSwipe(float time1, float time2, int heroCurrentPosition)
+    {
+        SwipeLeft(heroCurrentPosition);
+
+        yield return new WaitForSeconds(time1);
+
+        heroCurrentPosition = hero.GetComponent<PlayerController>().heroCurrentPosition;
+        SwipeUp(heroCurrentPosition);
+
+        yield return new WaitForSeconds(time2);
+
+        heroCurrentPosition = hero.GetComponent<PlayerController>().heroCurrentPosition;
+        SwipeLeft(heroCurrentPosition);
+
+        StartCoroutine(LoseExhausted(timeExhausted + 1.5f));
+    }
+
+    private IEnumerator ReverseTripleSwipe(float time1, float time2, int heroCurrentPosition)
+    {
+        SwipeUp(heroCurrentPosition);
+
+        yield return new WaitForSeconds(time1);
+
+        heroCurrentPosition = hero.GetComponent<PlayerController>().heroCurrentPosition;
+        SwipeLeft(heroCurrentPosition);
+
+        yield return new WaitForSeconds(time2);
+
+        heroCurrentPosition = hero.GetComponent<PlayerController>().heroCurrentPosition;
+        SwipeUp(heroCurrentPosition);
+
+        StartCoroutine(LoseExhausted(timeExhausted + 1.5f));
     }
 }

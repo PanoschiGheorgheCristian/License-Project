@@ -63,7 +63,7 @@ public class Bow : Weapon, ILongRangeWeapon
     }
 }
 
-public class IronBow : Weapon, ILongRangeWeapon
+public class IronBow : Weapon, ILongRangeWeapon, IBleedWeapon
 {
     // damageType attackType = damageType.Piercing;
 
@@ -103,7 +103,7 @@ public class IronBow : Weapon, ILongRangeWeapon
     }
 }
 
-public class ThrowingKnives : Weapon, ILongRangeWeapon
+public class ThrowingKnives : Weapon, ILongRangeWeapon, IBleedWeapon, IPoisonousWeapon
 {
     // damageType attackType = damageType.Piercing;
     private bool isLevel3;
@@ -311,7 +311,7 @@ public class SpikedShield : Weapon, IShieldWeapon
     }
 }
 
-public class MonkeyEarrings : Weapon, IShieldWeapon
+public class MonkeyEarrings : Weapon, IShieldWeapon, IStunWeapon
 {
     // damageType attackType = damageType.True;
     private float stunDuration = 1.5f;
@@ -347,7 +347,7 @@ public class MonkeyEarrings : Weapon, IShieldWeapon
     }
 }
 
-public class Sword : Weapon, ICloseCombatWeapon
+public class Sword : Weapon, ICloseCombatWeapon, IBleedWeapon
 {
     // damageType attackType = damageType.Slashing;
     private bool isLevel3;
@@ -389,7 +389,7 @@ public class Sword : Weapon, ICloseCombatWeapon
     }
 }
 
-public class Waraxe : Weapon, ICloseCombatWeapon
+public class Waraxe : Weapon, ICloseCombatWeapon, IBleedWeapon
 {
     // damageType attackType = damageType.Piercing;
 
@@ -470,7 +470,7 @@ public class Spear : Weapon, ICloseCombatWeapon
     }
 }
 
-public class Mace : Weapon, IMeleeWeapon
+public class Mace : Weapon, IMeleeWeapon, IStunWeapon
 {
     // damageType attackType = damageType.Bludgeoning;
     private bool isLevel3;
@@ -517,7 +517,7 @@ public class Mace : Weapon, IMeleeWeapon
     }
 }
 
-public class Daggers : Weapon, IMeleeWeapon
+public class Daggers : Weapon, IMeleeWeapon, IPoisonousWeapon
 {
     // damageType attackType = damageType.Bludgeoning;
 
@@ -560,7 +560,7 @@ public class Daggers : Weapon, IMeleeWeapon
     }
 }
 
-public class Flail : Weapon, IMeleeWeapon
+public class Flail : Weapon, IMeleeWeapon, IStunWeapon
 {
     // damageType attackType = damageType.Bludgeoning;
     private float stunDuration = 1.5f;

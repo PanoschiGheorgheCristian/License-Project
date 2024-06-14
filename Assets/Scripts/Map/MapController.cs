@@ -28,7 +28,8 @@ public class MapController : MonoBehaviour
     {
         _mainCamera = Camera.main;
         isSceneLoading = false;
-        SetEncounters();
+        if(save.stages == null)
+            SetEncounters();
 
         LoadGame();
         InitializeInventory();
@@ -73,7 +74,7 @@ public class MapController : MonoBehaviour
                         currentStage = iteratorGameObject;
                         currentStage.GetComponent<MapNode>().hasPlayer = true;
                         player.transform.position = currentStage.transform.position + new Vector3(0, 0.5f, -1);
-                        SaveGame(currentStage.name, save.currentGold, PlayerWeapons.GetWeaponsIndexes(), save.heroHealth, save.curses, save.availableWeapons, save.weaponExperience);
+                        SaveGame(currentStage.name, save.currentGold, PlayerWeapons.GetWeaponsIndexes(), save.heroHealth, save.curses, save.availableWeapons, save.weaponExperience, save.stages, save.layer);
                         isSceneLoading = true;
                         StartCoroutine(LoadStage());
                     }
@@ -97,7 +98,7 @@ public class MapController : MonoBehaviour
                         Color tempColor = Color.white;
                         tempColor.a = 0.4f;
                         weaponsInInventory[iterator].GetComponent<SpriteRenderer>().color = tempColor;
-                        SaveGame(currentStage.name, save.currentGold, tempArray, save.heroHealth, save.curses, save.availableWeapons, save.weaponExperience);
+                        SaveGame(currentStage.name, save.currentGold, tempArray, save.heroHealth, save.curses, save.availableWeapons, save.weaponExperience, save.stages, save.layer);
 
                     }
                 }
@@ -173,15 +174,25 @@ public class MapController : MonoBehaviour
         }
     }
 
-    public void SaveGame(string name, int gold, int[] weapons, int heroHealth, List<string> curses, List<int> availableWeapons, int[] weaponExperience)
+    private void LoadEncounters()
+    {
+        for(int i=0; i<18; i++)
+        {
+            mapNodes[i].GetComponent<MapNode>().SetEncounter(save.stages[i]);
+        }
+    }
+
+    public void SaveGame(string name, int gold, int[] weapons, int heroHealth, List<string> curses, List<int> availableWeapons, int[] weaponExperience, List<MapNode.Encounter> stages, int layer)
     {
         save.currentStage = name;
+        save.stages = stages;
         save.currentGold = gold;
         save.heroHealth = heroHealth;
         save.currentWeapons = weapons;
         save.curses = curses;
         save.availableWeapons = availableWeapons;
         save.weaponExperience = weaponExperience;
+        save.layer = layer;
 
         save.SaveGame();
         Debug.Log("Saved");
@@ -203,6 +214,13 @@ public class MapController : MonoBehaviour
         if (tempSave is not null)
         {
             save = tempSave;
+            if (save.layer != EnemyToFight.layer)
+            {
+                SetEncounters();
+                save.layer = EnemyToFight.layer;
+                SaveGame("Start", save.currentGold, save.currentWeapons, save.heroHealth, save.curses, save.availableWeapons, save.weaponExperience, save.stages, save.layer);
+            }
+            LoadEncounters();
             currentStage = GameObject.Find(save.currentStage);
             GameObject.Find("Player").transform.position = currentStage.transform.position + new Vector3(0, 0.5f, -1);
         }
@@ -224,7 +242,12 @@ public class MapController : MonoBehaviour
     {
         currentStage = GameObject.Find("Start");
         List<string> curses = new();
-        SaveGame(currentStage.name, 0, PlayerWeapons.GetWeaponsIndexes(), 100, curses, new List<int> {0,3,6,9,12}, new int[15]);
+        List<MapNode.Encounter> stages = new();
+        for(int i=0; i < 19; i++)
+        {
+            stages.Add(mapNodes[i].GetComponent<MapNode>().encounter);
+        }
+        SaveGame(currentStage.name, 0, PlayerWeapons.GetWeaponsIndexes(), 100, curses, new List<int> {0,3,6,9,12}, new int[15], stages, 1);
     }
 
     private IEnumerator LoadStage()
@@ -232,6 +255,7 @@ public class MapController : MonoBehaviour
         yield return new WaitForSeconds(1.5f);
 
         isSceneLoading = false;
+        EnemyToFight.layer = save.layer;
         if (currentStage.GetComponent<MapNode>().encounter == MapNode.Encounter.Enemy)
         {
             EnemyToFight.isElite = false;
@@ -250,6 +274,7 @@ public class MapController : MonoBehaviour
         {
             EnemyToFight.isElite = false;
             EnemyToFight.isBoss = true;
+            EnemyToFight.bossNr = save.layer;
             EnemyToFight.currentEnemy = currentStage.GetComponent<MapNode>().enemyNumber;
             SceneManager.LoadScene("Combat", LoadSceneMode.Single);
         }
@@ -268,6 +293,7 @@ public class MapController : MonoBehaviour
     public void EndGame()
     {
         Debug.Log("GAME OVER!");
+        System.IO.File.WriteAllText(Application.dataPath + "/Saves", string.Empty);
         StartGame();
         currentStage = GameObject.Find("Start");
         GameObject.Find("Player").transform.position = currentStage.transform.position + new Vector3(0, 0.5f, -1);

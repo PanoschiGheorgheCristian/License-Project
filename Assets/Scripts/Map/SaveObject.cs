@@ -8,12 +8,14 @@ public class SaveObject
 {
     private static string SAVE_FOLDER;
     public string currentStage;
+    public List<MapNode.Encounter> stages;
     public int currentGold;
     public int heroHealth;
     public int[] currentWeapons;
     public List<string> curses;
     public List<int> availableWeapons;
     public int[] weaponExperience;
+    public int layer;
 
     public SaveObject() { }
 

@@ -12,33 +12,51 @@ public class EnemyFlailAttack : GenericEnemyAttack
         heroCurrentPosition = hero.GetComponent<PlayerController>().heroCurrentPosition;
         if (isAttacking == 0 && isExhausted == 0 && !EnemyStatus.isStunned)
             if (hero.GetComponent<HeroStatus>().alive == 1)
-                if (heroCurrentPosition % 5 == 4)
-                    AttackClose();
+            {
+                if (EnemyToFight.isElite)
+                    ProcessEliteEnemy(heroCurrentPosition);
                 else
-                    GroundSlam(heroCurrentPosition);
+                    ProcessNormalEnemy(heroCurrentPosition);
+            }
     }
 
-    void AttackClose()
+    private void ProcessEliteEnemy(int heroPosition)
     {
-        Attack(4, 1.5f, 35);
-        Attack(9, 1.5f, 35);
-        Attack(14, 1.5f, 35);
+        StartCoroutine(FastStunStrike(heroPosition));
     }
 
-    void GroundSlam(int heroCurrentPosition)
+    private void ProcessNormalEnemy(int heroPosition)
     {
-        List<int> attackPositions = new List<int>();
-        attackPositions.Add(heroCurrentPosition);
+        StartCoroutine(StunStrike(heroPosition));
+    }
 
-        if (heroCurrentPosition > 4)
-            attackPositions.Add(heroCurrentPosition - 5);
-        if (heroCurrentPosition % 5 != 0)
-            attackPositions.Add(heroCurrentPosition - 1);
-        if (heroCurrentPosition < 10)
-            attackPositions.Add(heroCurrentPosition + 5);
-        if (heroCurrentPosition % 5 != 4)
-            attackPositions.Add(heroCurrentPosition + 1);
+    IEnumerator StunStrike(int heroPosition)
+    {
+        int playerHealth = hero.GetComponent<HeroStatus>().health;
+        Attack(heroPosition, 1f, 15);
 
-        Attack(attackPositions, 1f, 20);
+        yield return new WaitForSeconds(1.1f);
+
+        if(playerHealth != hero.GetComponent<HeroStatus>().health)
+        {
+            HeroStatus.isStunned = true;
+        }
+
+        StartCoroutine(LoseExhausted(2f));
+    }
+
+    IEnumerator FastStunStrike(int heroPosition)
+    {
+        int playerHealth = hero.GetComponent<HeroStatus>().health;
+        Attack(heroPosition, 0.5f, 15);
+
+        yield return new WaitForSeconds(0.6f);
+
+        if (playerHealth != hero.GetComponent<HeroStatus>().health)
+        {
+            HeroStatus.isStunned = true;
+        }
+
+        StartCoroutine(LoseExhausted(2f));
     }
 }

@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class EnemySpikedShieldAttack : GenericEnemyAttack
+public class EnemyBossAttack3 : GenericEnemyAttack
 {
     int heroCurrentPosition;
     // Update is called once per frame
@@ -12,29 +12,17 @@ public class EnemySpikedShieldAttack : GenericEnemyAttack
         heroCurrentPosition = hero.GetComponent<PlayerController>().heroCurrentPosition;
         if (isAttacking == 0 && isExhausted == 0 && !EnemyStatus.isStunned)
             if (hero.GetComponent<HeroStatus>().alive == 1)
-            {
-                if (EnemyToFight.isElite)
-                    ProcessEliteEnemy(heroCurrentPosition);
+                if (heroCurrentPosition % 5 == 4)
+                    AttackClose();
                 else
-                    ProcessNormalEnemy(heroCurrentPosition);
-            }
-    }
-
-    private void ProcessEliteEnemy(int heroPosition)
-    {
-
-    }
-
-    private void ProcessNormalEnemy(int heroPosition)
-    {
-
+                    GroundSlam(heroCurrentPosition);
     }
 
     void AttackClose()
     {
-        Attack(4, 0.5f, 10);
-        Attack(9, 0.5f, 10);
-        Attack(14, 0.5f, 10);
+        Attack(4, 1.5f, 35);
+        Attack(9, 1.5f, 35);
+        Attack(14, 1.5f, 35);
     }
 
     void GroundSlam(int heroCurrentPosition)
@@ -51,6 +39,6 @@ public class EnemySpikedShieldAttack : GenericEnemyAttack
         if (heroCurrentPosition % 5 != 4)
             attackPositions.Add(heroCurrentPosition + 1);
 
-        Attack(attackPositions, 0.8f, 15);
+        Attack(attackPositions, 1f, 20);
     }
 }

@@ -12,10 +12,22 @@ public class EnemyShieldAttack : GenericEnemyAttack
         heroCurrentPosition = hero.GetComponent<PlayerController>().heroCurrentPosition;
         if (isAttacking == 0 && isExhausted == 0 && !EnemyStatus.isStunned)
             if (hero.GetComponent<HeroStatus>().alive == 1)
-                if (heroCurrentPosition % 5 == 4)
-                    AttackClose();
+            {
+                if (EnemyToFight.isElite)
+                    ProcessEliteEnemy(heroCurrentPosition);
                 else
-                    GroundSlam(heroCurrentPosition);
+                    ProcessNormalEnemy(heroCurrentPosition);
+            }
+    }
+
+    private void ProcessEliteEnemy(int heroPosition)
+    {
+
+    }
+
+    private void ProcessNormalEnemy(int heroPosition)
+    {
+
     }
 
     void AttackClose()

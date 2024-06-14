@@ -31,3 +31,18 @@ public interface IMeleeWeapon : IWeaponType
 {
 
 }
+
+public interface IPoisonousWeapon : IWeaponType
+{
+
+}
+
+public interface IBleedWeapon : IWeaponType
+{
+
+}
+
+public interface IStunWeapon : IWeaponType
+{
+
+}

@@ -9,7 +9,7 @@ public abstract class GenericEnemyAttack : MonoBehaviour
     public Color[] colors = new Color[3];
     // 0 - threat ; 1 - normal ; 2 - damage
     protected int isAttacking;
-    protected int isExhausted;
+    public int isExhausted;
     public float timeExhausted;
 
     // Start is called before the first frame update
@@ -41,7 +41,7 @@ public abstract class GenericEnemyAttack : MonoBehaviour
     {
         isAttacking = 1;
         heroPositions[position].GetComponent<SpriteRenderer>().color = colors[0];
-        StartCoroutine(CheckHitAfterTime(attackDelay, 0.15f, timeExhausted, position, damage));
+        StartCoroutine(CheckHitAfterTime(attackDelay, 0.15f, position, damage));
     }
 
     protected void Attack(List<int> positions, float attackDelay, int damage)
@@ -54,10 +54,11 @@ public abstract class GenericEnemyAttack : MonoBehaviour
 
     protected void DealDamage(int damage)
     {
-        hero.GetComponent<HeroStatus>().UpdateHealth(hero.GetComponent<HeroStatus>().health - damage);
+        hero.GetComponent<HeroStatus>().UpdateHealth(hero.GetComponent<HeroStatus>().health - ((int) (damage +
+    damage * ((EnemyStatus.isBuffed ? EnemyStatus.buffPower : 0) + (EnemyStatus.isDebuffed ? EnemyStatus.debuffPower : 0)) / 100)));
     }
 
-    protected IEnumerator CheckHitAfterTime(float time1, float time2, float time3, int heroCurrentPosition, int damage)
+    protected IEnumerator CheckHitAfterTime(float time1, float time2, int heroCurrentPosition, int damage)
     {
         yield return new WaitForSeconds(time1);
 
@@ -74,9 +75,9 @@ public abstract class GenericEnemyAttack : MonoBehaviour
         isAttacking = 0;
         heroPositions[heroCurrentPosition].GetComponent<SpriteRenderer>().color = colors[1];
 
-        yield return new WaitForSeconds(time3);
+        // yield return new WaitForSeconds(time3);
 
-        isExhausted = 0;
+        // isExhausted = 0;
         }
         else
         {
@@ -84,5 +85,12 @@ public abstract class GenericEnemyAttack : MonoBehaviour
             isAttacking = 0;
             heroPositions[heroCurrentPosition].GetComponent<SpriteRenderer>().color = colors[1];
         }
+    }
+
+    protected IEnumerator LoseExhausted(float time1)
+    {
+        yield return new WaitForSeconds(time1);
+
+        isExhausted = 0;
     }
 }

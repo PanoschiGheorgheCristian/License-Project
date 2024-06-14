@@ -5,6 +5,11 @@ using UnityEngine;
 public class EnemyCircletAttack : GenericEnemyAttack
 {
     int heroCurrentPosition;
+
+    private void Awake() {
+        if (EnemyToFight.isElite)
+            EnemyStatus.buffPower = 50;
+    }
     // Update is called once per frame
     void Update()
     {
@@ -12,21 +17,83 @@ public class EnemyCircletAttack : GenericEnemyAttack
         heroCurrentPosition = hero.GetComponent<PlayerController>().heroCurrentPosition;
         if (isAttacking == 0 && isExhausted == 0 && !EnemyStatus.isStunned)
             if (hero.GetComponent<HeroStatus>().alive == 1)
-                if (heroCurrentPosition % 5 == 4)
-                    AttackClose();
+            {
+                if (EnemyToFight.isElite)
+                    ProcessEliteEnemy(heroCurrentPosition);
                 else
-                    PreciseAttack(heroCurrentPosition);
+                    ProcessNormalEnemy(heroCurrentPosition);
+            }
     }
 
-    void AttackClose()
+    private void ProcessEliteEnemy(int heroPosition)
     {
-        Attack(4, 0.8f, 15);
-        Attack(9, 0.8f, 15);
-        Attack(14, 0.8f, 15);
+        if (!EnemyStatus.isBuffed)
+            BuffSelf();
+        else
+            StartCoroutine(EliteConcentratedFire(heroPosition));
     }
 
-    void PreciseAttack(int heroCurrentPosition)
+    private void ProcessNormalEnemy(int heroPosition)
     {
-        Attack(heroCurrentPosition, 1f, 25);
+        if(!EnemyStatus.isBuffed)
+            BuffSelf();
+        else
+            StartCoroutine(ConcentratedFire(heroPosition));
+    }
+
+    void BuffSelf()
+    {
+        EnemyStatus.isBuffed = true;
+        isExhausted = 1;
+
+        StartCoroutine(LoseExhausted(1f));
+    }
+
+    IEnumerator ConcentratedFire(int heroPosition)
+    {
+        Attack(heroPosition, 1f, 5);
+
+        yield return new WaitForSeconds(1.2f);
+
+        for(int i = 0; i < 5; i++)
+        {
+            Attack(heroPosition, 0.2f, 5);
+            yield return new WaitForSeconds(0.2f);
+        }
+
+        Attack(heroPosition, 0.4f, 5);
+
+        StartCoroutine(LoseExhausted(0.4f + timeExhausted));
+    }
+
+    IEnumerator EliteConcentratedFire(int heroPosition)
+    {
+        List<int> attackPositions = new()
+        {
+            heroPosition
+        };
+
+        if (heroCurrentPosition > 4)
+            attackPositions.Add(heroCurrentPosition - 5);
+        if (heroCurrentPosition % 5 != 0)
+            attackPositions.Add(heroCurrentPosition - 1);
+        if (heroCurrentPosition < 10)
+            attackPositions.Add(heroCurrentPosition + 5);
+        if (heroCurrentPosition % 5 != 4)
+            attackPositions.Add(heroCurrentPosition + 1);
+
+        Attack(attackPositions, 1f, 5);
+
+        yield return new WaitForSeconds(1f);
+
+        for (int i = 0; i < 5; i++)
+        {   
+            Attack(attackPositions, 0.2f, 5);
+            yield return new WaitForSeconds(0.2f);
+        }
+
+        Attack(attackPositions, 0.4f, 5);
+
+        StartCoroutine(LoseExhausted(0.4f + timeExhausted));
     }
 }

@@ -1,0 +1,34 @@
+{
+    "name": "BlacksmithInput",
+    "maps": [
+        {
+            "name": "Interractions",
+            "id": "41e10787-7cce-4a7c-b26d-26aab5c4b844",
+            "actions": [
+                {
+                    "name": "Click",
+                    "type": "Button",
+                    "id": "1554affd-67e2-49b1-a458-b2d81ed2d957",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "1e574afc-aadb-4499-afad-b23f0724d607",
+                    "path": "<Mouse>/leftButton",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Click",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
+        }
+    ],
+    "controlSchemes": []
+}

@@ -1,1 +1,1 @@
-{"currentStage":"Stage5.2","currentGold":107,"heroHealth":20,"currentWeapons":[0,4,6,9,14],"curses":["sad","empty","barren"],"availableWeapons":[0,3,6,9,12,14,4],"weaponExperience":[0,0,0,1000,0,0,0,0,0,0,0,0,0,0,0]}
+{"currentStage":"Start","stages":[0,1,4,4,1,4,1,3,2,1,1,4,1,1,1,2,4,3,5],"currentGold":99,"heroHealth":25,"currentWeapons":[0,3,6,9,12],"curses":[],"availableWeapons":[0,3,6,9,12,14,1],"weaponExperience":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],"layer":0}
