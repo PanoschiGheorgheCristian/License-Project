@@ -22,22 +22,41 @@ public class EnemyStaffAttack : GenericEnemyAttack
 
     private void ProcessEliteEnemy(int heroPosition)
     {
-
+        StartCoroutine(PlusAttack(heroPosition));
     }
 
     private void ProcessNormalEnemy(int heroPosition)
     {
-
-    }
-    void AttackClose()
-    {
-        Attack(4, 1f, 25);
-        Attack(9, 1f, 25);
-        Attack(14, 1f, 25);
+        StartCoroutine(SwipeUp(heroPosition));
     }
 
-    void PreciseAttack(int heroCurrentPosition)
+    IEnumerator SwipeUp(int heroPosition)
     {
-        Attack(heroCurrentPosition, 0.7f, 20);
+        Attack(heroPosition, 1f, 15);
+        if (heroPosition < 10)
+            Attack(heroPosition + 5, 1f, 15);
+        if (heroPosition > 4)
+            Attack(heroPosition - 5, 1f, 15);
+
+        yield return new WaitForSeconds(1f);
+
+        StartCoroutine(LoseExhausted(timeExhausted));
+    }
+
+    IEnumerator PlusAttack(int heroPosition)
+    {
+        Attack(heroPosition, 1f, 15);
+        if (heroPosition < 10)
+            Attack(heroPosition + 5, 1f, 15);
+        if (heroPosition > 4)
+            Attack(heroPosition - 5, 1f, 15);
+        if (heroPosition % 5 != 0)
+            Attack(heroPosition - 1, 1f, 15);
+        if (heroPosition % 5 != 4)
+            Attack(heroPosition + 1, 1f, 15);
+
+        yield return new WaitForSeconds(1f);
+
+        StartCoroutine(LoseExhausted(timeExhausted));
     }
 }

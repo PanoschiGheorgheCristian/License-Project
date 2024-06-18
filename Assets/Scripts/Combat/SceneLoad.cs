@@ -35,12 +35,32 @@ public class SceneLoad : MonoBehaviour
         string json = SaveObject.getJsonSave();
         SaveObject saveObject = JsonUtility.FromJson<SaveObject>(json);
         saveObject.heroHealth = player.GetComponent<HeroStatus>().health;
-        if(EnemyToFight.isElite)
-            saveObject.currentGold += (int)UnityEngine.Random.Range(40,60);
+
+        int moneyDebuff = 0;
+        foreach (string iteratorString in saveObject.curses)
+        {
+            if (string.Equals("FeyTouched", iteratorString))
+            {
+                moneyDebuff = -40;
+            }
+        }
+
+        if (EnemyToFight.isElite)
+        {
+            double goldGained = UnityEngine.Random.Range(100, 150);
+            saveObject.currentGold += (int) (goldGained + goldGained * moneyDebuff / 100);
+        }
         else if(EnemyToFight.isBoss)
-            saveObject.currentGold += (int)UnityEngine.Random.Range(100, 150);
+        {
+            double goldGained = UnityEngine.Random.Range(200, 300);
+            saveObject.currentGold += (int)(goldGained + goldGained * moneyDebuff / 100);
+        }
         else
-            saveObject.currentGold += (int)UnityEngine.Random.Range(20, 30);
+        {
+            double goldGained = UnityEngine.Random.Range(50, 100);
+            saveObject.currentGold += (int)(goldGained + goldGained * moneyDebuff / 100);
+        }
+
         bool isWeaponObtained = false;
         for(int iterator = 0; iterator < saveObject.availableWeapons.Count; iterator++)
             if(EnemyToFight.currentEnemy == saveObject.availableWeapons[iterator])

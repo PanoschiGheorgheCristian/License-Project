@@ -22,31 +22,97 @@ public class MediumEnemyAttack : GenericEnemyAttack
 
     private void ProcessEliteEnemy(int heroPosition)
     {
-
+        if (heroPosition % 5 == 4 || heroPosition % 5 == 3)
+        {
+            WideSpreadAttack(heroPosition);
+        }
+        else
+            ImprovedIronArrow(heroPosition);
     }
 
     private void ProcessNormalEnemy(int heroPosition)
     {
-
+        if (heroPosition % 5 == 4 || heroPosition % 5 == 3)
+        {
+            SpreadAttack(heroPosition);
+        }
+        else
+            IronArrow(heroPosition);
     }
 
-    void AttackClose()
+    void SpreadAttack(int heroPosition)
     {
-        Attack(4, 1f, 25);
-        Attack(9, 1f, 25);
-        Attack(14, 1f, 25);
+        Attack(heroPosition, 0.7f, 10);
+        if (heroPosition % 5 != 0)
+        {
+            Attack(heroPosition - 1, 0.7f, 10);
+            if (heroPosition > 4)
+                Attack(heroPosition - 6, 0.7f, 10);
+            if (heroPosition < 10)
+                Attack(heroPosition + 4, 0.7f, 10);
+        }
+
+        StartCoroutine(LoseExhausted(0.7f + timeExhausted));
     }
 
-    void Arrow(int heroCurrentPosition)
+    void WideSpreadAttack(int heroPosition)
     {
-        List<int> attackPositions = new List<int>();
-        attackPositions.Add(heroCurrentPosition);
+        Attack(heroPosition, 0.7f, 10);
+        if (heroPosition % 5 != 0)
+        {
+            Attack(heroPosition - 1, 0.7f, 10);
+            if (heroPosition > 4)
+                Attack(heroPosition - 6, 0.7f, 10);
+            if (heroPosition < 10)
+                Attack(heroPosition + 4, 0.7f, 10);
+            if (heroPosition % 5 != 1)
+            {
+                Attack(heroPosition - 2, 0.7f, 10);
+                if (heroPosition > 4)
+                    Attack(heroPosition - 7, 0.7f, 10);
+                if (heroPosition < 10)
+                    Attack(heroPosition + 3, 0.7f, 10);
+            }
+        }
+
+        StartCoroutine(LoseExhausted(0.7f + timeExhausted));
+    }
+
+    void IronArrow(int heroCurrentPosition)
+    {
+        List<int> attackPositions = new()
+        {
+            heroCurrentPosition
+        };
 
         for (int i = heroCurrentPosition - heroCurrentPosition % 5; i < heroCurrentPosition - heroCurrentPosition % 5 + 5; i++)
         {
             attackPositions.Add(i);
         }
 
-        Attack(attackPositions, 0.7f, 20);
+        Attack(attackPositions, 1.2f, 30);
+
+        StartCoroutine(LoseExhausted(1.2f + timeExhausted));
+    }
+
+    void ImprovedIronArrow(int heroCurrentPosition)
+    {
+        List<int> attackPositions = new()
+        {
+            heroCurrentPosition
+        };
+
+        for (int i = heroCurrentPosition - heroCurrentPosition % 5; i < heroCurrentPosition - heroCurrentPosition % 5 + 5; i++)
+        {
+            attackPositions.Add(i);
+        }
+        if (heroCurrentPosition > 4)
+            attackPositions.Add(heroCurrentPosition - 5);
+        if (heroCurrentPosition < 10)
+            attackPositions.Add(heroCurrentPosition + 5);
+
+        Attack(attackPositions, 1.2f, 30);
+
+        StartCoroutine(LoseExhausted(1.2f + timeExhausted));
     }
 }

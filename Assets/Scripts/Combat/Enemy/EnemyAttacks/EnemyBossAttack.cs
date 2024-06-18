@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class EnemyBossAttack : GenericEnemyAttack
 {
+    int indicator = 0;
     int heroCurrentPosition;
     // Update is called once per frame
     void Update()
@@ -19,30 +20,40 @@ public class EnemyBossAttack : GenericEnemyAttack
 
     private void ProcessAttacks(int heroPosition)
     {
-
+        if(indicator < 2)
+        {
+            StartCoroutine(PreciseAttack(heroPosition));
+            indicator ++;
+        }
+        else
+        {
+            StartCoroutine(BoardWipe());
+            indicator = 0;
+        }
     }
 
-    void AttackClose()
+    IEnumerator PreciseAttack(int heroPosition)
     {
-        Attack(4, 1.5f, 35);
-        Attack(9, 1.5f, 35);
-        Attack(14, 1.5f, 35);
+        Attack(heroPosition, 0.5f, 20);
+
+        yield return new WaitForSeconds(0.5f);
+
+        StartCoroutine(LoseExhausted(timeExhausted));
     }
 
-    void GroundSlam(int heroCurrentPosition)
+    IEnumerator BoardWipe()
     {
-        List<int> attackPositions = new List<int>();
-        attackPositions.Add(heroCurrentPosition);
+        int rand = Random.Range(0, 15);
+        while(rand == 15)
+            rand = Random.Range(0, 15);
+        for (int i = 0; i < 15; i++)
+        {
+            if(i != rand)
+                Attack(i, 2.5f, 30);
+        }
 
-        if (heroCurrentPosition > 4)
-            attackPositions.Add(heroCurrentPosition - 5);
-        if (heroCurrentPosition % 5 != 0)
-            attackPositions.Add(heroCurrentPosition - 1);
-        if (heroCurrentPosition < 10)
-            attackPositions.Add(heroCurrentPosition + 5);
-        if (heroCurrentPosition % 5 != 4)
-            attackPositions.Add(heroCurrentPosition + 1);
+        yield return new WaitForSeconds(2.5f);
 
-        Attack(attackPositions, 1f, 20);
+        StartCoroutine(LoseExhausted(timeExhausted));
     }
 }

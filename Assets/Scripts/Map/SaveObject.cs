@@ -9,6 +9,7 @@ public class SaveObject
     private static string SAVE_FOLDER;
     public string currentStage;
     public List<MapNode.Encounter> stages;
+    public int[] enemyNumbers;
     public int currentGold;
     public int heroHealth;
     public int[] currentWeapons;

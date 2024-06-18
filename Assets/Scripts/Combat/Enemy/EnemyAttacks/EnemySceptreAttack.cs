@@ -5,6 +5,11 @@ using UnityEngine;
 public class EnemySceptreAttack : GenericEnemyAttack
 {
     int heroCurrentPosition;
+
+    private void Awake() {
+        if(EnemyToFight.isElite)
+            EnemyStatus.debuffPower = -50;
+    }
     // Update is called once per frame
     void Update()
     {
@@ -22,23 +27,59 @@ public class EnemySceptreAttack : GenericEnemyAttack
 
     private void ProcessEliteEnemy(int heroPosition)
     {
-
+        StartCoroutine(PlusAttack(heroPosition));
     }
 
     private void ProcessNormalEnemy(int heroPosition)
     {
-
+        StartCoroutine(SwipeUp(heroPosition));
     }
 
-    void AttackClose()
+    IEnumerator SwipeUp(int heroPosition)
     {
-        Attack(4, 0.8f, 15);
-        Attack(9, 0.8f, 15);
-        Attack(14, 0.8f, 15);
+        int heroHealth = hero.GetComponent<HeroStatus>().health;
+
+        Attack(heroPosition, 1f, 15);
+        if (heroPosition < 10)
+            Attack(heroPosition + 5, 1f, 15);
+        if (heroPosition > 4)
+            Attack(heroPosition - 5, 1f, 15);
+
+        yield return new WaitForSeconds(1f);
+
+        if (heroHealth != hero.GetComponent<HeroStatus>().health)
+            DebuffHero();
+
+        StartCoroutine(LoseExhausted(timeExhausted));
     }
 
-    void PreciseAttack(int heroCurrentPosition)
+    IEnumerator PlusAttack(int heroPosition)
     {
-        Attack(heroCurrentPosition, 1f, 25);
+        int heroHealth = hero.GetComponent<HeroStatus>().health;
+
+        Attack(heroPosition, 1f, 15);
+        if (heroPosition < 10)
+            Attack(heroPosition + 5, 1f, 15);
+        if (heroPosition > 4)
+            Attack(heroPosition - 5, 1f, 15);
+        if (heroPosition % 5 != 0)
+            Attack(heroPosition - 1, 1f, 15);
+        if (heroPosition % 5 != 4)
+            Attack(heroPosition + 1, 1f, 15);
+
+        yield return new WaitForSeconds(1f);
+
+        if (heroHealth != hero.GetComponent<HeroStatus>().health)
+            DebuffHero();
+
+        StartCoroutine(LoseExhausted(timeExhausted));
+    }
+
+    void DebuffHero()
+    {
+        HeroStatus.isDebuffed = true;
+        isExhausted = 1;
+
+        StartCoroutine(LoseExhausted(1f));
     }
 }

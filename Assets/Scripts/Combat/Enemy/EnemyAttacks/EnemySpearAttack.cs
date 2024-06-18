@@ -22,23 +22,53 @@ public class EnemySpearAttack : GenericEnemyAttack
 
     private void ProcessEliteEnemy(int heroPosition)
     {
-
+        StartCoroutine(TriplePoke(heroPosition));
     }
 
     private void ProcessNormalEnemy(int heroPosition)
     {
-
+        StartCoroutine(Poke(heroPosition));
     }
 
-    void AttackClose()
+    IEnumerator Poke(int heroPosition)
     {
-        Attack(4, 0.75f, 15);
-        Attack(9, 0.75f, 15);
-        Attack(14, 0.75f, 15);
+        for(int iterator = heroCurrentPosition; iterator % 5 < 4; iterator++)
+        {
+            Attack(iterator, (5 - heroPosition % 5) * 0.3f, 15);
+        }
+        Attack(heroPosition / 5* 5 + 4, (5 - heroPosition % 5) * 0.3f, 15);
+
+        yield return new WaitForSeconds(1.5f);
+
+        StartCoroutine(LoseExhausted(timeExhausted));
     }
 
-    void PreciseAttack(int heroCurrentPosition)
+    IEnumerator TriplePoke(int heroPosition)
     {
-        Attack(heroCurrentPosition, 0.3f, 10);
+        for (int iterator = heroCurrentPosition; iterator % 5 < 4; iterator++)
+        {
+            Attack(iterator, (5 - heroPosition % 5) * 0.3f, 15);
+        }
+        Attack(heroPosition / 5 * 5 + 4, (5 - heroPosition % 5) * 0.3f, 15);
+
+        yield return new WaitForSeconds(1.5f);
+
+        for (int iterator = heroCurrentPosition; iterator % 5 < 4; iterator++)
+        {
+            Attack(iterator, (5 - heroPosition % 5) * 0.3f, 15);
+        }
+        Attack(heroPosition / 5 * 5 + 4, (5 - heroPosition % 5) * 0.3f, 15);
+
+        yield return new WaitForSeconds(1.5f);
+
+        for (int iterator = heroCurrentPosition; iterator % 5 < 4; iterator++)
+        {
+            Attack(iterator, (5 - heroPosition % 5) * 0.3f, 15);
+        }
+        Attack(heroPosition / 5 * 5 + 4, (5 - heroPosition % 5) * 0.3f, 15);
+
+        yield return new WaitForSeconds(1.5f);
+
+        StartCoroutine(LoseExhausted(timeExhausted));
     }
 }

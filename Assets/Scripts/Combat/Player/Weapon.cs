@@ -39,7 +39,7 @@ public class Bow : Weapon, ILongRangeWeapon
         Debug.Log("Attack with Bow");
         enemyStatus = enemy.GetComponent<EnemyStatus>();
         enemyStatus.UpdateHealth(enemyStatus.health - ((int)(GetModifier() * (attackDamage + 
-            attackDamage * ((HeroStatus.isBuffed ? HeroStatus.buffPower : 0) + (HeroStatus.isDebuffed ? HeroStatus.debuffPower : 0)) / 100))));
+            attackDamage * ((HeroStatus.isBuffed ? HeroStatus.buffPower : 0) + (HeroStatus.isDebuffed ? EnemyStatus.debuffPower : 0)) / 100))));
     }
     public override double GetModifier()
     {
@@ -78,7 +78,7 @@ public class IronBow : Weapon, ILongRangeWeapon, IBleedWeapon
         Debug.Log("Attack with IronBow");
         enemyStatus = enemy.GetComponent<EnemyStatus>();
         enemyStatus.UpdateHealth(enemyStatus.health - ((int)(GetModifier() * (attackDamage + 
-            attackDamage * ((HeroStatus.isBuffed ? HeroStatus.buffPower : 0) + (HeroStatus.isDebuffed ? HeroStatus.debuffPower : 0)) / 100))));
+            attackDamage * ((HeroStatus.isBuffed ? HeroStatus.buffPower : 0) + (HeroStatus.isDebuffed ? EnemyStatus.debuffPower : 0)) / 100))));
         EnemyStatus.isBleeding = true;
     }
     public override double GetModifier()
@@ -119,7 +119,7 @@ public class ThrowingKnives : Weapon, ILongRangeWeapon, IBleedWeapon, IPoisonous
         Debug.Log("Attack with Throwing Knives");
         enemyStatus = enemy.GetComponent<EnemyStatus>();
         enemyStatus.UpdateHealth(enemyStatus.health - ((int)(GetModifier() * (attackDamage + 
-            attackDamage * ((HeroStatus.isBuffed ? HeroStatus.buffPower : 0) + (HeroStatus.isDebuffed ? HeroStatus.debuffPower : 0)) / 100))));
+            attackDamage * ((HeroStatus.isBuffed ? HeroStatus.buffPower : 0) + (HeroStatus.isDebuffed ? EnemyStatus.debuffPower : 0)) / 100))));
         EnemyStatus.isPoisoned = true;
         if(isLevel3)
             EnemyStatus.isBleeding = true;
@@ -163,7 +163,7 @@ public class Staff : Weapon, IMagicWeapon
         Debug.Log("Attack with Staff");
         enemyStatus = enemy.GetComponent<EnemyStatus>();
         enemyStatus.UpdateHealth(enemyStatus.health - ((int)(GetModifier() * (attackDamage + 
-            attackDamage * ((HeroStatus.isBuffed ? HeroStatus.buffPower : 0) + (HeroStatus.isDebuffed ? HeroStatus.debuffPower : 0)) / 100))));
+            attackDamage * ((HeroStatus.isBuffed ? HeroStatus.buffPower : 0) + (HeroStatus.isDebuffed ? EnemyStatus.debuffPower : 0)) / 100))));
     }
     public override double GetModifier()
     {
@@ -293,7 +293,7 @@ public class SpikedShield : Weapon, IShieldWeapon
 
         enemyStatus = enemy.GetComponent<EnemyStatus>();
         enemyStatus.UpdateHealth(enemyStatus.health - ((int)(GetModifier() * (attackDamage + 
-            attackDamage * ((HeroStatus.isBuffed ? HeroStatus.buffPower : 0) + (HeroStatus.isDebuffed ? HeroStatus.debuffPower : 0)) / 100))));
+            attackDamage * ((HeroStatus.isBuffed ? HeroStatus.buffPower : 0) + (HeroStatus.isDebuffed ? EnemyStatus.debuffPower : 0)) / 100))));
     }
 
     public override double GetModifier()
@@ -363,7 +363,7 @@ public class Sword : Weapon, ICloseCombatWeapon, IBleedWeapon
         Debug.Log("Attack with Sword");
         enemyStatus = enemy.GetComponent<EnemyStatus>();
         enemyStatus.UpdateHealth(enemyStatus.health - ((int)(GetModifier() * (attackDamage + 
-            attackDamage * ((HeroStatus.isBuffed ? HeroStatus.buffPower : 0) + (HeroStatus.isDebuffed ? HeroStatus.debuffPower : 0)) / 100))));
+            attackDamage * ((HeroStatus.isBuffed ? HeroStatus.buffPower : 0) + (HeroStatus.isDebuffed ? EnemyStatus.debuffPower : 0)) / 100))));
         if (isLevel3)
             EnemyStatus.isBleeding = true;
     }
@@ -404,7 +404,7 @@ public class Waraxe : Weapon, ICloseCombatWeapon, IBleedWeapon
         Debug.Log("Attack with WarAxe");
         enemyStatus = enemy.GetComponent<EnemyStatus>();
         enemyStatus.UpdateHealth(enemyStatus.health - ((int)(GetModifier() * (attackDamage + 
-            attackDamage * ((HeroStatus.isBuffed ? HeroStatus.buffPower : 0) + (HeroStatus.isDebuffed ? HeroStatus.debuffPower : 0)) / 100))));
+            attackDamage * ((HeroStatus.isBuffed ? HeroStatus.buffPower : 0) + (HeroStatus.isDebuffed ? EnemyStatus.debuffPower : 0)) / 100))));
         EnemyStatus.isBleeding = true;
     }
 
@@ -445,7 +445,7 @@ public class Spear : Weapon, ICloseCombatWeapon
         Debug.Log("Attack with Spear");
         enemyStatus = enemy.GetComponent<EnemyStatus>();
         enemyStatus.UpdateHealth(enemyStatus.health - ((int)(GetModifier() * (attackDamage + 
-            attackDamage * ((HeroStatus.isBuffed ? HeroStatus.buffPower : 0) + (HeroStatus.isDebuffed ? HeroStatus.debuffPower : 0)) / 100))));
+            attackDamage * ((HeroStatus.isBuffed ? HeroStatus.buffPower : 0) + (HeroStatus.isDebuffed ? EnemyStatus.debuffPower : 0)) / 100))));
     }
 
     public override double GetModifier()
@@ -486,7 +486,7 @@ public class Mace : Weapon, IMeleeWeapon, IStunWeapon
         Debug.Log("Attack with Mace");
         enemyStatus = enemy.GetComponent<EnemyStatus>();
         enemyStatus.UpdateHealth(enemyStatus.health - ((int)(GetModifier() * (attackDamage + 
-            attackDamage * ((HeroStatus.isBuffed ? HeroStatus.buffPower : 0) + (HeroStatus.isDebuffed ? HeroStatus.debuffPower : 0)) / 100))));
+            attackDamage * ((HeroStatus.isBuffed ? HeroStatus.buffPower : 0) + (HeroStatus.isDebuffed ? EnemyStatus.debuffPower : 0)) / 100))));
         if (isLevel3)
         {
             EnemyStatus.stunDuration = 1f;
@@ -532,9 +532,9 @@ public class Daggers : Weapon, IMeleeWeapon, IPoisonousWeapon
         Debug.Log("Attack with Daggers");
         enemyStatus = enemy.GetComponent<EnemyStatus>();
         enemyStatus.UpdateHealth(enemyStatus.health - ((int)(GetModifier() * (attackDamage + 
-            attackDamage * ((HeroStatus.isBuffed ? HeroStatus.buffPower : 0) + (HeroStatus.isDebuffed ? HeroStatus.debuffPower : 0)) / 100))));
+            attackDamage * ((HeroStatus.isBuffed ? HeroStatus.buffPower : 0) + (HeroStatus.isDebuffed ? EnemyStatus.debuffPower : 0)) / 100))));
         enemyStatus.UpdateHealth(enemyStatus.health - ((int)(GetModifier() * (attackDamage + 
-            attackDamage * ((HeroStatus.isBuffed ? HeroStatus.buffPower : 0) + (HeroStatus.isDebuffed ? HeroStatus.debuffPower : 0)) / 100))));
+            attackDamage * ((HeroStatus.isBuffed ? HeroStatus.buffPower : 0) + (HeroStatus.isDebuffed ? EnemyStatus.debuffPower : 0)) / 100))));
         EnemyStatus.isPoisoned = true;
     }
 
@@ -575,7 +575,7 @@ public class Flail : Weapon, IMeleeWeapon, IStunWeapon
         Debug.Log("Attack with Flail");
         enemyStatus = enemy.GetComponent<EnemyStatus>();
         enemyStatus.UpdateHealth(enemyStatus.health - ((int)(GetModifier() * (attackDamage + 
-            attackDamage * ((HeroStatus.isBuffed ? HeroStatus.buffPower : 0) + (HeroStatus.isDebuffed ? HeroStatus.debuffPower : 0)) / 100))));
+            attackDamage * ((HeroStatus.isBuffed ? HeroStatus.buffPower : 0) + (HeroStatus.isDebuffed ? EnemyStatus.debuffPower : 0)) / 100))));
         EnemyStatus.stunDuration = stunDuration;
         EnemyStatus.isStunned = true;
     }

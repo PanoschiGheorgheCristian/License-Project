@@ -1,10 +1,17 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class EnemyBossAttack3 : GenericEnemyAttack
 {
+    float improvedAttackSpeed;
+    int improvedAttackDamage;
+    int improvedAttackPosition;
     int heroCurrentPosition;
+    private void Awake() {
+        FindMostPowerfulEquipedWeaopn();
+    }
     // Update is called once per frame
     void Update()
     {
@@ -12,33 +19,56 @@ public class EnemyBossAttack3 : GenericEnemyAttack
         heroCurrentPosition = hero.GetComponent<PlayerController>().heroCurrentPosition;
         if (isAttacking == 0 && isExhausted == 0 && !EnemyStatus.isStunned)
             if (hero.GetComponent<HeroStatus>().alive == 1)
-                if (heroCurrentPosition % 5 == 4)
-                    AttackClose();
-                else
-                    GroundSlam(heroCurrentPosition);
+                ProcessAttacks(heroCurrentPosition);
     }
 
-    void AttackClose()
+    private void ProcessAttacks(int heroPosition)
     {
-        Attack(4, 1.5f, 35);
-        Attack(9, 1.5f, 35);
-        Attack(14, 1.5f, 35);
+        StartCoroutine(AttackColumn(heroPosition));
     }
 
-    void GroundSlam(int heroCurrentPosition)
+    void FindMostPowerfulEquipedWeaopn()
     {
-        List<int> attackPositions = new List<int>();
-        attackPositions.Add(heroCurrentPosition);
+        int[] weaponLevels = PlayerWeapons.GetAllWeaponsLevels();
+        int[] equipedWeapons = PlayerWeapons.GetWeaponsIndexes();
+        int max = 0;
+        for (int i = 0; i < 5; i++)
+        {
+            if(weaponLevels[equipedWeapons[i]] > max)
+                max = weaponLevels[equipedWeapons[i]];
+        }
+        for (int i = 0; i < 5; i++)
+        {
+            if (weaponLevels[equipedWeapons[i]] == max)
+            {
+                improvedAttackPosition = i;
+                improvedAttackDamage = 15;
+                improvedAttackSpeed = 0.5f;
+            }
+        }
+    }
 
-        if (heroCurrentPosition > 4)
-            attackPositions.Add(heroCurrentPosition - 5);
-        if (heroCurrentPosition % 5 != 0)
-            attackPositions.Add(heroCurrentPosition - 1);
-        if (heroCurrentPosition < 10)
-            attackPositions.Add(heroCurrentPosition + 5);
-        if (heroCurrentPosition % 5 != 4)
-            attackPositions.Add(heroCurrentPosition + 1);
+    IEnumerator AttackColumn(int heroPosition)
+    {
+        int column = heroPosition % 5;
+        if(column == improvedAttackPosition)
+        {
+            Attack(column, 1f - improvedAttackSpeed, 15 + improvedAttackDamage);
+            Attack(column + 5, 1f - improvedAttackSpeed, 15 + improvedAttackDamage);
+            Attack(column + 10, 1f - improvedAttackSpeed, 15 + improvedAttackDamage);
 
-        Attack(attackPositions, 1f, 20);
+            yield return new WaitForSeconds(1f - improvedAttackSpeed);
+
+        }
+        else
+        {
+            Attack(column, 1f, 15 + improvedAttackDamage);
+            Attack(column + 5, 1f, 15 + improvedAttackDamage);
+            Attack(column + 10, 1f, 15 + improvedAttackDamage);
+
+            yield return new WaitForSeconds(1f);
+        }
+
+        StartCoroutine(LoseExhausted(timeExhausted));
     }
 }

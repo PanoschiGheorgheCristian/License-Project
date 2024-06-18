@@ -22,31 +22,86 @@ public class EnemySwordAttack : GenericEnemyAttack
 
     private void ProcessEliteEnemy(int heroPosition)
     {
-
+        if (heroPosition % 5 == 4 || heroPosition % 5 == 3)
+        {
+            StartCoroutine(TripleSwipe(1.7f, 1.7f, heroCurrentPosition));
+        }
+        else
+        {
+            StartCoroutine(ReverseTripleSwipe(1.7f, 1.7f, heroCurrentPosition));
+        }
     }
 
     private void ProcessNormalEnemy(int heroPosition)
     {
-
-    }
-
-    void AttackClose()
-    {
-        Attack(4, 1f, 25);
-        Attack(9, 1f, 25);
-        Attack(14, 1f, 25);
-    }
-
-    void Arrow(int heroCurrentPosition)
-    {
-        List<int> attackPositions = new List<int>();
-        attackPositions.Add(heroCurrentPosition);
-
-        for (int i = heroCurrentPosition - heroCurrentPosition % 5; i < heroCurrentPosition - heroCurrentPosition % 5 + 5; i++)
+        if (heroPosition % 5 == 4 || heroPosition % 5 == 3)
         {
-            attackPositions.Add(i);
+            SimpleSwipe(heroPosition, 0);
         }
+        else
+            SimpleSwipe(heroPosition, 1);
+    }
 
-        Attack(attackPositions, 0.7f, 20);
+    void SwipeUp(int heroPosition)
+    {
+        Attack(heroPosition, 1.5f, 35);
+        if (heroPosition < 10)
+            Attack(heroPosition + 5, 1.5f, 35);
+        if (heroPosition > 4)
+            Attack(heroPosition - 5, 1.5f, 35);
+    }
+
+    void SwipeLeft(int heroPosition)
+    {
+        Attack(heroPosition, 1.5f, 35);
+        if (heroPosition % 5 != 0)
+            Attack(heroPosition - 1, 1.5f, 35);
+        if (heroPosition % 5 != 4)
+            Attack(heroPosition + 1, 1.5f, 35);
+    }
+
+    void SimpleSwipe(int heroPosition, int nr)
+    {
+        if (nr < 1)
+            SwipeLeft(heroPosition);
+        else
+            SwipeUp(heroPosition);
+
+
+        StartCoroutine(LoseExhausted(1.5f + timeExhausted));
+    }
+
+    private IEnumerator TripleSwipe(float time1, float time2, int heroCurrentPosition)
+    {
+        SwipeLeft(heroCurrentPosition);
+
+        yield return new WaitForSeconds(time1);
+
+        heroCurrentPosition = hero.GetComponent<PlayerController>().heroCurrentPosition;
+        SwipeUp(heroCurrentPosition);
+
+        yield return new WaitForSeconds(time2);
+
+        heroCurrentPosition = hero.GetComponent<PlayerController>().heroCurrentPosition;
+        SwipeLeft(heroCurrentPosition);
+
+        StartCoroutine(LoseExhausted(timeExhausted + 1.5f));
+    }
+
+    private IEnumerator ReverseTripleSwipe(float time1, float time2, int heroCurrentPosition)
+    {
+        SwipeUp(heroCurrentPosition);
+
+        yield return new WaitForSeconds(time1);
+
+        heroCurrentPosition = hero.GetComponent<PlayerController>().heroCurrentPosition;
+        SwipeLeft(heroCurrentPosition);
+
+        yield return new WaitForSeconds(time2);
+
+        heroCurrentPosition = hero.GetComponent<PlayerController>().heroCurrentPosition;
+        SwipeUp(heroCurrentPosition);
+
+        StartCoroutine(LoseExhausted(timeExhausted + 1.5f));
     }
 }

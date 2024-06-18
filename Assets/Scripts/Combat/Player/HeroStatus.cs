@@ -24,14 +24,29 @@ public class HeroStatus : MonoBehaviour
     private bool isBleedBeingProcessed;
     private bool isBuffBeingProcessed;
     private bool isDebuffBeingProcessed;
+    [SerializeField] List<GameObject> StatusEffectIcons;
 
     // Start is called before the first frame update
     void Start()
     {
-        healthbar.SetMaxHealth(100);
         string json = SaveObject.getJsonSave();
         SaveObject saveObject = JsonUtility.FromJson<SaveObject>(json);
-        UpdateHealth(saveObject.heroHealth);
+        bool check = false;
+        foreach (string iteratorString in saveObject.curses)
+        {
+            if( string.Equals("Haunted",iteratorString))
+            {
+                healthbar.SetMaxHealth(70);
+                check = true;
+            }
+        }
+        if(!check)
+        {
+            healthbar.SetMaxHealth(100);
+            UpdateHealth(saveObject.heroHealth);
+        }
+        else
+            UpdateHealth(saveObject.heroHealth < 70 ? saveObject.heroHealth : 70);
 
         alive = 1;
         shieldCharges = 0;
@@ -46,6 +61,14 @@ public class HeroStatus : MonoBehaviour
         isBleedBeingProcessed = false;
         isBuffBeingProcessed = false;
         isDebuffBeingProcessed = false;
+
+        foreach(GameObject gameObject in StatusEffectIcons)
+        {
+            gameObject.SetActive(false);
+        }
+
+        if(gameObject.GetComponent<PlayerController>().cuesedDelay > 0f)
+            StatusEffectIcons[4].SetActive(true);
     }
 
     void Update()
@@ -53,27 +76,40 @@ public class HeroStatus : MonoBehaviour
         if(isPoisoned && !isPoisonBeingProcessed)
         {
             isPoisonBeingProcessed = true;
+            StatusEffectIcons[3].SetActive(true);
             StartCoroutine(TakePoisonDamageAfterTime(2, 0));
         }
         if(isBleeding && !isBleedBeingProcessed)
         {
             isBleedBeingProcessed = true;
+            StatusEffectIcons[0].SetActive(true);
             StartCoroutine(TakeBleedDamageAfterTime(5));
         }
         if (isStunned && !isStunBeingProcessed)
         {
             isStunBeingProcessed = true;
+            StatusEffectIcons[2].SetActive(true);
             StartCoroutine(WaitDuringStun(1.5f));
         }
         if(isBuffed && !isBuffBeingProcessed)
         {
             isBuffBeingProcessed = true;
+            StatusEffectIcons[1].SetActive(true);
             StartCoroutine(LoseBuff(buffDuration));
         }
         if(isDebuffed && !isDebuffBeingProcessed)
         {
             isDebuffBeingProcessed = true;
+            StatusEffectIcons[5].SetActive(true);
             StartCoroutine(LoseDebuff(5f));
+        }
+        if (isShielded)
+        {
+            StatusEffectIcons[6].SetActive(true);
+        }
+        else if(StatusEffectIcons[6].activeSelf)
+        {
+            StatusEffectIcons[6].SetActive(false);
         }
         if (health <= 0)
         {
@@ -105,6 +141,7 @@ public class HeroStatus : MonoBehaviour
         {
             isPoisoned = false;
             isPoisonBeingProcessed = false;
+            StatusEffectIcons[3].SetActive(false);
         }
     }
 
@@ -114,6 +151,7 @@ public class HeroStatus : MonoBehaviour
 
         UpdateHealth(health - damage);
         isBleeding = false;
+        StatusEffectIcons[0].SetActive(false);
         isBleedBeingProcessed = false;
     }
 
@@ -122,6 +160,7 @@ public class HeroStatus : MonoBehaviour
         yield return new WaitForSeconds(duration);
 
         isStunned = false;
+        StatusEffectIcons[2].SetActive(false);
         isStunBeingProcessed = false;
     }
 
@@ -130,6 +169,7 @@ public class HeroStatus : MonoBehaviour
         yield return new WaitForSeconds(duration);
 
         isBuffed = false;
+        StatusEffectIcons[1].SetActive(false);
         isBuffBeingProcessed = false;
     }
 
@@ -139,5 +179,6 @@ public class HeroStatus : MonoBehaviour
 
         isDebuffed = false;
         isDebuffBeingProcessed = false;
+        StatusEffectIcons[5].SetActive(false);
     }
 }

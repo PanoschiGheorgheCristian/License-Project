@@ -22,35 +22,35 @@ public class HeavyEnemyAttack : GenericEnemyAttack
 
     private void ProcessEliteEnemy(int heroPosition)
     {
-
+        StartCoroutine(FastStunStrike(heroPosition));
     }
 
     private void ProcessNormalEnemy(int heroPosition)
     {
-
+        StartCoroutine(StunStrike(heroPosition));
     }
 
-    void AttackClose()
+    IEnumerator StunStrike(int heroPosition)
     {
-        Attack(4, 1.5f, 35);
-        Attack(9, 1.5f, 35);
-        Attack(14, 1.5f, 35);
+        Attack(heroPosition, 1f, 15);
+
+        yield return new WaitForSeconds(1.1f);
+        
+        StartCoroutine(LoseExhausted(timeExhausted));
     }
 
-    void GroundSlam(int heroCurrentPosition)
+    IEnumerator FastStunStrike(int heroPosition)
     {
-        List<int> attackPositions = new List<int>();
-        attackPositions.Add(heroCurrentPosition);
+        int playerHealth = hero.GetComponent<HeroStatus>().health;
+        Attack(heroPosition, 0.5f, 15);
 
-        if (heroCurrentPosition > 4)
-            attackPositions.Add(heroCurrentPosition - 5);
-        if (heroCurrentPosition % 5 != 0)
-            attackPositions.Add(heroCurrentPosition - 1);
-        if (heroCurrentPosition < 10)
-            attackPositions.Add(heroCurrentPosition + 5);
-        if (heroCurrentPosition % 5 != 4)
-            attackPositions.Add(heroCurrentPosition + 1);
+        yield return new WaitForSeconds(0.6f);
 
-        Attack(attackPositions, 1f, 20);
+        if (playerHealth != hero.GetComponent<HeroStatus>().health)
+        {
+            HeroStatus.isStunned = true;
+        }
+
+        StartCoroutine(LoseExhausted(timeExhausted));
     }
 }

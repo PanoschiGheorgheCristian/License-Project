@@ -17,8 +17,6 @@ public class EnemyManage : MonoBehaviour
 
     private int GetEnemyNr()
     {
-        EnemyToFight.currentEnemy = 1;
-        EnemyToFight.isElite = true;
         int enemyNumber = EnemyToFight.currentEnemy;
         enemyTypes[enemyNumber].SetActive(true);
 
@@ -37,5 +35,4 @@ public static class EnemyToFight
     public static bool isElite;
     public static bool isBoss;
     public static int layer;
-    public static int bossNr;
 }

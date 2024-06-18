@@ -10,28 +10,29 @@ public class PlayerController : MonoBehaviour
     int canMove;
     int isDashing;
     public float movementDelay;
+    public float cuesedDelay = 0;
 
     // Start is called before the first frame update
     void Start()
     {
 
-        heroBoardPositions[0] = new Vector3(-8f, -1.5f, -1f);
-        heroBoardPositions[1] = new Vector3(-5.5f, -1.5f, -1f);
-        heroBoardPositions[2] = new Vector3(-3f, -1.5f, -1f);
-        heroBoardPositions[3] = new Vector3(-0.5f, -1.5f, -1f);
-        heroBoardPositions[4] = new Vector3(2f, -1.5f, -1f);
+        heroBoardPositions[0] = new Vector3(-8f, -3f, -1f);
+        heroBoardPositions[1] = new Vector3(-5.5f, -3f, -1f);
+        heroBoardPositions[2] = new Vector3(-3f, -3f, -1f);
+        heroBoardPositions[3] = new Vector3(-0.5f, -3f, -1f);
+        heroBoardPositions[4] = new Vector3(2f, -3f, -1f);
 
-        heroBoardPositions[5] = new Vector3(-8f, 0.5f, -1f);
-        heroBoardPositions[6] = new Vector3(-5.5f, 0.5f, -1f);
-        heroBoardPositions[7] = new Vector3(-3f, 0.5f, -1f);
-        heroBoardPositions[8] = new Vector3(-0.5f, 0.5f, -1f);
-        heroBoardPositions[9] = new Vector3(2f, 0.5f, -1f);
+        heroBoardPositions[5] = new Vector3(-8f, -0.5f, -1f);
+        heroBoardPositions[6] = new Vector3(-5.5f, -0.5f, -1f);
+        heroBoardPositions[7] = new Vector3(-3f, -0.5f, -1f);
+        heroBoardPositions[8] = new Vector3(-0.5f, -0.5f, -1f);
+        heroBoardPositions[9] = new Vector3(2f, -0.5f, -1f);
 
-        heroBoardPositions[10] = new Vector3(-8f, 2.5f, -1f);
-        heroBoardPositions[11] = new Vector3(-5.5f, 2.5f, -1f);
-        heroBoardPositions[12] = new Vector3(-3f, 2.5f, -1f);
-        heroBoardPositions[13] = new Vector3(-0.5f, 2.5f, -1f);
-        heroBoardPositions[14] = new Vector3(2f, 2.5f, -1f);
+        heroBoardPositions[10] = new Vector3(-8f, 2f, -1f);
+        heroBoardPositions[11] = new Vector3(-5.5f, 2f, -1f);
+        heroBoardPositions[12] = new Vector3(-3f, 2f, -1f);
+        heroBoardPositions[13] = new Vector3(-0.5f, 2f, -1f);
+        heroBoardPositions[14] = new Vector3(2f, 2f, -1f);
         heroCurrentPosition = 7;
         canMove = 1;
     }
@@ -58,13 +59,23 @@ public class PlayerController : MonoBehaviour
     {
         if (canMove == 1)
         {
+            string json = SaveObject.getJsonSave();
+            SaveObject saveObject = JsonUtility.FromJson<SaveObject>(json);
+            foreach (string iteratorString in saveObject.curses)
+            {
+                if (string.Equals("Afflicted", iteratorString))
+                {
+                    cuesedDelay = 0.3f;
+                }
+            }
+
             if (Input.GetKeyDown(KeyCode.A) && heroCurrentPosition % 5 != 0)
             {
                 heroCurrentPosition = heroCurrentPosition - 1 - (heroCurrentPosition % 5 == 1 ? 0 : isDashing);
                 transform.position = heroBoardPositions[heroCurrentPosition];
                 attackScript.indexCurrentWeapon = heroCurrentPosition % 5;
                 canMove = 0;
-                StartCoroutine(RegainMovement(movementDelay));
+                StartCoroutine(RegainMovement(movementDelay + cuesedDelay));
             }
 
             if (Input.GetKeyDown(KeyCode.D) && heroCurrentPosition % 5 != 4)
@@ -73,7 +84,7 @@ public class PlayerController : MonoBehaviour
                 transform.position = heroBoardPositions[heroCurrentPosition];
                 attackScript.indexCurrentWeapon = heroCurrentPosition % 5;
                 canMove = 0;
-                StartCoroutine(RegainMovement(movementDelay));
+                StartCoroutine(RegainMovement(movementDelay + cuesedDelay));
             }
 
             if (Input.GetKeyDown(KeyCode.S) && heroCurrentPosition > 4)
@@ -82,7 +93,7 @@ public class PlayerController : MonoBehaviour
                 transform.position = heroBoardPositions[heroCurrentPosition];
                 attackScript.indexCurrentWeapon = heroCurrentPosition % 5;
                 canMove = 0;
-                StartCoroutine(RegainMovement(movementDelay));
+                StartCoroutine(RegainMovement(movementDelay + cuesedDelay));
             }
 
             if (Input.GetKeyDown(KeyCode.W) && heroCurrentPosition < 10)
@@ -91,7 +102,7 @@ public class PlayerController : MonoBehaviour
                 transform.position = heroBoardPositions[heroCurrentPosition];
                 attackScript.indexCurrentWeapon = heroCurrentPosition % 5;
                 canMove = 0;
-                StartCoroutine(RegainMovement(movementDelay));
+                StartCoroutine(RegainMovement(movementDelay + cuesedDelay));
             }
         }
     }

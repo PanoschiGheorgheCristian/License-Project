@@ -22,31 +22,87 @@ public class EnemyThrowDaggerAttack : GenericEnemyAttack
 
     private void ProcessEliteEnemy(int heroPosition)
     {
-
+        StartCoroutine(ThrowThreeDagger(heroPosition));
     }
 
     private void ProcessNormalEnemy(int heroPosition)
     {
-
+        StartCoroutine(ThrowDagger(heroPosition));
     }
 
-    void AttackClose()
+    IEnumerator ThrowDagger(int heroPosition)
     {
-        Attack(4, 0.5f, 10);
-        Attack(9, 0.5f, 10);
-        Attack(14, 0.5f, 10);
-    }
+        int heroHealth = hero.GetComponent<HeroStatus>().health;
 
-    void IronArrow(int heroCurrentPosition)
-    {
-        List<int> attackPositions = new List<int>();
-        attackPositions.Add(heroCurrentPosition);
-
-        for (int i = heroCurrentPosition - heroCurrentPosition % 5; i < heroCurrentPosition - heroCurrentPosition % 5 + 5; i++)
+        for (int iterator = heroCurrentPosition; iterator % 5 < 4; iterator++)
         {
-            attackPositions.Add(i);
+            Attack(iterator, 1f, 15);
+        }
+        Attack(heroPosition / 5 * 5 + 4, 1f, 15);
+
+        yield return new WaitForSeconds(1f);
+
+        if (heroHealth != hero.GetComponent<HeroStatus>().health)
+            Poison();
+    }
+
+    IEnumerator ThrowThreeDagger(int heroPosition)
+    {
+        int heroHealth = hero.GetComponent<HeroStatus>().health;
+
+        for (int iterator = heroCurrentPosition; iterator % 5 < 4; iterator++)
+        {
+            Attack(iterator, 1f, 15);
+        }
+        Attack(heroPosition / 5 * 5 + 4, 1f, 15);
+
+        yield return new WaitForSeconds(1f);
+
+        if (heroHealth != hero.GetComponent<HeroStatus>().health)
+        {
+            Poison();
+            Bleed();
         }
 
-        Attack(attackPositions, 0.7f, 10);
+        for (int iterator = heroCurrentPosition; iterator % 5 < 4; iterator++)
+        {
+            Attack(iterator, 1f, 15);
+        }
+        Attack(heroPosition / 5 * 5 + 4, 1f, 15);
+
+        yield return new WaitForSeconds(1f);
+
+        if (heroHealth != hero.GetComponent<HeroStatus>().health)
+        {
+            Poison();
+            Bleed();
+        }
+
+        for (int iterator = heroCurrentPosition; iterator % 5 < 4; iterator++)
+        {
+            Attack(iterator, 1f, 15);
+        }
+        Attack(heroPosition / 5 * 5 + 4, 1f, 15);
+
+        yield return new WaitForSeconds(1f);
+
+        if (heroHealth != hero.GetComponent<HeroStatus>().health)
+        {
+            Poison();
+            Bleed();
+        }
+    }
+
+    void Poison()
+    {
+        HeroStatus.isPoisoned = true;
+        isExhausted = 1;
+
+        StartCoroutine(LoseExhausted(1f));
+    }
+
+    void Bleed()
+    {
+        HeroStatus.isBleeding = true;
     }
 }

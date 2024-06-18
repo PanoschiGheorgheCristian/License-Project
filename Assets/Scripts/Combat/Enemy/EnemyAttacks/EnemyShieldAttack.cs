@@ -22,35 +22,56 @@ public class EnemyShieldAttack : GenericEnemyAttack
 
     private void ProcessEliteEnemy(int heroPosition)
     {
-
+        if (!EnemyStatus.isShielded)
+            ProtectSelf();
+        else
+        {
+            StartCoroutine(TwoStrikePreciseAttack(heroPosition));
+        }
     }
 
     private void ProcessNormalEnemy(int heroPosition)
     {
-
+        if (!EnemyStatus.isShielded)
+            ProtectSelf();
+        else
+        {
+            StartCoroutine(PreciseAttack(heroPosition));
+        }
     }
 
-    void AttackClose()
+    void ProtectSelf()
     {
-        Attack(4, 0.5f, 10);
-        Attack(9, 0.5f, 10);
-        Attack(14, 0.5f, 10);
+        EnemyStatus.isShielded = true;
+        isExhausted = 1;
+        Debug.Log("Protected");
+
+        StartCoroutine(LoseExhausted(1.5f));
     }
 
-    void GroundSlam(int heroCurrentPosition)
+    IEnumerator PreciseAttack(int heroPosition)
     {
-        List<int> attackPositions = new List<int>();
-        attackPositions.Add(heroCurrentPosition);
+        Attack(heroPosition, 1f, 10);
 
-        if (heroCurrentPosition > 4)
-            attackPositions.Add(heroCurrentPosition - 5);
-        if (heroCurrentPosition % 5 != 0)
-            attackPositions.Add(heroCurrentPosition - 1);
-        if (heroCurrentPosition < 10)
-            attackPositions.Add(heroCurrentPosition + 5);
-        if (heroCurrentPosition % 5 != 4)
-            attackPositions.Add(heroCurrentPosition + 1);
+        yield return new WaitForSeconds(1f);
 
-        Attack(attackPositions, 0.8f, 15);
+        StartCoroutine(LoseExhausted(timeExhausted));
+    }
+
+    IEnumerator TwoStrikePreciseAttack(int heroPosition)
+    {
+        Attack(heroPosition, 0.7f, 10);
+
+        yield return new WaitForSeconds(0.3f);
+
+        heroPosition = hero.GetComponent<PlayerController>().heroCurrentPosition;
+        Attack(heroPosition, 1f, 15);
+
+        yield return new WaitForSeconds(1f);
+
+        heroPosition = hero.GetComponent<PlayerController>().heroCurrentPosition;
+        Attack(heroPosition, 1.5f, 20);
+
+        StartCoroutine(LoseExhausted(2f + timeExhausted));
     }
 }

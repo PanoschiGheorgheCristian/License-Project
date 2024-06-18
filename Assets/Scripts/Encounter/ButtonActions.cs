@@ -78,6 +78,8 @@ public class ButtonActions : MonoBehaviour
                 curseNr = UnityEngine.Random.Range(0, save.curses.Count);
 
             Debug.Log("Removed the " + save.curses[curseNr] + " curse!");
+            if(string.Equals(save.curses[curseNr], "Wrathful"))
+                MapController.isWrathful = false;
             save.curses.RemoveAt(curseNr);
             
             SaveGame(save.currentStage, save.currentGold, save.currentWeapons, save.heroHealth, save.curses, save.availableWeapons);

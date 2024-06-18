@@ -6,7 +6,7 @@
     "Make them drink"
   ],
   "choiceEffects": [
-    "l60,cPoisoned,m",
+    "l60,cAfflicted,m",
     "d15,m",
     "d30,g120,m"
   ],

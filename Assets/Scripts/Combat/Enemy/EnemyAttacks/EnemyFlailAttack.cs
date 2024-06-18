@@ -42,7 +42,7 @@ public class EnemyFlailAttack : GenericEnemyAttack
             HeroStatus.isStunned = true;
         }
 
-        StartCoroutine(LoseExhausted(2f));
+        StartCoroutine(LoseExhausted(timeExhausted));
     }
 
     IEnumerator FastStunStrike(int heroPosition)
@@ -57,6 +57,6 @@ public class EnemyFlailAttack : GenericEnemyAttack
             HeroStatus.isStunned = true;
         }
 
-        StartCoroutine(LoseExhausted(2f));
+        StartCoroutine(LoseExhausted(timeExhausted));
     }
 }

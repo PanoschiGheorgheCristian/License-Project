@@ -39,12 +39,15 @@ public class Attack : MonoBehaviour
         {
             AttackEnemy(currentWeapon, enemy);
         }
+        if(Input.GetKeyDown(KeyCode.P))
+            enemy.GetComponent<EnemyStatus>().health = 0;
     }
 
     void AttackEnemy(Weapon currentWeapon, GameObject enemy)
     {
         isAttacking = 1;
-        currentWeapon.Attack(enemy, gameObject);
+        if(!EnemyStatus.isShielded)
+            currentWeapon.Attack(enemy, gameObject);
         StartCoroutine(CooldownAttack(attackCooldown));
     }
 
