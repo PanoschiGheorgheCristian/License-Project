@@ -31,6 +31,7 @@ public class MapController : MonoBehaviour
     [SerializeField] private GameObject Camp;
     [SerializeField] private GameObject weaponIcons;
     [SerializeField] private GameObject questionMark;
+    [SerializeField] private GameObject winMessage;
 
     public static bool isWrathful;
 
@@ -44,7 +45,7 @@ public class MapController : MonoBehaviour
         InitializeInventory();
         GameObject.Find("Inventory").SetActive(false);
         Menu.SetActive(false);
-        GameObject.Find("Win Message").SetActive(false);
+        winMessage.SetActive(false);
         if (save.heroHealth <= 0)
             EndGame();
     }
@@ -248,35 +249,32 @@ public class MapController : MonoBehaviour
         if (tempSave is not null)
         {
             save = tempSave;
-            if (save.layer != EnemyToFight.layer && EnemyToFight.layer != 0)
+            if (EnemyToFight.layer == 4)
             {
-                if(EnemyToFight.layer == 4)
+                StartCoroutine(DisplayWinMessage());
+            }
+            else if (save.layer != EnemyToFight.layer && EnemyToFight.layer != 0)
+            {
+                foreach (string iteratorString in save.curses)
                 {
-                    GameObject.Find("Win Message").SetActive(true);
+                    if (string.Equals("Wrathful", iteratorString))
+                    {
+                        isWrathful = true;
+                    }
                 }
-                else
+                SetEncounters();
+                save.layer = EnemyToFight.layer;
+                List<MapNode.Encounter> stages = new();
+                int[] enemyNumbers = new int[19];
+                for (int i = 0; i < 19; i++)
                 {
-                    foreach (string iteratorString in save.curses)
-                    {
-                        if (string.Equals("Wrathful", iteratorString))
-                        {
-                            isWrathful = true;
-                        }
-                    }
-                    SetEncounters();
-                    save.layer = EnemyToFight.layer;
-                    List<MapNode.Encounter> stages = new();
-                    int[] enemyNumbers = new int[19];
-                    for (int i = 0; i < 19; i++)
-                    {
-                        stages.Add(mapNodes[i].GetComponent<MapNode>().encounter);
-                        if((int) mapNodes[i].GetComponent<MapNode>().encounter == 1 || (int)mapNodes[i].GetComponent<MapNode>().encounter == 2 || (int)mapNodes[i].GetComponent<MapNode>().encounter == 5)
-                            enemyNumbers[i] = mapNodes[i].GetComponent<MapNode>().enemyNumber;
-                        else
-                            enemyNumbers[i] = -1;
-                    }
-                    SaveGame("Start", save.currentGold, save.currentWeapons, save.heroHealth, save.curses, save.availableWeapons, save.weaponExperience, stages, save.layer, enemyNumbers);
+                    stages.Add(mapNodes[i].GetComponent<MapNode>().encounter);
+                    if((int) mapNodes[i].GetComponent<MapNode>().encounter == 1 || (int)mapNodes[i].GetComponent<MapNode>().encounter == 2 || (int)mapNodes[i].GetComponent<MapNode>().encounter == 5)
+                        enemyNumbers[i] = mapNodes[i].GetComponent<MapNode>().enemyNumber;
+                    else
+                        enemyNumbers[i] = -1;
                 }
+                SaveGame("Start", save.currentGold, save.currentWeapons, save.heroHealth, save.curses, save.availableWeapons, save.weaponExperience, stages, save.layer, enemyNumbers);
             }
             LoadEncounters();
             currentStage = GameObject.Find(save.currentStage);
@@ -411,5 +409,12 @@ public class MapController : MonoBehaviour
                 tempIcon.transform.position = mapNode.gameObject.transform.position + new Vector3(0, 0f, -1);
             }
         }
+    }
+
+    IEnumerator DisplayWinMessage ()
+    {
+        yield return new WaitForSeconds(1f);
+
+        winMessage.SetActive(true);
     }
 }

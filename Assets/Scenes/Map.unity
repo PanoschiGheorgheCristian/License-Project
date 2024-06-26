@@ -1520,12 +1520,12 @@ RectTransform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 221199149}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: -5}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 887236479}
-  m_RootOrder: 1
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -4202,8 +4202,8 @@ Transform:
   m_LocalScale: {x: 77, y: 77, z: 77}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 936626228}
   - {fileID: 221199150}
+  - {fileID: 936626228}
   m_Father: {fileID: 1690397430}
   m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -4362,12 +4362,12 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 936626227}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: -5}
   m_LocalScale: {x: 16.001999, y: 8.01663, z: 0.8013}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 887236479}
-  m_RootOrder: 0
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &936626229
 SpriteRenderer:
@@ -4411,7 +4411,7 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_Sprite: {fileID: 7482667652216324306, guid: 311925a002f4447b3a28927169b83ea6, type: 3}
-  m_Color: {r: 0, g: 0, b: 0, a: 0.8352941}
+  m_Color: {r: 0, g: 0, b: 0, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -7096,6 +7096,7 @@ MonoBehaviour:
   Camp: {fileID: 690436762}
   weaponIcons: {fileID: 723540121}
   questionMark: {fileID: 799433353}
+  winMessage: {fileID: 887236478}
 --- !u!4 &1504209856
 Transform:
   m_ObjectHideFlags: 0
