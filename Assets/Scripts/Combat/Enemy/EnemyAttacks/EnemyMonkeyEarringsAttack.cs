@@ -10,7 +10,7 @@ public class EnemyMonkeyEarringsAttack : GenericEnemyAttack
     {
         //Check for Elite Enemy / Boss by looking at EnemyToFight.isElite / EnemyToFight.isBoss
         heroCurrentPosition = hero.GetComponent<PlayerController>().heroCurrentPosition;
-        if (isAttacking == 0 && isExhausted == 0 && !EnemyStatus.isStunned)
+        if (isAttacking == 0 && isExhausted == 0 && !EnemyStatus.isStunned && isInLoadingPeriod == false)
             if (hero.GetComponent<HeroStatus>().alive == 1)
             {
                 if (EnemyToFight.isElite)
@@ -52,6 +52,7 @@ public class EnemyMonkeyEarringsAttack : GenericEnemyAttack
 
     IEnumerator PreciseAttack(int heroPosition)
     {
+        isAttacking = 1;
         int heroHealth = hero.GetComponent<HeroStatus>().health;        
         Attack(heroPosition, 1f, 10);
 
@@ -65,6 +66,7 @@ public class EnemyMonkeyEarringsAttack : GenericEnemyAttack
 
     IEnumerator TwoStrikePreciseAttack(int heroPosition)
     {
+        isAttacking = 1;
         int heroHealth = hero.GetComponent<HeroStatus>().health;
         Attack(heroPosition, 0.3f, 10);
 

@@ -6,11 +6,11 @@ public class EnemySpearAttack : GenericEnemyAttack
 {
     int heroCurrentPosition;
     // Update is called once per frame
-    void Update()
+    void FixedUpdate()
     {
         //Check for Elite Enemy / Boss by looking at EnemyToFight.isElite / EnemyToFight.isBoss
         heroCurrentPosition = hero.GetComponent<PlayerController>().heroCurrentPosition;
-        if (isAttacking == 0 && isExhausted == 0 && !EnemyStatus.isStunned)
+        if (isAttacking == 0 && isExhausted == 0 && !EnemyStatus.isStunned && isInLoadingPeriod == false)
             if (hero.GetComponent<HeroStatus>().alive == 1)
             {
                 if (EnemyToFight.isElite)
@@ -32,7 +32,8 @@ public class EnemySpearAttack : GenericEnemyAttack
 
     IEnumerator Poke(int heroPosition)
     {
-        for(int iterator = heroCurrentPosition; iterator % 5 < 4; iterator++)
+        isAttacking = 1;
+        for (int iterator = heroCurrentPosition; iterator % 5 < 4; iterator++)
         {
             Attack(iterator, (5 - heroPosition % 5) * 0.3f, 15);
         }
@@ -45,6 +46,7 @@ public class EnemySpearAttack : GenericEnemyAttack
 
     IEnumerator TriplePoke(int heroPosition)
     {
+        isAttacking = 1;
         for (int iterator = heroCurrentPosition; iterator % 5 < 4; iterator++)
         {
             Attack(iterator, (5 - heroPosition % 5) * 0.3f, 15);

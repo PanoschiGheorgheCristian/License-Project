@@ -16,7 +16,7 @@ public class EnemyBossAttack2 : GenericEnemyAttack
     {
         //Check for Elite Enemy / Boss by looking at EnemyToFight.isElite / EnemyToFight.isBoss
         heroCurrentPosition = hero.GetComponent<PlayerController>().heroCurrentPosition;
-        if (isAttacking == 0 && isExhausted == 0 && !EnemyStatus.isStunned)
+        if (isAttacking == 0 && isExhausted == 0 && !EnemyStatus.isStunned && isInLoadingPeriod == false)
             if (hero.GetComponent<HeroStatus>().alive == 1)
             {
                 ProcessAttacks(heroCurrentPosition);
@@ -141,19 +141,20 @@ public class EnemyBossAttack2 : GenericEnemyAttack
 
     IEnumerator ChainAttack(int heroPosition)
     {
+        isAttacking = 1;
         SwipeHorizontal(heroPosition);
 
-        yield return new WaitForSeconds(0.8f);
+        yield return new WaitForSeconds(1f);
 
         heroPosition = hero.GetComponent<PlayerController>().heroCurrentPosition;
         SwipeVertical(heroPosition);
 
-        yield return new WaitForSeconds(0.8f);
+        yield return new WaitForSeconds(1f);
 
         heroPosition = hero.GetComponent<PlayerController>().heroCurrentPosition;
         DonutShape(heroPosition);
 
-        yield return new WaitForSeconds(1f);
+        yield return new WaitForSeconds(1.2f);
 
         StartCoroutine(LoseExhausted(timeExhausted));
     }

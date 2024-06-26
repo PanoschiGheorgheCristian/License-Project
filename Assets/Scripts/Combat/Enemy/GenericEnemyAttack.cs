@@ -4,7 +4,7 @@ using UnityEngine;
 
 public abstract class GenericEnemyAttack : MonoBehaviour
 {
-    bool isInLoadingPeriod = true;
+    protected bool isInLoadingPeriod = true;
     public GameObject hero;
     List<GameObject> heroPositions;
     public Color[] colors = new Color[3];
@@ -12,10 +12,6 @@ public abstract class GenericEnemyAttack : MonoBehaviour
     protected int isAttacking;
     public int isExhausted;
     public float timeExhausted;
-
-    private void Awake() {
-        StartCoroutine(LoseLoadPeriod());
-    }
 
     // Start is called before the first frame update
     void Start()
@@ -40,6 +36,7 @@ public abstract class GenericEnemyAttack : MonoBehaviour
             GameObject.Find("Position13"),
             GameObject.Find("Position14")
         };
+        StartCoroutine(LoseLoadPeriod());
     }
 
     protected void Attack(int position, float attackDelay, int damage)

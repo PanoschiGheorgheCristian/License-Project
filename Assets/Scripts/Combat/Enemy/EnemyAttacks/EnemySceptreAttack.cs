@@ -15,7 +15,7 @@ public class EnemySceptreAttack : GenericEnemyAttack
     {
         //Check for Elite Enemy / Boss by looking at EnemyToFight.isElite / EnemyToFight.isBoss
         heroCurrentPosition = hero.GetComponent<PlayerController>().heroCurrentPosition;
-        if (isAttacking == 0 && isExhausted == 0 && !EnemyStatus.isStunned)
+        if (isAttacking == 0 && isExhausted == 0 && !EnemyStatus.isStunned && isInLoadingPeriod == false)
             if (hero.GetComponent<HeroStatus>().alive == 1)
             {
                 if (EnemyToFight.isElite)
@@ -37,24 +37,30 @@ public class EnemySceptreAttack : GenericEnemyAttack
 
     IEnumerator SwipeUp(int heroPosition)
     {
+        isAttacking = 1;
+        Debug.Log("1");
         int heroHealth = hero.GetComponent<HeroStatus>().health;
 
+        Debug.Log("2");
         Attack(heroPosition, 1f, 15);
         if (heroPosition < 10)
             Attack(heroPosition + 5, 1f, 15);
         if (heroPosition > 4)
             Attack(heroPosition - 5, 1f, 15);
 
+        Debug.Log("3");
         yield return new WaitForSeconds(1f);
 
         if (heroHealth != hero.GetComponent<HeroStatus>().health)
             DebuffHero();
 
+        Debug.Log("4");
         StartCoroutine(LoseExhausted(timeExhausted));
     }
 
     IEnumerator PlusAttack(int heroPosition)
     {
+        isAttacking = 1;
         int heroHealth = hero.GetComponent<HeroStatus>().health;
 
         Attack(heroPosition, 1f, 15);

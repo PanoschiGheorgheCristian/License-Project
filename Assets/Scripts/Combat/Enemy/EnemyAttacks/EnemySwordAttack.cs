@@ -10,7 +10,7 @@ public class EnemySwordAttack : GenericEnemyAttack
     {
         //Check for Elite Enemy / Boss by looking at EnemyToFight.isElite / EnemyToFight.isBoss
         heroCurrentPosition = hero.GetComponent<PlayerController>().heroCurrentPosition;
-        if (isAttacking == 0 && isExhausted == 0 && !EnemyStatus.isStunned)
+        if (isAttacking == 0 && isExhausted == 0 && !EnemyStatus.isStunned && isInLoadingPeriod == false)
             if (hero.GetComponent<HeroStatus>().alive == 1)
             {
                 if (EnemyToFight.isElite)
@@ -44,6 +44,7 @@ public class EnemySwordAttack : GenericEnemyAttack
 
     void SwipeUp(int heroPosition)
     {
+        isAttacking = 1;
         Attack(heroPosition, 1.5f, 35);
         if (heroPosition < 10)
             Attack(heroPosition + 5, 1.5f, 35);
@@ -53,6 +54,7 @@ public class EnemySwordAttack : GenericEnemyAttack
 
     void SwipeLeft(int heroPosition)
     {
+        isAttacking = 1;
         Attack(heroPosition, 1.5f, 35);
         if (heroPosition % 5 != 0)
             Attack(heroPosition - 1, 1.5f, 35);
@@ -62,6 +64,7 @@ public class EnemySwordAttack : GenericEnemyAttack
 
     void SimpleSwipe(int heroPosition, int nr)
     {
+        isAttacking = 1;
         if (nr < 1)
             SwipeLeft(heroPosition);
         else
@@ -73,6 +76,7 @@ public class EnemySwordAttack : GenericEnemyAttack
 
     private IEnumerator TripleSwipe(float time1, float time2, int heroCurrentPosition)
     {
+        isAttacking = 1;
         SwipeLeft(heroCurrentPosition);
 
         yield return new WaitForSeconds(time1);
@@ -90,6 +94,7 @@ public class EnemySwordAttack : GenericEnemyAttack
 
     private IEnumerator ReverseTripleSwipe(float time1, float time2, int heroCurrentPosition)
     {
+        isAttacking = 1;
         SwipeUp(heroCurrentPosition);
 
         yield return new WaitForSeconds(time1);

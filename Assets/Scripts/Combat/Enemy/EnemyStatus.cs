@@ -5,14 +5,14 @@ using UnityEngine.SceneManagement;
 
 public class EnemyStatus : MonoBehaviour
 {
-    public enum armorType
+    public enum ArmorType
     {
         Light,
         Medium,
         Heavy
     }
     public int health;
-    public armorType armor;
+    public ArmorType armor;
     public HealthBar healthbar;
     public static bool isBuffed;
     public static bool isDebuffed;

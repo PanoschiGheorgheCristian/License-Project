@@ -356,7 +356,7 @@ public class MapController : MonoBehaviour
     public void EndGame()
     {
         Debug.Log("GAME OVER!");
-        System.IO.File.WriteAllText(Application.dataPath + "/Saves", string.Empty);
+        System.IO.File.WriteAllText(Application.streamingAssetsPath + "/Saves", string.Empty);
         SceneManager.LoadScene("Map", LoadSceneMode.Single);
     }
 

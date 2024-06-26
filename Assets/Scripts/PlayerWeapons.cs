@@ -14,7 +14,7 @@ public static class PlayerWeapons
 
     public static List<Weapon> GetWeapons() 
     {
-        SAVE_FOLDER = Application.dataPath + "/Saves";
+        SAVE_FOLDER = Application.streamingAssetsPath + "/Saves";
         string json = File.ReadAllText(SAVE_FOLDER);
         List<Weapon> returnWeapons = new();
 
@@ -42,7 +42,7 @@ public static class PlayerWeapons
 
     public static int[] GetWeaponsIndexes()
     {
-        SAVE_FOLDER = Application.dataPath + "/Saves";
+        SAVE_FOLDER = Application.streamingAssetsPath + "/Saves";
         string json = File.ReadAllText(SAVE_FOLDER);
 
         SaveObject save = JsonUtility.FromJson<SaveObject>(json);
@@ -67,7 +67,7 @@ public static class PlayerWeapons
 
     public static void UpdateWeaponToCurrentLevel(int index)
     {
-        SAVE_FOLDER = Application.dataPath + "/Saves";
+        SAVE_FOLDER = Application.streamingAssetsPath + "/Saves";
         string json = File.ReadAllText(SAVE_FOLDER);
 
         SaveObject save = JsonUtility.FromJson<SaveObject>(json);
@@ -106,7 +106,7 @@ public static class PlayerWeapons
 
     public static int[] GetAllWeaponsLevels()
     {
-        SAVE_FOLDER = Application.dataPath + "/Saves";
+        SAVE_FOLDER = Application.streamingAssetsPath + "/Saves";
         string json = File.ReadAllText(SAVE_FOLDER);
 
         SaveObject save = JsonUtility.FromJson<SaveObject>(json);

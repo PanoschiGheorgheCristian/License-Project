@@ -10,7 +10,7 @@ public class MediumEnemyAttack : GenericEnemyAttack
     {
         //Check for Elite Enemy / Boss by looking at EnemyToFight.isElite / EnemyToFight.isBoss
         heroCurrentPosition = hero.GetComponent<PlayerController>().heroCurrentPosition;
-        if (isAttacking == 0 && isExhausted == 0 && !EnemyStatus.isStunned)
+        if (isAttacking == 0 && isExhausted == 0 && !EnemyStatus.isStunned && isInLoadingPeriod == false)
             if (hero.GetComponent<HeroStatus>().alive == 1)
             {
                 if (EnemyToFight.isElite)
@@ -42,6 +42,7 @@ public class MediumEnemyAttack : GenericEnemyAttack
 
     void SpreadAttack(int heroPosition)
     {
+        isAttacking = 1;
         Attack(heroPosition, 0.7f, 10);
         if (heroPosition % 5 != 0)
         {
@@ -57,6 +58,7 @@ public class MediumEnemyAttack : GenericEnemyAttack
 
     void WideSpreadAttack(int heroPosition)
     {
+        isAttacking = 1;
         Attack(heroPosition, 0.7f, 10);
         if (heroPosition % 5 != 0)
         {
@@ -80,23 +82,22 @@ public class MediumEnemyAttack : GenericEnemyAttack
 
     void IronArrow(int heroCurrentPosition)
     {
-        List<int> attackPositions = new()
-        {
-            heroCurrentPosition
-        };
+        isAttacking = 1;
+        List<int> attackPositions = new();
 
         for (int i = heroCurrentPosition - heroCurrentPosition % 5; i < heroCurrentPosition - heroCurrentPosition % 5 + 5; i++)
         {
             attackPositions.Add(i);
         }
 
-        Attack(attackPositions, 1.2f, 30);
+        Attack(attackPositions, 1f, 20);
 
         StartCoroutine(LoseExhausted(1.2f + timeExhausted));
     }
 
     void ImprovedIronArrow(int heroCurrentPosition)
     {
+        isAttacking = 1;
         List<int> attackPositions = new()
         {
             heroCurrentPosition
@@ -111,7 +112,7 @@ public class MediumEnemyAttack : GenericEnemyAttack
         if (heroCurrentPosition < 10)
             attackPositions.Add(heroCurrentPosition + 5);
 
-        Attack(attackPositions, 1.2f, 30);
+        Attack(attackPositions, 1f, 20);
 
         StartCoroutine(LoseExhausted(1.2f + timeExhausted));
     }

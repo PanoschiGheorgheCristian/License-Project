@@ -13,8 +13,7 @@ public abstract class Weapon
         Piercing,
         Slashing,
         Bludgeoning,
-        Magic,
-        True
+        Magic
     }
     public EnemyStatus enemyStatus;
     protected Weapon() { }
@@ -105,11 +104,11 @@ public class IronBow : Weapon, ILongRangeWeapon, IBleedWeapon
 
 public class ThrowingKnives : Weapon, ILongRangeWeapon, IBleedWeapon, IPoisonousWeapon
 {
-    // damageType attackType = damageType.Piercing;
+    // damageType attackType = damageType.Slashing;
     private bool isLevel3;
     public ThrowingKnives()
     {
-        attackDamage = 5;
+        attackDamage = 10;
         attackCooldown = 1;
         isLevel3 = false;
     }
@@ -128,9 +127,9 @@ public class ThrowingKnives : Weapon, ILongRangeWeapon, IBleedWeapon, IPoisonous
     {
         return (int)enemyStatus.armor switch
         {
-            0 => 0.5,
-            1 => 2,
-            2 => 1,
+            0 => 2,
+            1 => 1,
+            2 => 0.5,
             _ => 1,
         };
     }
@@ -396,7 +395,7 @@ public class Waraxe : Weapon, ICloseCombatWeapon, IBleedWeapon
     public Waraxe()
     {
         attackDamage = 20;
-        attackCooldown = 2;
+        attackCooldown = 2.5;
     }
 
     public override void Attack(GameObject enemy, GameObject hero)
@@ -436,7 +435,7 @@ public class Spear : Weapon, ICloseCombatWeapon
 
     public Spear()
     {
-        attackDamage = 10;
+        attackDamage = 15;
         attackCooldown = 1;
     }
 
@@ -477,7 +476,7 @@ public class Mace : Weapon, IMeleeWeapon, IStunWeapon
     public Mace()
     {
         attackDamage = 15;
-        attackCooldown = 1.5;
+        attackCooldown = 2.5;
         isLevel3 = false;
     }
 

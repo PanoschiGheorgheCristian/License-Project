@@ -1,7 +1,6 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using UnityEditor.SearchService;
 using UnityEngine;
 
 public class HeroStatus : MonoBehaviour
@@ -9,6 +8,7 @@ public class HeroStatus : MonoBehaviour
     public int health;
     public int alive;
     public HealthBar healthbar;
+    public HealthBar energyBar;
     public int shieldCharges;
     public bool isShielded;
     public static bool isBuffed;
@@ -25,6 +25,8 @@ public class HeroStatus : MonoBehaviour
     private bool isBuffBeingProcessed;
     private bool isDebuffBeingProcessed;
     [SerializeField] List<GameObject> StatusEffectIcons;
+    private Attack attackScript;
+    private bool startedReloadingEnergyBar;
 
     // Start is called before the first frame update
     void Start()
@@ -69,6 +71,8 @@ public class HeroStatus : MonoBehaviour
 
         if(gameObject.GetComponent<PlayerController>().cuesedDelay > 0f)
             StatusEffectIcons[4].SetActive(true);
+        attackScript = gameObject.GetComponent<Attack>();
+        startedReloadingEnergyBar = false;
     }
 
     void Update()
@@ -119,6 +123,11 @@ public class HeroStatus : MonoBehaviour
         {
             gameObject.GetComponent<SpriteRenderer>().enabled = false;
             alive = -1;
+        }
+        if(attackScript.isAttacking == 1 && startedReloadingEnergyBar == false)
+        {
+            startedReloadingEnergyBar = true;
+            StartCoroutine(RefillEnergyBar());
         }
     }
 
@@ -180,5 +189,20 @@ public class HeroStatus : MonoBehaviour
         isDebuffed = false;
         isDebuffBeingProcessed = false;
         StatusEffectIcons[5].SetActive(false);
+    }
+
+    private IEnumerator RefillEnergyBar()
+    {
+        energyBar.SetMaxHealth(attackScript.currentWeapon.attackCooldown * 200);
+        energyBar.SetHealth(0);
+        while(energyBar.slider.value + attackScript.currentWeapon.attackCooldown < energyBar.slider.maxValue)
+        {
+            energyBar.SetHealth(energyBar.slider.value + attackScript.currentWeapon.attackCooldown);
+            yield return new WaitForSeconds(1/200);
+        }
+        energyBar.SetHealth(energyBar.slider.maxValue);
+        while(attackScript.isAttacking == 1)
+            yield return new WaitForSeconds(1 / 200);
+        startedReloadingEnergyBar = false;
     }
 }

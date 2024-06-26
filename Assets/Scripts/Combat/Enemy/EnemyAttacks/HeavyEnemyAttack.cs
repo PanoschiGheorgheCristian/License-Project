@@ -10,7 +10,7 @@ public class HeavyEnemyAttack : GenericEnemyAttack
     {
         //Check for Elite Enemy / Boss by looking at EnemyToFight.isElite / EnemyToFight.isBoss
         heroCurrentPosition = hero.GetComponent<PlayerController>().heroCurrentPosition;
-        if (isAttacking == 0 && isExhausted == 0 && !EnemyStatus.isStunned)
+        if (isAttacking == 0 && isExhausted == 0 && !EnemyStatus.isStunned && isInLoadingPeriod == false)
             if (hero.GetComponent<HeroStatus>().alive == 1)
             {
                 if (EnemyToFight.isElite)
@@ -32,6 +32,7 @@ public class HeavyEnemyAttack : GenericEnemyAttack
 
     IEnumerator StunStrike(int heroPosition)
     {
+        isAttacking = 1;
         Attack(heroPosition, 1f, 15);
 
         yield return new WaitForSeconds(1.1f);
@@ -41,6 +42,7 @@ public class HeavyEnemyAttack : GenericEnemyAttack
 
     IEnumerator FastStunStrike(int heroPosition)
     {
+        isAttacking = 1;
         int playerHealth = hero.GetComponent<HeroStatus>().health;
         Attack(heroPosition, 0.5f, 15);
 

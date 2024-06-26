@@ -6,17 +6,17 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
+    path: Assets/Scenes/Map.unity
+    guid: 80d8ecb9ae90ec94f8e2461a359af76d
+  - enabled: 1
     path: Assets/Scenes/Combat.unity
     guid: 2cda990e2423bbf4892e6590ba056729
   - enabled: 1
     path: Assets/Scenes/Encounter.unity
     guid: b47a0bcb95447234b917751a392671a9
-  - enabled: 1
-    path: Assets/Scenes/Map.unity
-    guid: 80d8ecb9ae90ec94f8e2461a359af76d
   - enabled: 0
-    path: Assets/Scenes/Shop.unity
-    guid: 1a366abc6ff181348a6bc1209a04d533
+    path: 
+    guid: 00000000000000000000000000000000
   - enabled: 1
     path: Assets/Scenes/BlackSmith.unity
     guid: cee343dba6cbd5e47bb48e9465af491e

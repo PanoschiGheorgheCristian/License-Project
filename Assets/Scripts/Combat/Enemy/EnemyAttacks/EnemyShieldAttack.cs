@@ -10,7 +10,7 @@ public class EnemyShieldAttack : GenericEnemyAttack
     {
         //Check for Elite Enemy / Boss by looking at EnemyToFight.isElite / EnemyToFight.isBoss
         heroCurrentPosition = hero.GetComponent<PlayerController>().heroCurrentPosition;
-        if (isAttacking == 0 && isExhausted == 0 && !EnemyStatus.isStunned)
+        if (isAttacking == 0 && isExhausted == 0 && !EnemyStatus.isStunned && isInLoadingPeriod == false)
             if (hero.GetComponent<HeroStatus>().alive == 1)
             {
                 if (EnemyToFight.isElite)
@@ -51,6 +51,7 @@ public class EnemyShieldAttack : GenericEnemyAttack
 
     IEnumerator PreciseAttack(int heroPosition)
     {
+        isAttacking = 1;
         Attack(heroPosition, 1f, 10);
 
         yield return new WaitForSeconds(1f);
@@ -60,18 +61,19 @@ public class EnemyShieldAttack : GenericEnemyAttack
 
     IEnumerator TwoStrikePreciseAttack(int heroPosition)
     {
-        Attack(heroPosition, 0.7f, 10);
+        isAttacking = 1;
+        Attack(heroPosition, 1f, 10);
 
-        yield return new WaitForSeconds(0.3f);
+        yield return new WaitForSeconds(1.25f);
 
         heroPosition = hero.GetComponent<PlayerController>().heroCurrentPosition;
         Attack(heroPosition, 1f, 15);
 
-        yield return new WaitForSeconds(1f);
+        yield return new WaitForSeconds(1.25f);
 
         heroPosition = hero.GetComponent<PlayerController>().heroCurrentPosition;
         Attack(heroPosition, 1.5f, 20);
 
-        StartCoroutine(LoseExhausted(2f + timeExhausted));
+        StartCoroutine(LoseExhausted(1.25f + timeExhausted));
     }
 }

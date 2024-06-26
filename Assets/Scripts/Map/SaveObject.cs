@@ -33,6 +33,6 @@ public class SaveObject
     [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
     private static void GetSaveFolder()
     {
-        SAVE_FOLDER = Application.dataPath + "/Saves";
+        SAVE_FOLDER = Application.streamingAssetsPath + "/Saves";
     }
 }

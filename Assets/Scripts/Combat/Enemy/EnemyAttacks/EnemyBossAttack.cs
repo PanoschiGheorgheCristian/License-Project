@@ -11,7 +11,7 @@ public class EnemyBossAttack : GenericEnemyAttack
     {
         //Check for Elite Enemy / Boss by looking at EnemyToFight.isElite / EnemyToFight.isBoss
         heroCurrentPosition = hero.GetComponent<PlayerController>().heroCurrentPosition;
-        if (isAttacking == 0 && isExhausted == 0 && !EnemyStatus.isStunned)
+        if (isAttacking == 0 && isExhausted == 0 && !EnemyStatus.isStunned && isInLoadingPeriod == false)
             if (hero.GetComponent<HeroStatus>().alive == 1)
             {
                 ProcessAttacks(heroCurrentPosition);
@@ -34,6 +34,7 @@ public class EnemyBossAttack : GenericEnemyAttack
 
     IEnumerator PreciseAttack(int heroPosition)
     {
+        isAttacking = 1;
         Attack(heroPosition, 0.5f, 20);
 
         yield return new WaitForSeconds(0.5f);
@@ -43,6 +44,7 @@ public class EnemyBossAttack : GenericEnemyAttack
 
     IEnumerator BoardWipe()
     {
+        isAttacking = 1;
         int rand = Random.Range(0, 15);
         while(rand == 15)
             rand = Random.Range(0, 15);

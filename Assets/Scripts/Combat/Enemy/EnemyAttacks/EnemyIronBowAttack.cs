@@ -10,7 +10,7 @@ public class EnemyIronBowAttack : GenericEnemyAttack
     {
         //Check for Elite Enemy / Boss by looking at EnemyToFight.isElite / EnemyToFight.isBoss
         heroCurrentPosition = hero.GetComponent<PlayerController>().heroCurrentPosition;
-        if (isAttacking == 0 && isExhausted == 0 && !EnemyStatus.isStunned)
+        if (isAttacking == 0 && isExhausted == 0 && !EnemyStatus.isStunned && isInLoadingPeriod == false)
             if (hero.GetComponent<HeroStatus>().alive == 1)
             {
                 if (EnemyToFight.isElite)
@@ -42,6 +42,7 @@ public class EnemyIronBowAttack : GenericEnemyAttack
 
     void SpreadAttack(int heroPosition)
     {
+        isAttacking = 1;
         Attack(heroPosition, 0.7f, 10);
         if(heroPosition % 5 != 0)
         {
@@ -57,6 +58,7 @@ public class EnemyIronBowAttack : GenericEnemyAttack
 
     void WideSpreadAttack(int heroPosition)
     {
+        isAttacking = 1;
         Attack(heroPosition, 0.7f, 10);
         if (heroPosition % 5 != 0)
         {
@@ -80,10 +82,8 @@ public class EnemyIronBowAttack : GenericEnemyAttack
 
     void IronArrow(int heroCurrentPosition)
     {
-        List<int> attackPositions = new()
-        {
-            heroCurrentPosition
-        };
+        isAttacking = 1;
+        List<int> attackPositions = new();
 
         for (int i = heroCurrentPosition - heroCurrentPosition % 5; i < heroCurrentPosition - heroCurrentPosition % 5 + 5; i++)
         {
@@ -97,10 +97,8 @@ public class EnemyIronBowAttack : GenericEnemyAttack
 
     void ImprovedIronArrow(int heroCurrentPosition)
     {
-        List<int> attackPositions = new()
-        {
-            heroCurrentPosition
-        };
+        isAttacking = 1;
+        List<int> attackPositions = new();
 
         for (int i = heroCurrentPosition - heroCurrentPosition % 5; i < heroCurrentPosition - heroCurrentPosition % 5 + 5; i++)
         {
